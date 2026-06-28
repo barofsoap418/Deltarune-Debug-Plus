@@ -1,0 +1,16 @@
+{
+  "Name": "CH5 DEBUG",
+  "Flags": [],
+  "VerifyStrings": [],
+  "AssetsDataFilePath": null,
+  "ErrorOnWarnings": true,
+  "ExcludeDirectories": [],
+  "SubProjects": [],
+  "Patches": [],
+  "ExternalFiles": [],
+  "FileCopies": [],
+  "FileDeletes": [],
+  "PreImportScripts": [],
+  "PreAssetImportScripts": [],
+  "PostImportScripts": []
+}
