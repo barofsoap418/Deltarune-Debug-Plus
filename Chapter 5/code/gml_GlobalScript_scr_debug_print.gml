@@ -1,4 +1,4 @@
-function scr_debug_print()
+function scr_debug_print(arg0)
 {
 	if (!scr_debug())
         exit

@@ -34,7 +34,7 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 		if (type == "[group]")
             name = "[ " + name + "... ]";
         else if (type == "[flagset]")
-            name += ": " + string(global.flag[item]);
+            name += "(" + string(item) + ") : " + string(global.flag[item]);
         else if (type == "[globalset]")
             name += ": " + string(variable_global_get(item));
         else if (type == "[globalset_multi]")

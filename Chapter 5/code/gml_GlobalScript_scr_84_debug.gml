@@ -7,14 +7,14 @@ function scr_84_debug(arg0)
         global.chemg_menu_indices[0] = 0
         global.chemg_menu_depth = 0
         ossafe_ini_open("DebugPlus.ini")
-        global.chemg_god_mode = ini_read_real("AshleysDebug", "global.chemg_god_mode", 0)
-        global.chemg_show_room = ini_read_real("AshleysDebug", "global.chemg_show_room", 1)
-        global.chemg_show_val = ini_read_real("AshleysDebug", "global.chemg_show_val", 1)
-        global.chemg_show_plot = ini_read_real("AshleysDebug", "global.chemg_show_plot", 1)
-        global.chemg_show_encounterno = ini_read_real("AshleysDebug", "global.chemg_show_encounterno", 0)
-        global.chemg_show_interact = ini_read_real("AshleysDebug", "global.chemg_show_interact", 0)
-        global.chemg_show_entrance = ini_read_real("AshleysDebug", "global.chemg_show_entrance", 0)
-        global.chemg_show_fps = ini_read_real("AshleysDebug", "global.chemg_show_fps", 0)
+        global.chemg_god_mode = ini_read_real("AshleysDebug", "chemg_god_mode", 0)
+        global.chemg_show_room = ini_read_real("AshleysDebug", "chemg_show_room", 1)
+        global.chemg_show_val = ini_read_real("AshleysDebug", "chemg_show_val", 1)
+        global.chemg_show_plot = ini_read_real("AshleysDebug", "chemg_show_plot", 1)
+        global.chemg_show_encounterno = ini_read_real("AshleysDebug", "chemg_show_encounterno", 0)
+        global.chemg_show_interact = ini_read_real("AshleysDebug", "chemg_show_interact", 0)
+        global.chemg_show_entrance = ini_read_real("AshleysDebug", "chemg_show_entrance", 0)
+        global.debug_fps_display = ini_read_real("AshleysDebug", "debug_fps_display", 0)
         ossafe_ini_close()
         global.chemg_font_test = false
         var parent = ds_list_create()
@@ -288,8 +288,6 @@ function scr_84_debug(arg0)
         
         
         
-        
-        
         parent = scr_84_pop()
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Give Armor")
@@ -355,15 +353,20 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 5")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[armoritem]", 23, "ShadowMantle")
-        scr_84_add_menu_item(parent, "[armoritem]", 24, "LodeStone")
-        scr_84_add_menu_item(parent, "[armoritem]", 25, "GingerGuard")
-        scr_84_add_menu_item(parent, "[armoritem]", 26, "BlueRibbon")
-        scr_84_add_menu_item(parent, "[armoritem]", 27, "TennaTie")
+        scr_84_add_menu_item(parent, "[armoritem]", 30, "MonarchRBN")
+        scr_84_add_menu_item(parent, "[armoritem]", 31, "TrueTie")
+        scr_84_add_menu_item(parent, "[armoritem]", 32, "DogWidow")
+        scr_84_add_menu_item(parent, "[armoritem]", 33, "RedRibbon")
+        scr_84_add_menu_item(parent, "[armoritem]", 34, "NetskieHat")
+        scr_84_add_menu_item(parent, "[armoritem]", 35, "SethSpecs")
+        scr_84_add_menu_item(parent, "[armoritem]", 36, "YellowHat")
+        scr_84_add_menu_item(parent, "[armoritem]", 37, "O.Glove")
+        scr_84_add_menu_item(parent, "[armoritem]", 38, "GreenApron")
+        parent = scr_84_pop()
+        parent = scr_84_pop()
         parent = scr_84_pop()
         
-        parent = scr_84_pop()
-        parent = scr_84_pop()
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Rooms")
         scr_84_push(parent)
@@ -738,25 +741,29 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Unsorted Full List")
         scr_84_push(parent)
         parent = group
-        for (var rooms = 0; rooms < (room_last + ROOM_INITIALIZE); rooms++)
-            scr_84_add_menu_item(parent, "[roomdark]", rooms, room_get_name(rooms))
+        for (var rooms = 0; rooms < (room_last + 1); rooms++)
+            scr_84_add_menu_item(parent, "[roomgeneric]", rooms, room_get_name(rooms))
         parent = scr_84_pop()
         parent = scr_84_pop()
+        
+        
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Options")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[god]", "", "God Mode")
-        scr_84_add_menu_item(parent, "[showroom]", "", "Toggle Room Name")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_god_mode", "God Mode")
+        scr_84_add_menu_item(parent, "[platswap]", "", "Swap to Platformer Mode")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_room", "Toggle Room Name")
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Additional Visibility Toggles")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[showplot]", "", "Toggle Plot")
-        scr_84_add_menu_item(parent, "[showencounter]", "", "Toggle Encounterno")
-        scr_84_add_menu_item(parent, "[showinteract]", "", "Toggle Interact")
-        scr_84_add_menu_item(parent, "[showentrance]", "", "Toggle Entrance")
-        scr_84_add_menu_item(parent, "[showfps]", "", "Toggle FPS")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_plot", "Toggle Plot")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_encounterno", "Toggle Encounterno")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_interact", "Toggle Interact")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_entrance", "Toggle Entrance")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "debug_fps_display", "Toggle FPS")
         parent = scr_84_pop()
         scr_84_add_menu_item(parent, "[restart]", "", "Restart Room")
         scr_84_add_menu_item(parent, "[loadj]", "", "Reload Japanese")
@@ -767,13 +774,15 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[credits]", "", "Credits")
         scr_84_add_menu_item(parent, "[ashley]", "", "!!!SUPER IMPORTANT!!!")
         parent = scr_84_pop()
+        
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Flags")
         scr_84_push(parent)
         parent = group
+        
         scr_84_add_menu_item(parent, "[flagsetspec]", 0, "Set Specific Flag")
         scr_84_add_menu_item(parent, "[tempflag]", 0, "Set Temporary Flag")
-        scr_84_add_menu_item(parent, "[plot]", 0, "Set Plot Value")
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Enemy Recruit Flags")
         scr_84_push(parent)
@@ -793,6 +802,7 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[flagset]", 622, "Rudinn Ranger")
         scr_84_add_menu_item(parent, "[flagset]", 623, "Head Hathy")
         parent = scr_84_pop()
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 2")
         scr_84_push(parent)
@@ -808,6 +818,7 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[flagset]", 642, "Tasque Manager")
         scr_84_add_menu_item(parent, "[flagset]", 644, "Mauswheel")
         parent = scr_84_pop()
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 3")
         scr_84_push(parent)
@@ -821,6 +832,36 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[flagset]", 660, "Elnina")
         scr_84_add_menu_item(parent, "[flagset]", 661, "Lanino")
         parent = scr_84_pop()
+        
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Chapter 4")
+        scr_84_push(parent)
+        parent = group
+        scr_84_add_menu_item(parent, "[flagset]", 662, "Guei")
+        scr_84_add_menu_item(parent, "[flagset]", 663, "Balthizard")
+        scr_84_add_menu_item(parent, "[flagset]", 664, "Bibliox")
+        scr_84_add_menu_item(parent, "[flagset]", 665, "Mizzle")
+        scr_84_add_menu_item(parent, "[flagset]", 666, "Wicabel")
+        scr_84_add_menu_item(parent, "[flagset]", 667, "Winglade")
+        scr_84_add_menu_item(parent, "[flagset]", 668, "Organikk")
+        scr_84_add_menu_item(parent, "[flagset]", 669, "HolywaterCooler")
+        parent = scr_84_pop()
+        
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Chapter 5")
+        scr_84_push(parent)
+        parent = group
+        scr_84_add_menu_item(parent, "[flagset]", 670, "Floradinn")
+        scr_84_add_menu_item(parent, "[flagset]", 671, "Leafling")
+        scr_84_add_menu_item(parent, "[flagset]", 672, "Shi")
+        scr_84_add_menu_item(parent, "[flagset]", 673, "Shinobeetle")
+        scr_84_add_menu_item(parent, "[flagset]", 674, "KawKaw")
+        scr_84_add_menu_item(parent, "[flagset]", 675, "Sheary")
+        scr_84_add_menu_item(parent, "[flagset]", 676, "Netskie")
+        scr_84_add_menu_item(parent, "[flagset]", 677, "Terakota")
+        parent = scr_84_pop()
+        
+        
         parent = scr_84_pop()
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Options")
@@ -843,15 +884,44 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[flagset]", 10, "C-Skippable Dialogue")
         scr_84_add_menu_item(parent, "[flagset]", 7, "Openable Menu")
         scr_84_add_menu_item(parent, "[flagset]", 9, "Battle Music")
-        parent = scr_84_pop()
+        scr_84_add_menu_item(parent, "[flagset]", 23, "Climbing Flag")
+        scr_84_add_menu_item(parent, "[flagset]", 24, "Petal Feather Flag")
         scr_84_add_menu_item(parent, "[flagset]", 31, "Disable Walking Sounds")
         scr_84_add_menu_item(parent, "[flagset]", 32, "Disable Item/Gear Comments")
+        parent = scr_84_pop()
         scr_84_add_menu_item(parent, "[flagset]", 40, "Enemy Kills")
         scr_84_add_menu_item(parent, "[flagset]", 254, "Starwalker Flag")
+        
         scr_84_add_menu_item(parent, "[flagset]", 910, "CH1 Egg Flag")
         scr_84_add_menu_item(parent, "[flagset]", 918, "CH2 Egg Flag")
         scr_84_add_menu_item(parent, "[flagset]", 930, "CH3 Egg Flag")
+        scr_84_add_menu_item(parent, "[flagset]", 931, "CH4 Egg Flag")
+        scr_84_add_menu_item(parent, "[flagset]", 941, "CH5 Egg Flag")
+        
+        scr_84_add_menu_item(parent, "[flagset]", 1646, "CH1 Shadow Crystal")
+        scr_84_add_menu_item(parent, "[flagset]", 1647, "CH2 Shadow Crystal")
+        scr_84_add_menu_item(parent, "[flagset]", 1648, "CH3 Shadow Crystal")
+        scr_84_add_menu_item(parent, "[flagset]", 1649, "CH4 Shadow Crystal")
+        scr_84_add_menu_item(parent, "[flagset]", 1907, "CH5 Shadow Crystal")
+        
+        scr_84_add_menu_item(parent, "[flagset]", 915, "Weird Route Progress Flag")
+        scr_84_add_menu_item(parent, "[flagset]", 916, "Weird Route Failure Flag")
+        
         parent = scr_84_pop()
+        
+        
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Global Variables")
+        scr_84_push(parent)
+        parent = group
+        scr_84_add_menu_item(parent, "[set_global_any_real]", 0, "Set Any Global Variable (Number)")
+        scr_84_add_menu_item(parent, "[set_global_any_string]", 0, "Set Any Global Variable (String)")
+        scr_84_add_menu_item(parent, "[globalset]", "plot", "Set Plot Value")
+        scr_84_add_menu_item(parent, "[globalset]", "interact", "Set Interact Value")
+        scr_84_add_menu_item(parent, "[globalset]", "darkzone", "Set Darkzone Value")
+        parent = scr_84_pop()
+        
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Stats")
         scr_84_push(parent)
@@ -1009,7 +1079,7 @@ function scr_84_debug(arg0)
     }
     if (process)
         return global.chemg_menu_depth > 0;
-    if (keyboard_check_pressed(ord("B")) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_stickr))
+    if (keyboard_check_pressed(vk_f1) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_stickr))
     {
         global.chemg_menu_depth = 1
         global.chemg_interact = global.interact
@@ -1082,12 +1152,27 @@ function scr_84_debug(arg0)
             }
             else if (choice == "[room]")
             {
+                global.darkzone = 0
                 room_goto(choice_data)
                 global.chemg_menu_depth = 0
             }
             else if (choice == "[roomdark]")
             {
+                global.darkzone = 1
                 show_debug_message("room_goto: " + choice_name)
+                room_goto(choice_data)
+                global.chemg_menu_depth = 0
+            }
+            else if (choice == "[roomplat]")
+            {
+                global.darkzone = 1
+                // insert code to start in sidescrolling mode here lol
+                show_debug_message("room_goto: " + choice_name)
+                room_goto(choice_data)
+                global.chemg_menu_depth = 0
+            }
+            else if (choice == "[roomgeneric]")
+            {
                 room_goto(choice_data)
                 global.chemg_menu_depth = 0
             }
@@ -1110,13 +1195,6 @@ function scr_84_debug(arg0)
                 show_debug_message("restart room")
                 room_restart()
                 global.chemg_menu_depth = 0
-            }
-            else if (choice == "[god]")
-            {
-                global.chemg_god_mode = 1 - global.chemg_god_mode
-                ossafe_ini_open("DebugPlus.ini")
-                ini_write_real("AshleysDebug", "global.chemg_god_mode", global.chemg_god_mode)
-                ossafe_ini_close()
             }
             else if (choice == "[lightitem]")
             {
@@ -1154,54 +1232,44 @@ function scr_84_debug(arg0)
             {
                 global.flag[1044] = max(0, global.flag[1044] + choice_data)
             }
-            else if (choice == "[showroom]")
+            else if choice == "[toggle_global_saveto_ini]"
             {
-                global.chemg_show_room = !global.chemg_show_room
+                variable_global_set(choice_data, 1 - variable_global_get(choice_data))
                 ossafe_ini_open("DebugPlus.ini")
-                ini_write_real("AshleysDebug", "global.chemg_show_room", global.chemg_show_room)
+                ini_write_real("AshleysDebug", choice_data, variable_global_get(choice_data))
                 ossafe_ini_close()
+                
             }
-            else if (choice == "[showval]")
+            else if choice == "[set_global_any_real]" || choice == "[set_global_any_string]"
             {
-                global.chemg_show_val = !global.chemg_show_val
-                ossafe_ini_open("DebugPlus.ini")
-                ini_write_real("AshleysDebug", "global.chemg_show_val", global.chemg_show_val)
-                ossafe_ini_close()
-            }
-            else if (choice == "[showplot]")
-            {
-                global.chemg_show_plot = !global.chemg_show_plot
-                ossafe_ini_open("DebugPlus.ini")
-                ini_write_real("AshleysDebug", "global.chemg_show_plot", global.chemg_show_plot)
-                ossafe_ini_close()
-            }
-            else if (choice == "[showencounter]")
-            {
-                global.chemg_show_encounterno = !global.chemg_show_encounterno
-                ossafe_ini_open("DebugPlus.ini")
-                ini_write_real("AshleysDebug", "global.chemg_show_encounterno", global.chemg_show_encounterno)
-                ossafe_ini_close()
-            }
-            else if (choice == "[showinteract]")
-            {
-                global.chemg_show_interact = !global.chemg_show_interact
-                ossafe_ini_open("DebugPlus.ini")
-                ini_write_real("AshleysDebug", "global.chemg_show_interact", global.chemg_show_interact)
-                ossafe_ini_close()
-            }
-            else if (choice == "[showentrance]")
-            {
-                global.chemg_show_entrance = !global.chemg_show_entrance
-                ossafe_ini_open("DebugPlus.ini")
-                ini_write_real("AshleysDebug", "global.chemg_show_entrance", global.chemg_show_entrance)
-                ossafe_ini_close()
-            }
-            else if (choice == "[showfps]")
-            {
-                global.chemg_show_fps = !global.chemg_show_fps
-                ossafe_ini_open("DebugPlus.ini")
-                ini_write_real("AshleysDebug", "global.chemg_show_fps", global.chemg_show_fps)
-                ossafe_ini_close()
+                var _globalvar = get_string("Enter the variable to set (don't include \"global.\")", "")
+                
+                if _globalvar != ""
+                {
+                    var _continue = 1
+                    if !variable_global_exists(_globalvar)
+                    {
+                        _continue = 0
+                        if show_question("A variable with this name doesn't exist.\nInitialize a variable with this name?")
+                            _continue = 1
+                    }
+                    
+                    if _continue == 1
+                    {
+                        var _str = "Enter the variable's new value"
+                        if choice == "[set_global_any_real]"
+                            _str += " as a number."
+                        else if choice == "[set_global_any_string]"
+                            _str += " as a string."
+                        
+                        var _globalvarvalue = get_string(_str, "")
+                        
+                        if choice == "[set_global_any_real]"
+                            variable_global_set(_globalvar, real(_globalvarvalue))
+                        else if choice == "[set_global_any_string]"
+                            variable_global_set(_globalvar, _globalvarvalue)
+                    }
+                }
             }
             else if (choice == "[fonttest]")
             {
@@ -1213,7 +1281,7 @@ function scr_84_debug(arg0)
                 var varname = get_string("Enter Room ID (ex. room_dark1)", "")
                 if (room_exists(asset_get_index(varname)))
                     room_goto(asset_get_index(varname))
-                else
+                else if varname != ""
                     show_message("Doesn't exist vro.")
             }
             else if (choice == "[setgold]")
@@ -1228,7 +1296,7 @@ function scr_84_debug(arg0)
             }
             else if (choice == "[flagset]")
             {
-                var varname = get_string("Enter new value (currently: " + string(global.flag[choice_data]) + ")", "")
+                var varname = get_string("Enter new value for flag " + string(choice_data) + " (currently: " + string(global.flag[choice_data]) + ")", "")
                 if (varname != "")
                 {
                     if (is_numeric(global.flag[choice_data]))
@@ -1250,7 +1318,7 @@ function scr_84_debug(arg0)
                     flagid = real(flagid)
                     if (flagid <= array_length(global.flag))
                     {
-                        var varname = get_string("Enter new value (currently: " + string(global.flag[flagid]) + ")", "")
+                        var varname = get_string("Enter new value for flag " + string(flagid) + " (currently: " + string(global.flag[flagid]) + ")", "")
                         if (varname != "")
                         {
                             if (is_numeric(global.flag[flagid]))
@@ -1783,10 +1851,8 @@ function scr_84_debug(arg0)
                         {
                             if (is_numeric(global.tempflag[flagid]))
                                 global.tempflag[flagid] = real(varname)
-                            else if (is_string(global.tempflag[choice_data]))
-                                global.tempflag[flagid] = string(varname)
                             else
-                                show_message("error????")
+                                show_message("Tempflags can only be set to numbers!!!!")
                         }
                     }
                     else
@@ -1829,7 +1895,7 @@ function scr_84_debug(arg0)
         draw_set_valign(fa_top)
         var yy = global.chemg_yoffset
         var vspacing = 15
-        scr_84_draw_text_outline(10, yy, "====[ 8-4 Debug Menu ]====[ D$: " + string(global.gold) + " $: " + string(global.lgold) + " PTs: " + string(global.flag[1044]) + " ]")
+        scr_84_draw_text_outline(10, yy, "====[ 8-4 Debug Menu ]====[ D$: " + string(global.gold) + " $: " + string(global.lgold) + " F$: " + string(global.flag[1411]) + " P$: " + string(global.flag[1312]) + " ]")
         yy += vspacing
         global.chemg_max_depth = -1
         global.chemg_cursor_y = 0
@@ -1868,15 +1934,19 @@ function scr_84_debug(arg0)
             scr_84_draw_text_outline(chemg_x, chemg_y + 16 + (8 * _counter), "ENTRANCE: " + string(global.entrance))
             _counter++
         }
-        if (global.chemg_show_fps == 1)
+        
+        // removed in favor of the chaper 1 fps counter, which is already in this chapter's code anyway
+        /*if (global.chemg_show_fps == 1)
         {
             scr_84_draw_text_outline(chemg_x, chemg_y + 16 + (8 * _counter), "FPS: " + string(fps))
             _counter++
-        }
+        }*/
     }
     if (global.chemg_menu_depth > 0)
     {
         draw_set_font(fnt_main)
+        if draw_get_color() == c_yellow
+            draw_set_color(c_green)
         var barofsoap418 = "Restored/Improved by barofsoap418"
         scr_84_draw_text_outline(635 - string_width(barofsoap418), 475 - string_height(barofsoap418), barofsoap418)
     }
