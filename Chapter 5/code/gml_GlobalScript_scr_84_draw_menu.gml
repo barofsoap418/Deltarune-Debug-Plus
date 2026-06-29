@@ -49,6 +49,13 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
             colsiner++
             draw_set_color(make_color_hsv((colsiner * 8) % 255, 60 + (sin(colsiner / 10) * 15), 255))
         }
+        else if (type == "[menukey]")
+        {
+            if (global.chemg_rebinding)
+                name += ": <Press Key>";
+            else
+                name += ": " + global.asc_def[global.chemg_menu_key];
+        }
             
 		scr_84_draw_text_outline(xx, yy, prefix + name)
 		yy += vspacing

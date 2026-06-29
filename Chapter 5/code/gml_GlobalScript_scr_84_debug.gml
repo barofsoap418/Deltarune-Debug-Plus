@@ -15,7 +15,9 @@ function scr_84_debug(arg0)
         global.chemg_show_interact = ini_read_real("AshleysDebug", "chemg_show_interact", 0)
         global.chemg_show_entrance = ini_read_real("AshleysDebug", "chemg_show_entrance", 0)
         global.debug_fps_display = ini_read_real("AshleysDebug", "debug_fps_display", 0)
+        global.chemg_menu_key = ini_read_real("AshleysDebug", "chemg_menu_key", vk_f1)
         ossafe_ini_close()
+        global.chemg_rebinding = false
         global.chemg_font_test = false
         var parent = ds_list_create()
         show_debug_message("init debug")
@@ -372,43 +374,43 @@ function scr_84_debug(arg0)
         scr_84_push(parent)
         parent = group
         scr_84_add_menu_item(parent, "[gotoroom]", 0, "Go to Specific Room")
-        scr_84_add_menu_item(parent, "[room]", 1, "ROOM_INITIALIZE")
-        scr_84_add_menu_item(parent, "[room]", 17, "PLACE_CONTACT")
+        scr_84_add_menu_item(parent, "[room]", ROOM_INITIALIZE, "ROOM_INITIALIZE")
+        scr_84_add_menu_item(parent, "[room]", PLACE_CONTACT, "PLACE_CONTACT")
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Debug")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[room]", 2, "room_title_placeholder")
-        scr_84_add_menu_item(parent, "[room]", 3, "room_battletest")
-        scr_84_add_menu_item(parent, "[roomdark]", 4, "room_cutscene_tester")
-        scr_84_add_menu_item(parent, "[roomdark]", 5, "room_sound_tester")
-        scr_84_add_menu_item(parent, "[roomdark]", 6, "room_sprite_tester")
-        scr_84_add_menu_item(parent, "[roomdark]", 7, "room_gif_tester")
-        scr_84_add_menu_item(parent, "[roomdark]", 8, "room_bullettest")
-        scr_84_add_menu_item(parent, "[roomdark]", 9, "room_GMS2_test")
-        scr_84_add_menu_item(parent, "[roomdark]", 10, "room_cutscene_tester_b")
-        scr_84_add_menu_item(parent, "[roomdark]", 11, "room_debug_color")
-        scr_84_add_menu_item(parent, "[roomdark]", 12, "room_debug_battle")
-        scr_84_add_menu_item(parent, "[roomdark]", 13, "room_debug_loc")
-        scr_84_add_menu_item(parent, "[roomdark]", 84, "room_debug_smallface_dark")
-        scr_84_add_menu_item(parent, "[roomdark]", 85, "room_debug_smallface")
-        scr_84_add_menu_item(parent, "[roomdark]", 86, "room_debug_choicer_dark")
-        scr_84_add_menu_item(parent, "[roomdark]", 87, "room_debug_choicer_light")
-        scr_84_add_menu_item(parent, "[roomdark]", 88, "room_debug_battleBalloon")
-        scr_84_add_menu_item(parent, "[roomdark]", 89, "room_overworldBulletEnemyTest")
-        scr_84_add_menu_item(parent, "[roomdark]", 93, "room_tennaCutsceneTest")
-        scr_84_add_menu_item(parent, "[roomdark]", 94, "room_tennaAnimTest")
-        scr_84_add_menu_item(parent, "[roomdark]", 113, "room_lerptest")
-        scr_84_add_menu_item(parent, "[roomdark]", 123, "room_debug_tennatexttester")
-        scr_84_add_menu_item(parent, "[roomdark]", 128, "room_rhythmgame_editor")
-        scr_84_add_menu_item(parent, "[roomdark]", 133, "room_genanimtest")
-        scr_84_add_menu_item(parent, "[roomdark]", 143, "room_perspective_testing")
-        scr_84_add_menu_item(parent, "[roomdark]", 143, "room_bullettest_new")
-        scr_84_add_menu_item(parent, "[roomdark]", 165, "room_ch3_gameshowroom_tennatest")
-        scr_84_add_menu_item(parent, "[roomdark]", 185, "room_rhythmgame_tenna_test")
-        scr_84_add_menu_item(parent, "[roomdark]", 222, "room_dw_channelchange_test")
-        scr_84_add_menu_item(parent, "[roomdark]", 176, "room_CHEFS")
-        scr_84_add_menu_item(parent, "[roomdark]", 126, "room_susiezilla_singleScreenMockup")
+        scr_84_add_menu_item(parent, "[room]", room_title_placeholder, "room_title_placeholder")
+        scr_84_add_menu_item(parent, "[room]", room_battletest, "room_battletest")
+        scr_84_add_menu_item(parent, "[roomdark]", room_cutscene_tester, "room_cutscene_tester")
+        scr_84_add_menu_item(parent, "[roomdark]", room_sound_tester, "room_sound_tester")
+        scr_84_add_menu_item(parent, "[roomdark]", room_sprite_tester, "room_sprite_tester")
+        scr_84_add_menu_item(parent, "[roomdark]", room_gif_tester, "room_gif_tester")
+        scr_84_add_menu_item(parent, "[roomdark]", room_bullettest, "room_bullettest")
+        scr_84_add_menu_item(parent, "[roomdark]", room_GMS2_test, "room_GMS2_test")
+        scr_84_add_menu_item(parent, "[roomdark]", room_cutscene_tester_b, "room_cutscene_tester_b")
+        scr_84_add_menu_item(parent, "[roomdark]", room_debug_color, "room_debug_color")
+        scr_84_add_menu_item(parent, "[roomdark]", room_debug_battle, "room_debug_battle")
+        scr_84_add_menu_item(parent, "[roomdark]", room_debug_loc, "room_debug_loc")
+        scr_84_add_menu_item(parent, "[roomdark]", room_debug_smallface_dark, "room_debug_smallface_dark")
+        scr_84_add_menu_item(parent, "[roomdark]", room_debug_smallface, "room_debug_smallface")
+        scr_84_add_menu_item(parent, "[roomdark]", room_debug_choicer_dark, "room_debug_choicer_dark")
+        scr_84_add_menu_item(parent, "[roomdark]", room_debug_choicer_light, "room_debug_choicer_light")
+        scr_84_add_menu_item(parent, "[roomdark]", room_debug_battleBalloon, "room_debug_battleBalloon")
+        scr_84_add_menu_item(parent, "[roomdark]", room_overworldBulletEnemyTest, "room_overworldBulletEnemyTest")
+        scr_84_add_menu_item(parent, "[roomdark]", room_lerptest, "room_lerptest")
+        scr_84_add_menu_item(parent, "[roomdark]", room_rhythmgame_editor, "room_rhythmgame_editor")
+        scr_84_add_menu_item(parent, "[roomdark]", room_bullettest_new, "room_bullettest_new")
+        scr_84_add_menu_item(parent, "[roomdark]", room_rhythmgame_editor, "room_rhythmgame_editor")
+        scr_84_add_menu_item(parent, "[roomdark]", room_animexampletest, "room_animexampletest")
+        scr_84_add_menu_item(parent, "[roomdark]", room_climbtest, "room_climbtest")
+        scr_84_add_menu_item(parent, "[roomdark]", room_towery_tester, "room_towery_tester")
+        scr_84_add_menu_item(parent, "[roomdark]", room_animtest, "room_animtest")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_shadowplatformTest, "room_dw_fcastle_shadowplatformTest")
+        scr_84_add_menu_item(parent, "[roomdark]", room_plat_lab, "room_plat_lab")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_flowerclimb_for_tiling, "room_dw_fcastle_flowerclimb_for_tiling")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_petaltest, "room_dw_petaltest")
+        scr_84_add_menu_item(parent, "[roomdark]", room_floortex_test, "room_floortex_test")
         parent = scr_84_pop()
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Light World")
@@ -418,331 +420,308 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Kris's House")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[room]", 15, "room_krisroom")
-        scr_84_add_menu_item(parent, "[room]", 16, "room_krishallway")
-        scr_84_add_menu_item(parent, "[room]", 17, "room_torroom")
-        scr_84_add_menu_item(parent, "[room]", 18, "room_torhouse")
-        scr_84_add_menu_item(parent, "[room]", 19, "room_torbathroom")
+        scr_84_add_menu_item(parent, "[room]", room_krisroom, "room_krisroom")
+        scr_84_add_menu_item(parent, "[room]", room_krishallway, "room_krishallway")
+        scr_84_add_menu_item(parent, "[room]", room_torroom, "room_torroom")
+        scr_84_add_menu_item(parent, "[room]", room_torhouse, "room_torhouse")
+        scr_84_add_menu_item(parent, "[room]", room_torbathroom, "room_torbathroom")
         parent = scr_84_pop()
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Exteriors")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[room]", 20, "room_town_krisyard")
-        scr_84_add_menu_item(parent, "[room]", 21, "room_town_northwest")
-        scr_84_add_menu_item(parent, "[room]", 22, "room_town_north")
-        scr_84_add_menu_item(parent, "[room]", 23, "room_beach")
-        scr_84_add_menu_item(parent, "[room]", 24, "room_town_mid")
-        scr_84_add_menu_item(parent, "[room]", 25, "room_town_apartments")
-        scr_84_add_menu_item(parent, "[room]", 26, "room_town_south")
-        scr_84_add_menu_item(parent, "[room]", 27, "room_town_school")
-        scr_84_add_menu_item(parent, "[room]", 28, "room_town_church")
-        scr_84_add_menu_item(parent, "[room]", 29, "room_graveyard")
-        scr_84_add_menu_item(parent, "[room]", 30, "room_town_shelter")
+        scr_84_add_menu_item(parent, "[room]", room_town_krisyard, "room_town_krisyard")
+        scr_84_add_menu_item(parent, "[room]", room_town_northwest, "room_town_northwest")
+        scr_84_add_menu_item(parent, "[room]", room_town_north, "room_town_north")
+        scr_84_add_menu_item(parent, "[room]", room_beach, "room_beach")
+        scr_84_add_menu_item(parent, "[room]", room_town_mid, "room_town_mid")
+        scr_84_add_menu_item(parent, "[room]", room_town_apartments, "room_town_apartments")
+        scr_84_add_menu_item(parent, "[room]", room_town_south, "room_town_south")
+        scr_84_add_menu_item(parent, "[room]", room_town_school, "room_town_school")
+        scr_84_add_menu_item(parent, "[room]", room_town_church, "room_town_church")
+        scr_84_add_menu_item(parent, "[room]", room_graveyard, "room_graveyard")
+        scr_84_add_menu_item(parent, "[room]", room_town_shelter, "room_town_shelter")
         parent = scr_84_pop()
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Interiors")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[room]", 31, "room_hospital_lobby")
-        scr_84_add_menu_item(parent, "[room]", 32, "room_hospital_hallway")
-        scr_84_add_menu_item(parent, "[room]", 33, "room_hospital_rudy")
-        scr_84_add_menu_item(parent, "[room]", 34, "room_hospital_room2")
-        scr_84_add_menu_item(parent, "[room]", 35, "room_diner")
-        scr_84_add_menu_item(parent, "[room]", 36, "room_townhall")
-        scr_84_add_menu_item(parent, "[room]", 37, "room_flowershop_1f")
-        scr_84_add_menu_item(parent, "[room]", 38, "room_flowershop_2f")
-        scr_84_add_menu_item(parent, "[room]", 39, "room_library")
-        scr_84_add_menu_item(parent, "[room]", 40, "room_alphysalley")
-        scr_84_add_menu_item(parent, "[room]", 41, "room_lw_computer_lab")
-        scr_84_add_menu_item(parent, "[room]", 42, "room_lw_library_upstairs")
-        scr_84_add_menu_item(parent, "[room]", 43, "room_lw_police")
-        scr_84_add_menu_item(parent, "[room]", 44, "room_lw_conbini")
-        scr_84_add_menu_item(parent, "[room]", 45, "room_lw_icee_pizza")
+        scr_84_add_menu_item(parent, "[room]", room_hospital_lobby, "room_hospital_lobby")
+        scr_84_add_menu_item(parent, "[room]", room_hospital_hallway, "room_hospital_hallway")
+        scr_84_add_menu_item(parent, "[room]", room_hospital_rudy, "room_hospital_rudy")
+        scr_84_add_menu_item(parent, "[room]", room_hospital_room2, "room_hospital_room2")
+        scr_84_add_menu_item(parent, "[room]", room_diner, "room_diner")
+        scr_84_add_menu_item(parent, "[room]", room_townhall, "room_townhall")
+        scr_84_add_menu_item(parent, "[room]", room_flowershop_1f, "room_flowershop_1f")
+        scr_84_add_menu_item(parent, "[room]", room_flowershop_2f, "room_flowershop_2f")
+        scr_84_add_menu_item(parent, "[room]", room_library, "room_library")
+        scr_84_add_menu_item(parent, "[room]", room_alphysalley, "room_alphysalley")
+        scr_84_add_menu_item(parent, "[room]", room_lw_computer_lab, "room_lw_computer_lab")
+        scr_84_add_menu_item(parent, "[room]", room_lw_library_upstairs, "room_lw_library_upstairs")
+        scr_84_add_menu_item(parent, "[room]", room_lw_police, "room_lw_police")
+        scr_84_add_menu_item(parent, "[room]", room_lw_conbini, "room_lw_conbini")
+        scr_84_add_menu_item(parent, "[room]", room_lw_icee_pizza, "room_lw_icee_pizza")
+        parent = scr_84_pop()
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Church")
+        scr_84_push(parent)
+        parent = group
+        scr_84_add_menu_item(parent, "[room]", room_lw_church_entrance, "room_lw_church_entrance")
+        scr_84_add_menu_item(parent, "[room]", room_lw_church_main, "room_lw_church_main")
+        scr_84_add_menu_item(parent, "[room]", room_lw_church_choir, "room_lw_church_choir")
+        scr_84_add_menu_item(parent, "[room]", room_lw_church_office, "room_lw_church_office")
+        parent = scr_84_pop()
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Noelle's House")
+        scr_84_push(parent)
+        parent = group
+        scr_84_add_menu_item(parent, "[room]", room_town_noellehouse, "room_town_noellehouse")
+        scr_84_add_menu_item(parent, "[room]", room_lw_noellehouse_dess, "room_lw_noellehouse_dess")
         parent = scr_84_pop()
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "School")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[room]", 46, "room_torielclass")
-        scr_84_add_menu_item(parent, "[room]", 47, "room_schoollobby")
-        scr_84_add_menu_item(parent, "[room]", 48, "room_alphysclass")
-        scr_84_add_menu_item(parent, "[room]", 49, "room_schooldoor")
-        scr_84_add_menu_item(parent, "[room]", 50, "room_insidecloset")
-        scr_84_add_menu_item(parent, "[room]", 51, "room_school_unusedroom")
+        scr_84_add_menu_item(parent, "[room]", room_torielclass, "room_torielclass")
+        scr_84_add_menu_item(parent, "[room]", room_schoollobby, "room_schoollobby")
+        scr_84_add_menu_item(parent, "[room]", room_alphysclass, "room_alphysclass")
+        scr_84_add_menu_item(parent, "[room]", room_schooldoor, "room_schooldoor")
+        scr_84_add_menu_item(parent, "[room]", room_insidecloset, "room_insidecloset")
+        scr_84_add_menu_item(parent, "[room]", room_school_unusedroom, "room_school_unusedroom")
         parent = scr_84_pop()
         parent = scr_84_pop()
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Castle Town")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[roomdark]", 52, "room_castle_tutorial")
-        scr_84_add_menu_item(parent, "[roomdark]", 53, "room_dw_castle_east_door")
-        scr_84_add_menu_item(parent, "[roomdark]", 54, "room_dw_castle_west_cliff")
-        scr_84_add_menu_item(parent, "[roomdark]", 55, "room_dw_castle_area_1")
-        scr_84_add_menu_item(parent, "[roomdark]", 56, "room_dw_castle_town")
-        scr_84_add_menu_item(parent, "[roomdark]", 57, "room_dw_ralsei_castle_front")
-        scr_84_add_menu_item(parent, "[roomdark]", 58, "room_dw_castle_restaurant")
-        scr_84_add_menu_item(parent, "[roomdark]", 59, "room_dw_castle_cafe")
-        scr_84_add_menu_item(parent, "[roomdark]", 60, "room_dw_castle_dojo")
-        scr_84_add_menu_item(parent, "[roomdark]", 61, "room_dw_ralsei_castle_1f")
-        scr_84_add_menu_item(parent, "[roomdark]", 62, "room_dw_ralsei_castle_2f")
-        scr_84_add_menu_item(parent, "[roomdark]", 63, "room_dw_castle_dungeon")
-        scr_84_add_menu_item(parent, "[roomdark]", 64, "room_dw_castle_rooms_kris")
-        scr_84_add_menu_item(parent, "[roomdark]", 65, "room_dw_castle_rooms_susie")
+        scr_84_add_menu_item(parent, "[roomdark]", room_castle_tutorial, "room_castle_tutorial")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_east_door, "room_dw_castle_east_door")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_west_cliff, "room_dw_castle_west_cliff")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_area_1, "room_dw_castle_area_1")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_town, "room_dw_castle_town")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_ralsei_castle_front, "room_dw_ralsei_castle_front")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_restaurant, "room_dw_castle_restaurant")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_cafe, "room_dw_castle_cafe")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_dojo, "room_dw_castle_dojo")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_tv, "room_dw_castle_tv")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_tv_rhythm, "room_dw_castle_tv_rhythm")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_ralsei_castle_1f, "room_dw_ralsei_castle_1f")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_ralsei_castle_2f, "room_dw_ralsei_castle_2f")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_ralsei_castle_3f, "room_dw_ralsei_castle_3f")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_dungeon, "room_dw_castle_dungeon")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_rooms_kris, "room_dw_castle_rooms_kris")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_rooms_susie, "room_dw_castle_rooms_susie")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_rooms_ralsei, "room_dw_castle_rooms_ralsei")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_rhythm, "room_dw_rhythm")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_rhythm_countdown, "room_dw_rhythm_countdown")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_church_entrance, "room_dw_castle_church_entrance")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_church_climb, "room_dw_castle_church_climb")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_ralsei_castle_basketball, "room_dw_ralsei_castle_basketball")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_music, "room_dw_castle_music")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_tv_mike, "room_dw_castle_tv_mike")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_castle_tv_kikky, "room_dw_castle_tv_kikky")
         parent = scr_84_pop()
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Couch Overworld")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[roomdark]", 188, "room_dw_couch_overworld_intro_left")
-        scr_84_add_menu_item(parent, "[roomdark]", 98, "room_dw_couch_overworld_intro")
-        scr_84_add_menu_item(parent, "[roomdark]", 99, "room_dw_couch_overworld_01")
-        scr_84_add_menu_item(parent, "[roomdark]", 100, "room_dw_couch_overworld_02")
-        scr_84_add_menu_item(parent, "[roomdark]", 187, "room_dw_couch_points")
-        scr_84_add_menu_item(parent, "[roomdark]", 101, "room_dw_couch_overworld_03")
-        scr_84_add_menu_item(parent, "[roomdark]", 102, "room_dw_couch_overworld_04")
-        scr_84_add_menu_item(parent, "[roomdark]", 103, "room_dw_couch_overworld_05")
-        scr_84_add_menu_item(parent, "[roomdark]", 189, "room_dw_couch_video")
-        parent = scr_84_pop()
-        scr_84_add_menu_item(parent, "[roomdark]", 194, "room_dw_tv_curtain")
-        scr_84_add_menu_item(parent, "[roomdark]", 131, "room_ch3_gameshowroom")
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Green Room")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[roomdark]", 150, "room_board_empty")
-        scr_84_add_menu_item(parent, "[roomdark]", 147, "room_dw_b3bs_interstitial")
-        scr_84_add_menu_item(parent, "[roomdark]", 135, "room_dw_green_room")
-        scr_84_add_menu_item(parent, "[roomdark]", 139, "room_dw_changing_room")
-        scr_84_add_menu_item(parent, "[roomdark]", 140, "room_dw_console_room")
-        scr_84_add_menu_item(parent, "[roomdark]", 168, "room_dw_teevie_preview")
-        scr_84_add_menu_item(parent, "[roomdark]", 216, "room_dw_teevie_preview_south")
-        scr_84_add_menu_item(parent, "[roomdark]", 192, "room_dw_puzzlecloset_0")
-        scr_84_add_menu_item(parent, "[roomdark]", 170, "room_dw_puzzlecloset_1")
-        scr_84_add_menu_item(parent, "[roomdark]", 240, "room_dw_puzzlecloset_1a")
-        scr_84_add_menu_item(parent, "[roomdark]", 171, "room_dw_puzzlecloset_2")
-        scr_84_add_menu_item(parent, "[roomdark]", 218, "room_dw_puzzlecloset_3")
-        scr_84_add_menu_item(parent, "[roomdark]", 109, "room_dw_snow_zone")
-        scr_84_add_menu_item(parent, "[roomdark]", 190, "room_dw_snow_zone_battle")
-        scr_84_add_menu_item(parent, "[roomdark]", 242, "room_dw_snow_zone_east_door")
-        scr_84_add_menu_item(parent, "[roomdark]", 238, "room_ch3_gacharoom_unknown")
-        parent = scr_84_pop()
-        
         
         group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Boards")
+        scr_84_add_menu_item(parent, "[group]", group, "Garden")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[roomdark]", 193, "room_board_gsa02_b0")
-        scr_84_add_menu_item(parent, "[roomdark]", 125, "room_board_intro")
-        scr_84_add_menu_item(parent, "[roomdark]", 112, "room_board_1")
-        scr_84_add_menu_item(parent, "[roomdark]", 137, "room_board_sword_intro")
-        scr_84_add_menu_item(parent, "[roomdark]", 136, "room_board_1_sword")
-        scr_84_add_menu_item(parent, "[roomdark]", 138, "room_board_1_sword_trees")
-        scr_84_add_menu_item(parent, "[roomdark]", 141, "room_board_2")
-        scr_84_add_menu_item(parent, "[roomdark]", 148, "room_board_2_sword")
-        scr_84_add_menu_item(parent, "[roomdark]", 115, "room_board_dungeon_2")
-        scr_84_add_menu_item(parent, "[roomdark]", 144, "room_board_3")
-        scr_84_add_menu_item(parent, "[roomdark]", 186, "room_board_3_sword")
-        scr_84_add_menu_item(parent, "[roomdark]", 116, "room_board_dungeon_3")
-        scr_84_add_menu_item(parent, "[roomdark]", 117, "room_board_preshadowmantle")
-        scr_84_add_menu_item(parent, "[roomdark]", 118, "room_shadowmantle")
-        scr_84_add_menu_item(parent, "[roomdark]", 119, "room_board_prepostshadowmantle")
-        scr_84_add_menu_item(parent, "[roomdark]", 120, "room_board_postshadowmantle")
-        scr_84_add_menu_item(parent, "[roomdark]", 134, "room_board_preshadowmantle_repeat")
-        scr_84_add_menu_item(parent, "[roomdark]", 175, "room_board_3b")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_intro, "room_dw_garden_intro")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_meetflowery, "room_dw_garden_meetflowery")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_video, "room_dw_garden_video")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_ralseicupboard, "room_dw_garden_ralseicupboard")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_floradinnencounter, "room_dw_garden_floradinnencounter")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_hospital, "room_dw_garden_hospital")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_fishingspot, "room_dw_garden_fishingspot")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_mushrooms, "room_dw_garden_mushrooms")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_shearydodge, "room_dw_garden_shearydodge")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_hopschef, "room_dw_garden_hopschef")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_riverchest, "room_dw_garden_riverchest")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_enemyrush, "room_dw_garden_enemyrush")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_pedestal, "room_dw_garden_pedestal")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_shearyguide, "room_dw_garden_shearyguide")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_flowerygardening, "room_dw_garden_flowerygardening")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_firstdash, "room_dw_garden_firstdash")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_platshortcut, "room_dw_garden_platshortcut")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_starwalkerdash, "room_dw_garden_starwalkerdash")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_diner, "room_dw_garden_diner")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_newdash, "room_dw_garden_newdash")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_hardpressureplates, "room_dw_garden_hardpressureplates")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_susiechase, "room_dw_garden_susiechase")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_aquatransition, "room_dw_garden_aquatransition")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_aquadash, "room_dw_garden_aquadash")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_garden_aquadash_plat, "room_dw_garden_aquadash_plat")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_wateringcan_aqua, "room_dw_garden_wateringcan_aqua")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_aqua, "room_dw_garden_aqua")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_aquadarkness, "room_dw_garden_aquadarkness")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_aquahole, "room_dw_garden_aquahole")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_aquahole_left, "room_dw_garden_aquahole_left")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_aquashrine, "room_dw_garden_aquashrine")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_garden_aquaplatforming, "room_dw_garden_aquaplatforming")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_finalplatforming, "room_dw_garden_finalplatforming")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_finalplatforming_right, "room_dw_garden_finalplatforming_right")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_garden_cliffexit, "room_dw_garden_cliffexit")
         parent = scr_84_pop()
-        
         
         group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Minigames")
+        scr_84_add_menu_item(parent, "[group]", group, "Cliffs")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[roomdark]", 169, "room_dw_chef")
-        scr_84_add_menu_item(parent, "[roomdark]", 96, "room_dw_rhythm")
-        scr_84_add_menu_item(parent, "[roomdark]", 166, "room_dw_susiezilla")
-        scr_84_add_menu_item(parent, "[roomdark]", 132, "room_shootout")
-        scr_84_add_menu_item(parent, "[roomdark]", 172, "room_dw_chef_empty")
-        scr_84_add_menu_item(parent, "[roomdark]", 173, "room_dw_susiezilla_empty")
-        scr_84_add_menu_item(parent, "[roomdark]", 174, "room_dw_rhythm_empty")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_gardentransition_new, "room_dw_cliff_gardentransition_new")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_climbrefresher, "room_dw_cliff_climbrefresher")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_cutdown_tutorial, "room_dw_cliff_cutdown_tutorial")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_precipice, "room_dw_cliff_precipice")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_bunnyfarm, "room_dw_cliff_bunnyfarm")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_silver_hammer, "room_dw_cliff_silver_hammer")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_twirlflowerplatforming, "room_dw_cliff_twirlflowerplatforming")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_yellowcave, "room_dw_cliff_yellowcave")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_dash_runner, "room_dw_cliff_dash_runner")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_seth_miniboss, "room_dw_cliff_seth_miniboss")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_shop, "room_dw_cliff_shop")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_kawkawdash, "room_dw_cliff_kawkawdash")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_twirlflowerwind, "room_dw_cliff_twirlflowerwind")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_bonuscombat, "room_dw_cliff_bonuscombat")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_netskieclimb, "room_dw_cliff_netskieclimb")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_netskieclimb_behind, "room_dw_cliff_netskieclimb_behind")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_finaldash, "room_dw_cliff_finaldash")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_cliff_verticalwind, "room_dw_cliff_verticalwind")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_cliff_eastcliff, "room_dw_cliff_eastcliff")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_shicave, "room_dw_cliff_shicave")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_verticalwind_post, "room_dw_cliff_verticalwind_post")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cliff_sethaqua_battle, "room_dw_cliff_sethaqua_battle")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_dogballoon, "room_dw_dogballoon")
+        scr_84_add_menu_item(parent, "[roomdark]", room_man, "room_man")
         parent = scr_84_pop()
-        
         
         group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Backstage")
+        scr_84_add_menu_item(parent, "[group]", group, "Flower Castle")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[roomdark]", 156, "room_dw_b3bs_intro")
-        scr_84_add_menu_item(parent, "[roomdark]", 177, "room_dw_b3bs_jail1")
-        scr_84_add_menu_item(parent, "[roomdark]", 157, "room_dw_b3bs_zapper_a")
-        scr_84_add_menu_item(parent, "[roomdark]", 178, "room_dw_b3bs_shop")
-        scr_84_add_menu_item(parent, "[roomdark]", 159, "room_dw_b3bs_lancerget")
-        scr_84_add_menu_item(parent, "[roomdark]", 179, "room_dw_b3bs_mysterypuzzle")
-        scr_84_add_menu_item(parent, "[roomdark]", 158, "room_dw_b3bs_rabbick_a")
-        scr_84_add_menu_item(parent, "[roomdark]", 164, "room_dw_b3bs_zapper_b")
-        scr_84_add_menu_item(parent, "[roomdark]", 181, "room_dw_b3bs_jail2")
-        scr_84_add_menu_item(parent, "[roomdark]", 180, "room_dw_b3bs_watercooler")
-        scr_84_add_menu_item(parent, "[roomdark]", 163, "room_dw_b3bs_sadshadowguys")
-        scr_84_add_menu_item(parent, "[roomdark]", 162, "room_dw_b3bs_rabbick_b")
-        scr_84_add_menu_item(parent, "[roomdark]", 160, "room_dw_b3bs_cooltrashy")
-        scr_84_add_menu_item(parent, "[roomdark]", 151, "room_dw_b3bs_rouxls_lanina")
-        scr_84_add_menu_item(parent, "[roomdark]", 153, "room_dw_b3bs_rouxls_boss")
-        scr_84_add_menu_item(parent, "[roomdark]", 154, "room_dw_b3bs_cheaterpippins")
-        scr_84_add_menu_item(parent, "[roomdark]", 217, "room_dw_b3bs_camerareminder")
-        scr_84_add_menu_item(parent, "[roomdark]", 155, "room_dw_b3bs_idcardpuzzle")
-        scr_84_add_menu_item(parent, "[roomdark]", 161, "room_dw_b3bs_zapper_c")
-        scr_84_add_menu_item(parent, "[roomdark]", 182, "room_dw_b3bs_zapper_d")
-        scr_84_add_menu_item(parent, "[roomdark]", 183, "room_dw_b3bs_extrapuzzle")
-        scr_84_add_menu_item(parent, "[roomdark]", 184, "room_dw_b3bs_bibliox")
-        scr_84_add_menu_item(parent, "[roomdark]", 121, "room_dw_ch3_man")
-        parent = scr_84_pop()
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_entrance, "room_dw_fcastle_entrance")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_partyjail, "room_dw_fcastle_partyjail")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_post_party_jail, "room_dw_fcastle_post_party_jail")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_foyer, "room_dw_fcastle_foyer")
         
+        // Left path
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_shinobeetle_encounter, "room_dw_fcastle_shinobeetle_encounter")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_left_wing_floweryscene, "room_dw_fcastle_left_wing_floweryscene")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_bounce_1, "room_dw_fcastle_bounce_1")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_left_twodoors, "room_dw_fcastle_left_twodoors")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_yellow_miniboss, "room_dw_fcastle_yellow_miniboss")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_sandtrap, "room_dw_fcastle_sandtrap")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_zenlooker, "room_dw_fcastle_zenlooker")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_dangerous_platforming, "room_dw_fcastle_dangerous_platforming")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_fcastle_bounce_3, "room_dw_fcastle_bounce_3")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_blueroom, "room_dw_fcastle_blueroom")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_left_penultimate, "room_dw_fcastle_left_penultimate")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_shinobeetle_3d, "room_dw_fcastle_shinobeetle_3d")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_yellowjail, "room_dw_fcastle_yellowjail")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_onsen, "room_dw_fcastle_onsen")
+        
+        // Right path
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_cafe, "room_dw_fcastle_cafe")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_terracotta_encounter, "room_dw_fcastle_terracotta_encounter")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_terracotta_bonus, "room_dw_fcastle_terracotta_bonus")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_terracotta_puzzle, "room_dw_fcastle_terracotta_puzzle")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_fusumadodge, "room_dw_fcastle_fusumadodge")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_right_wing_floweryscene, "room_dw_fcastle_right_wing_floweryscene")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_right_puzzle, "room_dw_fcastle_right_puzzle")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_orange_puppet_introduction, "room_dw_fcastle_orange_puppet_introduction")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_fcastle_gloves_tower, "room_dw_fcastle_gloves_tower")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_fcastle_trainroom, "room_dw_fcastle_trainroom")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_second_diner, "room_dw_fcastle_second_diner")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_foxhunt, "room_dw_fcastle_foxhunt")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_foxhunt_terakota, "room_dw_fcastle_foxhunt_terakota")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_foxhunt_socks, "room_dw_fcastle_foxhunt_socks")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_foxhunt_chaos, "room_dw_fcastle_foxhunt_chaos")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_foxhunt_secret, "room_dw_fcastle_foxhunt_secret")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_obscured_bullets, "room_dw_fcastle_obscured_bullets")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_sidepuzzle, "room_dw_fcastle_sidepuzzle")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_right_penultimate, "room_dw_fcastle_right_penultimate")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_heldmushrooms, "room_dw_fcastle_heldmushrooms")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_green_orange_battle, "room_dw_fcastle_green_orange_battle")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_right_endingscene, "room_dw_fcastle_right_endingscene")
+        
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_asgore, "room_dw_fcastle_asgore")
+        parent = scr_84_pop()
         
         group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "TV World")
+        scr_84_add_menu_item(parent, "[group]", group, "Flower Castle - Top")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[roomdark]", 108, "room_dw_backstage")
-        scr_84_add_menu_item(parent, "[roomdark]", 195, "room_dw_teevie_intro")
-        scr_84_add_menu_item(parent, "[roomdark]", 196, "room_dw_teevie_large_01")
-        scr_84_add_menu_item(parent, "[roomdark]", 197, "room_dw_teevie_large_02")
-        scr_84_add_menu_item(parent, "[roomdark]", 198, "room_dw_teevie_cowboy_zone_01_intro")
-        scr_84_add_menu_item(parent, "[roomdark]", 199, "room_dw_teevie_cowboy_zone_01_after")
-        scr_84_add_menu_item(parent, "[roomdark]", 201, "room_dw_teevie_susiezilla")
-        scr_84_add_menu_item(parent, "[roomdark]", 202, "room_dw_teevie_cowboy_zone_02_intro")
-        scr_84_add_menu_item(parent, "[roomdark]", 203, "room_dw_teevie_cowboy_zone_02_after")
-        scr_84_add_menu_item(parent, "[roomdark]", 231, "room_dw_teevie_ribbicks_a")
-        scr_84_add_menu_item(parent, "[roomdark]", 200, "room_dw_teevie_watercooler")
-        scr_84_add_menu_item(parent, "[roomdark]", 232, "room_dw_teevie_ribbicks_b")
-        scr_84_add_menu_item(parent, "[roomdark]", 204, "room_dw_teevie_shadow_guys")
-        scr_84_add_menu_item(parent, "[roomdark]", 205, "room_dw_teevie_stealth_c")
-        scr_84_add_menu_item(parent, "[roomdark]", 206, "room_dw_teevie_stealth")
-        scr_84_add_menu_item(parent, "[roomdark]", 207, "room_dw_teevie_failure_cage")
-        scr_84_add_menu_item(parent, "[roomdark]", 215, "room_dw_teevie_ribbick")
-        scr_84_add_menu_item(parent, "[roomdark]", 208, "room_dw_teevie_rhythm")
-        scr_84_add_menu_item(parent, "[roomdark]", 234, "room_dw_teevie_shuttahmaze")
-        scr_84_add_menu_item(parent, "[roomdark]", 224, "room_dw_teevie_maze_quiz")
-        scr_84_add_menu_item(parent, "[roomdark]", 220, "room_dw_teevie_bonus_zone")
-        scr_84_add_menu_item(parent, "[roomdark]", 142, "room_dw_tv_closet")
-        scr_84_add_menu_item(parent, "[roomdark]", 219, "room_dw_teevie_sams")
-        scr_84_add_menu_item(parent, "[roomdark]", 235, "room_dw_teevie_stealth_d")
-        scr_84_add_menu_item(parent, "[roomdark]", 213, "room_dw_teevie_chef")
-        scr_84_add_menu_item(parent, "[roomdark]", 236, "room_dw_teevie_dust")
-        scr_84_add_menu_item(parent, "[roomdark]", 237, "room_dw_teevie_dust_south")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_top_intro, "room_dw_fcastle_top_intro")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_top_entrance, "room_dw_fcastle_top_entrance")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_seth_encounter, "room_dw_fcastle_seth_encounter")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_yellowblue, "room_dw_fcastle_yellowblue")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_top_staircase_1, "room_dw_fcastle_top_staircase_1")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_ultradash, "room_dw_fcastle_ultradash")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_top_staircase_2, "room_dw_fcastle_top_staircase_2")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_green_checkpoint, "room_dw_fcastle_green_checkpoint")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_fcastle_top_ascent, "room_dw_fcastle_top_ascent")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_fcastle_orange_gauntlet, "room_dw_fcastle_orange_gauntlet")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_final_save, "room_dw_fcastle_final_save")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_flowery, "room_dw_fcastle_flowery")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_fcastle_top_challenge, "room_dw_fcastle_top_challenge")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dogplatforming, "room_dogplatforming")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_bromides, "room_dw_fcastle_bromides")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_fcastle_top_descent, "room_dw_fcastle_top_descent")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_top_pinkdoor, "room_dw_fcastle_top_pinkdoor")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_pinkroom, "room_dw_fcastle_pinkroom")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_pink_encounter, "room_dw_pink_encounter")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_pinkshop, "room_dw_fcastle_pinkshop")
+        
+        // Flowery Battle
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_fcastle_flowerclimb, "room_dw_fcastle_flowerclimb")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_fcastle_flowerydash, "room_dw_fcastle_flowerydash")
         parent = scr_84_pop()
         
-        
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Cutscene")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[roomdark]", 95, "room_dw_tv_cutscene1g")
-        scr_84_add_menu_item(parent, "[roomdark]", 104, "room_dw_nondescript_room")
-        scr_84_add_menu_item(parent, "[roomdark]", 105, "room_dw_nondescript_field")
-        scr_84_add_menu_item(parent, "[roomdark]", 106, "room_dw_nondescript_hallway")
-        scr_84_add_menu_item(parent, "[roomdark]", 107, "room_dw_nondescript_classroom")
-        scr_84_add_menu_item(parent, "[roomdark]", 110, "room_town_krisyard_dark")
-        scr_84_add_menu_item(parent, "[roomdark]", 127, "room_torhouse_sepia")
-        parent = scr_84_pop()
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_post_flowery_battle, "room_dw_post_flowery_battle")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_fcastle_top_fountain, "room_dw_fcastle_top_fountain")
+        scr_84_add_menu_item(parent, "[roomplat]", room_dw_post_fountain_close, "room_dw_post_fountain_close")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_flowery_tree, "room_dw_flowery_tree")
         
         
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Special")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[room]", 243, "room_intro")
-        scr_84_add_menu_item(parent, "[room]", 66, "PLACE_DOG")
-        scr_84_add_menu_item(parent, "[room]", 67, "room_legend")
-        scr_84_add_menu_item(parent, "[room]", 68, "room_legend_neo")
-        scr_84_add_menu_item(parent, "[room]", 69, "room_shop1")
-        scr_84_add_menu_item(parent, "[room]", 70, "room_shop_music")
-        scr_84_add_menu_item(parent, "[room]", 71, "room_gameover")
-        scr_84_add_menu_item(parent, "[room]", 72, "PLACE_LOGO")
-        scr_84_add_menu_item(parent, "[room]", 73, "PLACE_FAILURE")
-        scr_84_add_menu_item(parent, "[room]", 74, "PLACE_NAMING_JIKKEN")
-        scr_84_add_menu_item(parent, "[room]", 75, "PLACE_MENU")
-        scr_84_add_menu_item(parent, "[room]", 76, "room_ed")
-        scr_84_add_menu_item(parent, "[room]", 83, "PLACE_DOGCHECK2")
-        scr_84_add_menu_item(parent, "[room]", 245, "room_chapter_continue")
+        scr_84_add_menu_item(parent, "[room]", room_intro_ch5, "room_intro_ch5")
+        scr_84_add_menu_item(parent, "[room]", PLACE_DOG, "PLACE_DOG")
+        scr_84_add_menu_item(parent, "[room]", room_legend, "room_legend")
+        scr_84_add_menu_item(parent, "[room]", room_legend_neo, "room_legend_neo")
+        scr_84_add_menu_item(parent, "[room]", room_shop1, "room_shop1")
+        scr_84_add_menu_item(parent, "[room]", room_shop_music, "room_shop_music")
+        scr_84_add_menu_item(parent, "[room]", room_gameover, "room_gameover")
+        scr_84_add_menu_item(parent, "[room]", PLACE_LOGO, "PLACE_LOGO")
+        scr_84_add_menu_item(parent, "[room]", PLACE_FAILURE, "PLACE_FAILURE")
+        scr_84_add_menu_item(parent, "[room]", PLACE_NAMING_JIKKEN, "PLACE_NAMING_JIKKEN")
+        scr_84_add_menu_item(parent, "[room]", PLACE_MENU, "PLACE_MENU")
+        scr_84_add_menu_item(parent, "[room]", room_ed, "room_ed")
+        scr_84_add_menu_item(parent, "[room]", PLACE_DOGCHECK2, "PLACE_DOGCHECK2")
+        scr_84_add_menu_item(parent, "[room]", room_chapter_continue, "room_chapter_continue")
+        scr_84_add_menu_item(parent, "[room]", PLACE_DOGCHECK_CH5, "PLACE_DOGCHECK_CH5")
+        scr_84_add_menu_item(parent, "[room]", room_shop_ch5, "room_shop_ch5")
         parent = scr_84_pop()
-        
-        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Unused")
         scr_84_push(parent)
         parent = group
         
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Boards")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[roomdark]", 90, "room_board1_oldtest")
-        scr_84_add_menu_item(parent, "[roomdark]", 91, "room_boardtest")
-        scr_84_add_menu_item(parent, "[roomdark]", 92, "room_boardtest_old")
-        scr_84_add_menu_item(parent, "[roomdark]", 97, "room_board_designTest")
-        scr_84_add_menu_item(parent, "[roomdark]", 114, "room_shadowmantle_movementExample")
-        scr_84_add_menu_item(parent, "[roomdark]", 122, "room_board_boattest")
-        scr_84_add_menu_item(parent, "[roomdark]", 129, "room_board_tests")
-        scr_84_add_menu_item(parent, "[roomdark]", 130, "room_board_postshadowmantle_test")
-        parent = scr_84_pop()
-        
-        
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Green Room")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[roomdark]", 225, "room_dw_ranking_hub")
-        scr_84_add_menu_item(parent, "[roomdark]", 226, "room_dw_ranking_a")
-        scr_84_add_menu_item(parent, "[roomdark]", 227, "room_dw_ranking_b")
-        scr_84_add_menu_item(parent, "[roomdark]", 228, "room_dw_ranking_c")
-        scr_84_add_menu_item(parent, "[roomdark]", 229, "room_dw_ranking_z")
-        scr_84_add_menu_item(parent, "[roomdark]", 230, "room_dw_ranking_z_hallway")
-        scr_84_add_menu_item(parent, "[roomdark]", 239, "room_dw_ranking_t")
-        scr_84_add_menu_item(parent, "[roomdark]", 167, "room_dw_inbetween")
-        parent = scr_84_pop()
-        
-        
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Backstage")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[roomdark]", 145, "room_dw_b3bstest")
-        scr_84_add_menu_item(parent, "[roomdark]", 146, "room_dw_b3bstest_big")
-        scr_84_add_menu_item(parent, "[roomdark]", 152, "room_dw_b3bs_template")
-        scr_84_add_menu_item(parent, "[roomdark]", 191, "room_dw_b3bs_zapper_a_old")
-        parent = scr_84_pop()
-        
-        
-        scr_84_add_menu_item(parent, "[roomdark]", 124, "room_susiezilla")
-        
-        
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "TV World")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[roomdark]", 233, "room_dw_teevie_susiebridge")
-        scr_84_add_menu_item(parent, "[roomdark]", 212, "room_dw_teevie_maze")
-        scr_84_add_menu_item(parent, "[roomdark]", 209, "room_dw_teevie_maze_points")
-        scr_84_add_menu_item(parent, "[roomdark]", 210, "room_dw_teevie_maze_chef")
-        scr_84_add_menu_item(parent, "[roomdark]", 211, "room_dw_teevie_maze_final")
-        scr_84_add_menu_item(parent, "[roomdark]", 214, "room_dw_teevie_cutscene_final")
-        scr_84_add_menu_item(parent, "[roomdark]", 221, "room_dw_teevie_audiencepits")
-        scr_84_add_menu_item(parent, "[roomdark]", 223, "room_dw_teevie_lightmaze")
-        parent = scr_84_pop()
-        
-        
-        scr_84_add_menu_item(parent, "[room]", 77, "room_empty")
-        scr_84_add_menu_item(parent, "[roomdark]", 78, "room_DARKempty")
-        scr_84_add_menu_item(parent, "[roomdark]", 79, "room_DARKbase_GMS2")
-        scr_84_add_menu_item(parent, "[roomdark]", 81, "room_cc_clover")
+        scr_84_add_menu_item(parent, "[room]", room_empty, "room_empty")
+        scr_84_add_menu_item(parent, "[roomdark]", room_DARKempty, "room_DARKempty")
+        scr_84_add_menu_item(parent, "[roomdark]", room_DARKbase_GMS2, "room_DARKbase_GMS2")
+        scr_84_add_menu_item(parent, "[roomdark]", room_cc_clover, "room_cc_clover")
+        scr_84_add_menu_item(parent, "[roomdark]", room_cc_lancer, "room_cc_lancer")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_rhythm_empty, "room_dw_rhythm_empty")
         parent = scr_84_pop()
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Unsorted Full List")
         scr_84_push(parent)
         parent = group
-        for (var rooms = 0; rooms < (room_last + 1); rooms++)
-            scr_84_add_menu_item(parent, "[roomgeneric]", rooms, room_get_name(rooms))
+        
+        for (var rooms = 0; rooms < (room_last + ROOM_INITIALIZE); rooms++)
+            scr_84_add_menu_item(parent, "[roomdark]", rooms, room_get_name(rooms))
+        
         parent = scr_84_pop()
         parent = scr_84_pop()
         
@@ -753,7 +732,7 @@ function scr_84_debug(arg0)
         scr_84_push(parent)
         parent = group
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_god_mode", "God Mode")
-        scr_84_add_menu_item(parent, "[platswap]", "", "Swap to Platformer Mode")
+        scr_84_add_menu_item(parent, "[platswap]", "", "Toggle Platformer Mode")
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_room", "Toggle Room Name")
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Additional Visibility Toggles")
@@ -765,12 +744,14 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_entrance", "Toggle Entrance")
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "debug_fps_display", "Toggle FPS")
         parent = scr_84_pop()
+        scr_84_add_menu_item(parent, "[menukey]", "", "Menu Keybind");
         scr_84_add_menu_item(parent, "[restart]", "", "Restart Room")
         scr_84_add_menu_item(parent, "[loadj]", "", "Reload Japanese")
         scr_84_add_menu_item(parent, "[lang]", "ja", "Use Japanese")
         scr_84_add_menu_item(parent, "[lang]", "en", "Use English")
         scr_84_add_menu_item(parent, "[phone]", "", "Give Sans's Number")
         scr_84_add_menu_item(parent, "[fonttest]", "", "Font Test")
+        scr_84_add_menu_item(parent, "[stopmusic]", "", "Stop All Music");
         scr_84_add_menu_item(parent, "[credits]", "", "Credits")
         scr_84_add_menu_item(parent, "[ashley]", "", "!!!SUPER IMPORTANT!!!")
         parent = scr_84_pop()
@@ -971,6 +952,7 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[setmember]", 2, "Set Party Member 2")
         parent = scr_84_pop()
         
+        /* not updated for ch5 yet
         group = ds_list_create();
         scr_84_add_menu_item(parent, "[group]", group, "Quick Plot Warps");
         scr_84_push(parent);
@@ -1074,12 +1056,13 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[warp]", 44, "Light World Scene")
         parent = scr_84_pop();
         parent = scr_84_pop();
-        
+        */
         global.chemg_menus = parent
     }
     if (process)
         return global.chemg_menu_depth > 0;
-    if (keyboard_check_pressed(vk_f1) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_stickr))
+    if ((keyboard_check_pressed(global.chemg_menu_key) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_stickr))
+    && !global.chemg_rebinding && global.chemg_menu_depth <= 0)
     {
         global.chemg_menu_depth = 1
         global.chemg_interact = global.interact
@@ -1109,7 +1092,8 @@ function scr_84_debug(arg0)
         var timeinc = 0.25
         if (debug_movecooldown > 0)
             debug_movecooldown -= 1
-        if (keyboard_check(vk_up) || gamepad_button_check(obj_gamecontroller.gamepad_id, gp_padu) || keyboard_check(vk_down) || gamepad_button_check(obj_gamecontroller.gamepad_id, gp_padd))
+        if ((keyboard_check(vk_up) || gamepad_button_check(obj_gamecontroller.gamepad_id, gp_padu) || keyboard_check(vk_down) || gamepad_button_check(obj_gamecontroller.gamepad_id, gp_padd))
+            && !global.chemg_rebinding)
         {
             debug_movetimer += timeinc
             if (debug_movetimer >= 0.75)
@@ -1128,7 +1112,35 @@ function scr_84_debug(arg0)
             debug_downmove = 0
             debug_movetimer = 0
         }
-        if (keyboard_check_pressed(vk_up) || (debug_upmove >= 1 && debug_movecooldown <= 0) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_padu))
+
+        // Override all other input while rebinding
+        if (global.chemg_rebinding)
+        {
+            // Disallow binding navigation keys
+            if (keyboard_check_pressed(vk_up) ||
+                keyboard_check_pressed(vk_down) ||
+                keyboard_check_pressed(vk_left) ||
+                keyboard_check_pressed(vk_right) ||
+                keyboard_check_pressed(vk_escape) ||
+                keyboard_check_pressed(vk_enter) ||
+                keyboard_check_pressed(ord("X")) ||
+                keyboard_check_pressed(ord("Z")))
+            {
+                scr_debug_print("Can't bind menu to this key");
+                snd_play(snd_cantselect);
+                global.chemg_rebinding = false;
+            }
+            else if (keyboard_check_pressed(vk_anykey))
+            {
+                snd_play(snd_select)
+                global.chemg_menu_key = keyboard_lastkey;
+                global.chemg_rebinding = false;
+                ossafe_ini_open("DebugPlus.ini");
+                ini_write_real("AshleysDebug", "chemg_menu_key", global.chemg_menu_key);
+                ossafe_ini_close();
+            }
+        }
+        else if (keyboard_check_pressed(vk_up) || (debug_upmove >= 1 && debug_movecooldown <= 0) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_padu))
         {
             change = -1
         }
@@ -1150,28 +1162,29 @@ function scr_84_debug(arg0)
                 show_message("loaded " + type + " lang file")
                 global.chemg_menu_depth = 0
             }
-            else if (choice == "[room]")
+            else if (choice == "[room]") // Light World rooms
             {
                 global.darkzone = 0
+                global.start_in_platmode = 0;
                 room_goto(choice_data)
                 global.chemg_menu_depth = 0
             }
-            else if (choice == "[roomdark]")
+            else if (choice == "[roomdark]") // Dark World rooms
             {
                 global.darkzone = 1
+                global.start_in_platmode = 0;
+                room_goto(choice_data)
+                global.chemg_menu_depth = 0
+            }
+            else if (choice == "[roomplat]") // DW rooms that expect to start in platformer mode, to save having to manually switch
+            {
+                global.darkzone = 1
+                global.start_in_platmode = 1;
                 show_debug_message("room_goto: " + choice_name)
                 room_goto(choice_data)
                 global.chemg_menu_depth = 0
             }
-            else if (choice == "[roomplat]")
-            {
-                global.darkzone = 1
-                // insert code to start in sidescrolling mode here lol
-                show_debug_message("room_goto: " + choice_name)
-                room_goto(choice_data)
-                global.chemg_menu_depth = 0
-            }
-            else if (choice == "[roomgeneric]")
+            else if (choice == "[roomgeneric]") // Rooms that don't care about light/dark state
             {
                 room_goto(choice_data)
                 global.chemg_menu_depth = 0
@@ -1334,7 +1347,7 @@ function scr_84_debug(arg0)
                     }
                     else
                     {
-                        show_message("Too high!! Max flag count is 9999 for CH1 and 2500 for CH2+")
+                        show_message("Too high!! Max flag count is " + string(array_length_1d(global.flag) - 1))
                     }
                 }
             }
@@ -1477,6 +1490,10 @@ function scr_84_debug(arg0)
                     }
                 }
             }
+            else if (choice == "[stopmusic]")
+            {
+                snd_free_all();
+            }
             else if (choice == "[platswap]")
             {
                 if (instance_exists(obj_platswap))
@@ -1487,11 +1504,18 @@ function scr_84_debug(arg0)
                 else
                 {
                     scr_debug_print("This room doesn't support platformer mode");
+                    snd_play(snd_cantselect);
                 }
+            }
+            else if (choice == "[menukey]")
+            {
+                // Ignore controller since only keyboard mapping is currently supported
+                if (!gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_face1))
+                    global.chemg_rebinding = true;
             }
             else if choice == "[credits]"
             {
-                show_message("place")
+                show_message("i am lesbian kris deltarune and this is my credits window") // todo
             }
             else if (choice == "[warp]")
             {
@@ -1857,7 +1881,7 @@ function scr_84_debug(arg0)
                     }
                     else
                     {
-                        show_message("Too high!! Max tempflag count is 100.")
+                        show_message("Too high!! Max tempflag count is " + string(array_length_1d(global.tempflag) - 1))
                     }
                 }
             }
@@ -1887,6 +1911,8 @@ function scr_84_debug(arg0)
         keyboard_clear(vk_enter)
         keyboard_clear(ord("X"))
         keyboard_clear(ord("Z"))
+        keyboard_clear(global.chemg_menu_key)
+
         if (change != 0)
             global.chemg_menu_indices[depth_ndx] = (global.chemg_menu_indices[depth_ndx] + num_choices + change) % num_choices
         draw_set_font(fnt_main)
