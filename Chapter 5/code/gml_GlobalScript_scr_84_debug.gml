@@ -1998,6 +1998,7 @@ function scr_84_debug(arg0)
             ft[array_length_1d(ft)] = "toriel font"
             ft[array_length_1d(ft)] = 8
             ft[array_length_1d(ft)] = "toriel font slow"
+            // 9 skipped
             ft[array_length_1d(ft)] = 10
             ft[array_length_1d(ft)] = "susie font"
             ft[array_length_1d(ft)] = 11
@@ -2009,9 +2010,10 @@ function scr_84_debug(arg0)
             ft[array_length_1d(ft)] = 14
             ft[array_length_1d(ft)] = "sans font"
             ft[array_length_1d(ft)] = 15
-            ft[array_length_1d(ft)] = "pap font"
-            ft[array_length_1d(ft)] = 16
-            ft[array_length_1d(ft)] = ")??? font"
+            ft[array_length_1d(ft)] = "pap font (unused)"
+            // skipped ? what could this have been
+            //ft[array_length_1d(ft)] = 16
+            //ft[array_length_1d(ft)] = ")??? font"
             ft[array_length_1d(ft)] = 17
             ft[array_length_1d(ft)] = "undyne font"
             ft[array_length_1d(ft)] = 18
@@ -2026,6 +2028,7 @@ function scr_84_debug(arg0)
             ft[array_length_1d(ft)] = "alphys font small"
             ft[array_length_1d(ft)] = 23
             ft[array_length_1d(ft)] = "noelle font small"
+            // 24-29 skipped
             ft[array_length_1d(ft)] = 30
             ft[array_length_1d(ft)] = "susie dark world"
             ft[array_length_1d(ft)] = 31
@@ -2034,18 +2037,21 @@ function scr_84_debug(arg0)
             ft[array_length_1d(ft)] = "lancer dark world"
             ft[array_length_1d(ft)] = 33
             ft[array_length_1d(ft)] = "king dark world"
+            // 34 skipped
             ft[array_length_1d(ft)] = 35
             ft[array_length_1d(ft)] = "joker dark world"
             ft[array_length_1d(ft)] = 36
             ft[array_length_1d(ft)] = "NORMAL FONT SILENT"
             ft[array_length_1d(ft)] = 37
             ft[array_length_1d(ft)] = "susie dark world slow, spaced."
+            // 38-39 skipped
             ft[array_length_1d(ft)] = 40
             ft[array_length_1d(ft)] = "inteo"
             ft[array_length_1d(ft)] = 41
             ft[array_length_1d(ft)] = "intro slower"
             ft[array_length_1d(ft)] = 42
             ft[array_length_1d(ft)] = "big silent slower"
+            // 43-44 skipped
             ft[array_length_1d(ft)] = 45
             ft[array_length_1d(ft)] = "battle dialogue ral"
             ft[array_length_1d(ft)] = 46
@@ -2054,6 +2060,7 @@ function scr_84_debug(arg0)
             ft[array_length_1d(ft)] = "battle dialogue sus"
             ft[array_length_1d(ft)] = 48
             ft[array_length_1d(ft)] = "king dark world battle"
+            // 49 skipped
             ft[array_length_1d(ft)] = 50
             ft[array_length_1d(ft)] = "enemy"
             ft[array_length_1d(ft)] = 51
@@ -2066,36 +2073,105 @@ function scr_84_debug(arg0)
             ft[array_length_1d(ft)] = "enemy: Susie 2"
             ft[array_length_1d(ft)] = 55
             ft[array_length_1d(ft)] = "rudy font"
+            // 56-59 skipped
             ft[array_length_1d(ft)] = 60
             ft[array_length_1d(ft)] = "SLOWER, SILENT 2"
+            ft[array_length_1d(ft)] = 61
+            ft[array_length_1d(ft)] = "susie alt"
+            ft[array_length_1d(ft)] = 62
+            ft[array_length_1d(ft)] = "queen"
+            ft[array_length_1d(ft)] = 63
+            ft[array_length_1d(ft)] = "noelle alt 1"
+            ft[array_length_1d(ft)] = 64
+            ft[array_length_1d(ft)] = "noelle alt 2"
+            ft[array_length_1d(ft)] = 65
+            ft[array_length_1d(ft)] = "rouxls (unused)"
+            ft[array_length_1d(ft)] = 66
+            ft[array_length_1d(ft)] = "spamton"
+            ft[array_length_1d(ft)] = 67
+            ft[array_length_1d(ft)] = "spamton neo"
+            ft[array_length_1d(ft)] = 68
+            ft[array_length_1d(ft)] = "spamton battle"
+            ft[array_length_1d(ft)] = 69
+            ft[array_length_1d(ft)] = "berdly battle"
+            ft[array_length_1d(ft)] = 70
+            ft[array_length_1d(ft)] = "queen battle (unused?)"
+            ft[array_length_1d(ft)] = 71
+            ft[array_length_1d(ft)] = "queen battle alt (unused?)"
+            ft[array_length_1d(ft)] = 72
+            ft[array_length_1d(ft)] = "spamton neo battle"
+            // 73 skipped
+            ft[array_length_1d(ft)] = 74
+            ft[array_length_1d(ft)] = "ralsei in battle"
+            ft[array_length_1d(ft)] = 75
+            ft[array_length_1d(ft)] = "susie in battle"
+            ft[array_length_1d(ft)] = 76
+            ft[array_length_1d(ft)] = "noelle in battle"
+            ft[array_length_1d(ft)] = 77
+            ft[array_length_1d(ft)] = "berdly dark world"
+            ft[array_length_1d(ft)] = 78
+            ft[array_length_1d(ft)] = "dark world generic alt?"
+            ft[array_length_1d(ft)] = 79
+            ft[array_length_1d(ft)] = "susie and ralsei"
+            // 80-82 skipped - chapter 3 stuff?
+            ft[array_length_1d(ft)] = 83
+            ft[array_length_1d(ft)] = "jackenstein"
+            ft[array_length_1d(ft)] = 84
+            ft[array_length_1d(ft)] = "tenna"
+            // 85 skipped
+            ft[array_length_1d(ft)] = 86
+            ft[array_length_1d(ft)] = "flowery"
+            ft[array_length_1d(ft)] = 87
+            ft[array_length_1d(ft)] = "carol"
+            ft[array_length_1d(ft)] = 88
+            ft[array_length_1d(ft)] = "flowery alt"
+            ft[array_length_1d(ft)] = 89
+            ft[array_length_1d(ft)] = "asgore dark world"
+            ft[array_length_1d(ft)] = 90
+            ft[array_length_1d(ft)] = "aqua"
+            ft[array_length_1d(ft)] = 91
+            ft[array_length_1d(ft)] = "seth"
+            ft[array_length_1d(ft)] = 92
+            ft[array_length_1d(ft)] = "yellow"
+            ft[array_length_1d(ft)] = 93
+            ft[array_length_1d(ft)] = "orange"
+            ft[array_length_1d(ft)] = 94
+            ft[array_length_1d(ft)] = "blue"
+            ft[array_length_1d(ft)] = 95
+            ft[array_length_1d(ft)] = "green"
+            ft[array_length_1d(ft)] = 96
+            ft[array_length_1d(ft)] = "flowery battle"
+            ft[array_length_1d(ft)] = 97
+            ft[array_length_1d(ft)] = "normal alt?"
+            ft[array_length_1d(ft)] = 98
+            ft[array_length_1d(ft)] = "normal orange?"
+            ft[array_length_1d(ft)] = 99
+            ft[array_length_1d(ft)] = "susie alt"
+            ft[array_length_1d(ft)] = 100
+            ft[array_length_1d(ft)] = "board text"
+            
+            ft[array_length_1d(ft)] = 200
+            ft[array_length_1d(ft)] = "susie in battle alt"
+            ft[array_length_1d(ft)] = 201
+            ft[array_length_1d(ft)] = "ralsei in battle alt"
+            ft[array_length_1d(ft)] = 202
+            ft[array_length_1d(ft)] = "ralsei alt"
+            ft[array_length_1d(ft)] = 203
+            ft[array_length_1d(ft)] = "normal alt?"
+            
             ft[array_length_1d(ft)] = 666
             ft[array_length_1d(ft)] = "GLOW TEXT"
             ft[array_length_1d(ft)] = 667
             ft[array_length_1d(ft)] = "GLOW TEXT 2"
-            ft[array_length_1d(ft)] = -1
-            ft[array_length_1d(ft)] = 3
-            ft[array_length_1d(ft)] = -2
-            ft[array_length_1d(ft)] = 7
-            ft[array_length_1d(ft)] = -3
-            ft[array_length_1d(ft)] = 2
-            ft[array_length_1d(ft)] = -4
-            ft[array_length_1d(ft)] = 10
-            ft[array_length_1d(ft)] = -5
-            ft[array_length_1d(ft)] = 0
-            ft[array_length_1d(ft)] = -6
-            ft[array_length_1d(ft)] = 9
-            ft[array_length_1d(ft)] = -7
-            ft[array_length_1d(ft)] = 1
-            ft[array_length_1d(ft)] = -8
-            ft[array_length_1d(ft)] = 8
-            ft[array_length_1d(ft)] = -9
-            ft[array_length_1d(ft)] = 11
-            ft[array_length_1d(ft)] = -10
-            ft[array_length_1d(ft)] = 5
-            ft[array_length_1d(ft)] = -11
-            ft[array_length_1d(ft)] = 4
-            ft[array_length_1d(ft)] = -12
-            ft[array_length_1d(ft)] = 6
+            
+            ft[array_length_1d(ft)] = 999
+            ft[array_length_1d(ft)] = "susie intro (unused)"
+            
+            // Autogenerate the list of raw fonts
+            for (var i = 0; font_exists(i); i++) {
+                ft[array_length_1d(ft)] = -1;
+                ft[array_length_1d(ft)] = i;
+            }
             global.chemg_font_types = ft
             global.chemg_font_type_ndx = 0
         }
@@ -2115,24 +2191,38 @@ function scr_84_debug(arg0)
         strings[1] = "dozen liquor jugs."
         strings[2] = "これは日本語です。"
         strings[3] = "魔物に食われない！"
+        strings[4] = "1234567890+-%/"
         var typer = ft[fndx]
-        var font, vspacing, msg
+        var font, vspacing, msg, clr
         if (typer >= 0)
         {
             global.typer = typer
             scr_texttype()
             font = myfont
+            clr = mycolor
             msg = "(" + string(global.typer) + ") " + ft[fndx + 1] + ", font: " + font_get_name(myfont)
             vspacing = vspace
+            
+            // play the sound, may be more useful to just spawn a obj_writer
+            // so you can see other properties like speed
+            if (change) != 0
+                snd_play(textsound);
         }
         else
         {
             font = ft[fndx + 1]
-            msg = "font: " + font_get_name(font)
+            clr = c_white
+            
+            // Indicate runtime generated fonts
+            var fontname = font_get_name(font)
+            if (string_starts_with(fontname, "__newfont"))
+                msg = "runtime sprite font [" + string(font) + "]"
+            else
+                msg = "font: " + fontname
             vspacing = font_get_size(font) + 2
         }
         draw_set_font(font)
-        draw_set_colour(c_white)
+        draw_set_colour(clr)
         for (var i = 0; i < array_length_1d(strings); i += 1)
         {
             var str = strings[i]
