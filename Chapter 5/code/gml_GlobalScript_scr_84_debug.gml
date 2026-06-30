@@ -733,6 +733,7 @@ function scr_84_debug(arg0)
         parent = group
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_god_mode", "God Mode")
         scr_84_add_menu_item(parent, "[platswap]", "", "Toggle Platformer Mode")
+        scr_84_add_menu_item(parent, "[flagchangeGUI]", "", "Toggle Flag Change Display")
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_room", "Toggle Room Name")
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Additional Visibility Toggles")
@@ -1942,6 +1943,13 @@ function scr_84_debug(arg0)
                     {
                         show_message("Too high!! Max tempflag count is " + string(array_length(global.tempflag) - 1))
                     }
+                }
+            }
+            else if choice == "[flagchangeGUI]"
+            {
+                if i_ex(obj_debugProfiler)
+                {
+                    obj_debugProfiler.toggleFlagGUI = true
                 }
             }
             else

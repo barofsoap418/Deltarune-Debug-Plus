@@ -7,7 +7,7 @@ function scr_debug_print(arg0)
         instance_create(camerax() + 10, cameray() + 10, obj_debug_gui)
         obj_debug_gui.depth = -9999
     }
-    obj_debug_gui.newtext = arg0
+    obj_debug_gui.newtext = string(arg0)
     with (obj_debug_gui)
     {
         message[messagecount] = newtext

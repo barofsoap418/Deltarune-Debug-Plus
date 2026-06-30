@@ -6,3 +6,4 @@ global.chemg_god_mode = 0
 windowswitcher = 0
 interactshower = 0
 depth = -9999
+toggleFlagGUI = false
