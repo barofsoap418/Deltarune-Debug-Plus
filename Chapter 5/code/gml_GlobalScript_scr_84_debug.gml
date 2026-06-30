@@ -720,7 +720,7 @@ function scr_84_debug(arg0)
         parent = group
         
         for (var rooms = 0; rooms < (room_last + ROOM_INITIALIZE); rooms++)
-            scr_84_add_menu_item(parent, "[roomdark]", rooms, room_get_name(rooms))
+            scr_84_add_menu_item(parent, "[roomgeneric]", rooms, room_get_name(rooms))
         
         parent = scr_84_pop()
         parent = scr_84_pop()
@@ -873,20 +873,42 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[flagset]", 40, "Enemy Kills")
         scr_84_add_menu_item(parent, "[flagset]", 254, "Starwalker Flag")
         
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Eggs")
+        scr_84_push(parent)
+        parent = group
         scr_84_add_menu_item(parent, "[flagset]", 910, "CH1 Egg Flag")
         scr_84_add_menu_item(parent, "[flagset]", 918, "CH2 Egg Flag")
         scr_84_add_menu_item(parent, "[flagset]", 930, "CH3 Egg Flag")
         scr_84_add_menu_item(parent, "[flagset]", 931, "CH4 Egg Flag")
         scr_84_add_menu_item(parent, "[flagset]", 941, "CH5 Egg Flag")
+        parent = scr_84_pop()
         
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Shadow Crystals")
+        scr_84_push(parent)
+        parent = group
         scr_84_add_menu_item(parent, "[flagset]", 1646, "CH1 Shadow Crystal")
         scr_84_add_menu_item(parent, "[flagset]", 1647, "CH2 Shadow Crystal")
         scr_84_add_menu_item(parent, "[flagset]", 1648, "CH3 Shadow Crystal")
         scr_84_add_menu_item(parent, "[flagset]", 1649, "CH4 Shadow Crystal")
         scr_84_add_menu_item(parent, "[flagset]", 1907, "CH5 Shadow Crystal")
+        parent = scr_84_pop()
         
         scr_84_add_menu_item(parent, "[flagset]", 915, "Weird Route Progress Flag")
         scr_84_add_menu_item(parent, "[flagset]", 916, "Weird Route Failure Flag")
+        
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Unsorted Full List")
+        scr_84_push(parent)
+        parent = group
+        for (var i = 0; i < array_length(global.flagname); i++)
+        {   
+            // Don't bother showing unnamed flags
+            if (global.flagname[i] != undefined)
+                scr_84_add_menu_item(parent, "[flagset]", i, scr_flag_name_get(i))
+        }
+        parent = scr_84_pop()
         
         parent = scr_84_pop()
         
@@ -1061,6 +1083,18 @@ function scr_84_debug(arg0)
     }
     if (process)
         return global.chemg_menu_depth > 0;
+    
+    // Store old states of draw parameters so we can avoid messing with how other menus look
+    var old_color = draw_get_color()
+    var old_font = draw_get_font()
+    var old_halign = draw_get_halign()
+    var old_valign = draw_get_valign()
+    
+    draw_set_font(fnt_main)
+    draw_set_colour(c_white)
+    draw_set_halign(fa_left)
+    draw_set_valign(fa_top)
+    
     if ((keyboard_check_pressed(global.chemg_menu_key) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_stickr))
     && !global.chemg_rebinding && global.chemg_menu_depth <= 0)
     {
@@ -1278,7 +1312,12 @@ function scr_84_debug(arg0)
                         var _globalvarvalue = get_string(_str, "")
                         
                         if choice == "[set_global_any_real]"
-                            variable_global_set(_globalvar, real(_globalvarvalue))
+                        {
+                            try
+                                variable_global_set(_globalvar, real(_globalvarvalue))
+                            catch(exc)
+                                show_message("That's not a number silly")
+                        }
                         else if choice == "[set_global_any_string]"
                             variable_global_set(_globalvar, _globalvarvalue)
                     }
@@ -1312,42 +1351,62 @@ function scr_84_debug(arg0)
                 var varname = get_string("Enter new value for flag " + string(choice_data) + " (currently: " + string(global.flag[choice_data]) + ")", "")
                 if (varname != "")
                 {
-                    if (is_numeric(global.flag[choice_data]))
+                    try
                         global.flag[choice_data] = real(varname)
-                    else
+                    catch(exc)
                         show_message("Flags can only be set to numbers!!!!")
-                    // idk why i added this, flags can't be strings lmao it makes the game crash when loading files
-                    /*else if (is_string(global.flag[choice_data]))
-                        global.flag[choice_data] = string(varname)
-                    else
-                        show_message("error????")*/
                 }
             }
             else if (choice == "[flagsetspec]")
             {
-                var flagid = get_string("Enter the flag ID", "")
-                if (flagid != "")
+                var flagstr = get_string("Enter the flag name or numeric ID", "")
+                if (flagstr != "")
                 {
-                    flagid = real(flagid)
-                    if (flagid <= array_length(global.flag))
+                    var _continue = false
+                    var flagid = 0
+                    try
                     {
-                        var varname = get_string("Enter new value for flag " + string(flagid) + " (currently: " + string(global.flag[flagid]) + ")", "")
-                        if (varname != "")
+                        flagid = real(flagstr)
+                        _continue = true
+                    }
+                    catch(exc)
+                    {
+                        // non-numeric, check flagnames instead...this won't actually work until flagnames are implemented
+                        for (var i = 0; i < array_length(global.flagname); i++)
                         {
-                            if (is_numeric(global.flag[flagid]))
-                                global.flag[flagid] = real(varname)
-                            else
-                                show_message("Flags can only be set to numbers!!!!")
-                            // idk why i added this, flags can't be strings lmao it makes the game crash when loading files
-                            /*else if (is_string(global.flag[choice_data]))
-                                global.flag[choice_data] = string(varname)
-                            else
-                                show_message("error????")*/
+                            if (global.flagname[i] != undefined && 
+                                string_lower(global.flagname[i]) == string_lower(flagstr))
+                            {
+                                flagid = i
+                                _continue = true
+                                break
+                            }
+                        }
+                    }
+                    
+                    if (_continue)
+                    {
+                        if (flagid <= array_length(global.flag))
+                        {
+                            var str = "Enter new value for flag " + string(flagid) + " " + scr_flag_name_get(flagid) + " (currently: " + string(global.flag[flagid]) + ")"
+                                
+                            var varname = get_string(str, "")
+                            if (varname != "")
+                            {
+                                try
+                                    global.flag[flagid] = real(varname)
+                                catch(exc)
+                                    show_message("Flags can only be set to numbers!!!!")
+                            }
+                        }
+                        else
+                        {
+                            show_message("Too high!! Max flag count is " + string(array_length(global.flag) - 1))
                         }
                     }
                     else
                     {
-                        show_message("Too high!! Max flag count is " + string(array_length_1d(global.flag) - 1))
+                        show_message("Flag not found")
                     }
                 }
             }
@@ -1484,7 +1543,7 @@ function scr_84_debug(arg0)
                 var newval = get_string("Enter new " + choice_data + " value (currently: " + string(variable_global_get(choice_data[0])) + ")", "");
                 if (newval != "")
                 {
-                    for (var i = 0; i < array_length_1d(choice_data); i++)
+                    for (var i = 0; i < array_length(choice_data); i++)
                     {
                         variable_global_set(choice_data[i], real(newval));
                     }
@@ -1881,7 +1940,7 @@ function scr_84_debug(arg0)
                     }
                     else
                     {
-                        show_message("Too high!! Max tempflag count is " + string(array_length_1d(global.tempflag) - 1))
+                        show_message("Too high!! Max tempflag count is " + string(array_length(global.tempflag) - 1))
                     }
                 }
             }
@@ -2251,4 +2310,10 @@ function scr_84_debug(arg0)
         draw_set_font(fnt_main)
         draw_text(xx, yy, "<-/-> to change typer: " + msg)
     }
+    
+    draw_set_color(old_color)
+    draw_set_font(old_font)
+    draw_set_halign(old_halign)
+    draw_set_valign(old_valign)
+    
 }
