@@ -952,6 +952,7 @@ function global_flagname_init()
     global.flagname[1279] = "raise_bat_hard_hiscore"
     global.flagname[1280] = "raise_bat_hard_hirank"
     global.flagname[1312] = "pink_coins"
+    global.flagname[1324] = "town_time_of_day"
     global.flagname[1365] = "scissors_puzzle_flags"
     global.flagname[1399] = "hopschef_progress_flag"
     global.flagname[1411] = "flowery_dollars"
