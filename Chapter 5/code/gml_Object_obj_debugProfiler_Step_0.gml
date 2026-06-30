@@ -6,6 +6,8 @@ if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pre
 	else
 		safe_delete(obj_debug_drawInput)
 }
+
+
 if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pressed(vk_up))
 {
 	snd_play(snd_txtsans)
@@ -16,16 +18,25 @@ if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pre
 	show_debug_overlay(showdebug)
 	scr_debug_print("showdebug = " + string(showdebug))
 }
+
+
 if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pressed(ord("D"))) || toggleFlagGUI
 {
     toggleFlagGUI = false
-	if (writedisplay == 0)
-		writedisplay = 1
+	if (global.chemg_display_flag_changes == 0)
+	{
+		global.chemg_display_flag_changes = 1
+	}
 	else
 	{
-		writedisplay = 0
+		global.chemg_display_flag_changes = 0
 	    scr_debug_clear_all()
 	}
+	
+	ossafe_ini_open("DebugPlus.ini")
+    ini_write_real("AshleysDebug", "chemg_display_flag_changes", global.chemg_display_flag_changes)
+    ossafe_ini_close()
+    
 	var i = array_length_1d(global.flag) - 1
 	while (i > -1)
 	{
@@ -34,22 +45,40 @@ if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pre
 	}
 	snd_play_pitch(snd_queen_hoot_0, 1.1)
 }
-if (writedisplay == 1)
+
+
+if global.chemg_display_flag_changes == 1 || global.chemg_flag_detection == 1
 {
-	var i = array_length_1d(global.flag) - 1
-	while (i > -1)
-	{
-		if (lastval[i] != global.flag[i]) && i != 0 && i != 33 // exclude flag 0 and flag 33
-			scr_debug_print("global.flag[" + string(i) + "] (" + scr_flag_name_get(i) + ") has been changed from " + string(lastval[i]) + " to " + string(global.flag[i]))
-		i--
-	}
-	i = array_length_1d(global.flag) - 1
-	while (i > -1)
-	{
-		lastval[i] = global.flag[i]
-		i--
-	}
+    var i = array_length_1d(global.flag) - 1
+    while (i > -1)
+    {
+        if (lastval[i] != global.flag[i]) && i != 0 && i != 33 // exclude flag 0 and flag 33
+        {
+            var _msg = "global.flag[" + string(i) + "] (" + scr_flag_name_get(i) + ") has been changed from " + string(lastval[i]) + " to " + string(global.flag[i])
+            
+            for (var j = maxFlags - 1; j > -1; j --)
+                flagSetArray[j + 1] = flagSetArray[j]
+                
+            flagSetArray[0] = _msg
+            if global.chemg_display_flag_changes == 1
+                scr_debug_print(_msg)
+        }
+        i--
+    }
+    i = array_length_1d(global.flag) - 1
+    while (i > -1)
+    {
+        lastval[i] = global.flag[i]
+        i--
+    }
 }
+
+if keyboard_check(vk_control) && keyboard_check(vk_shift) && keyboard_check_pressed(ord("F"))
+{
+    displaySetFlagsArray = !displaySetFlagsArray
+    snd_play_x(snd_txttor, 1, 0.5 + displaySetFlagsArray / 2)
+}
+
 if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pressed(vk_backspace))
 {
 	var dump_date = string(date_get_year(date_current_datetime())) + "_" + string(date_get_month(date_current_datetime())) + "_" + string(date_get_day(date_current_datetime())) + "_" + string(date_get_hour(date_current_datetime())) + "_" + string(date_get_minute(date_current_datetime())) + "_" + string(date_get_second(date_current_datetime()))
@@ -69,6 +98,8 @@ if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pre
 	snd_play(snd_won)
 	file_text_open_read("activeObjectList_" + dump_date + ".txt")
 }
+
+
 if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pressed(ord("T")))
 {
 	snd_play_pitch(snd_bump, 0.8)
@@ -78,6 +109,8 @@ if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pre
 		cutsceneshow = 1
 	scr_debug_print("cutsceneshow = " + string(cutsceneshow))
 }
+
+
 if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pressed(ord("G")))
 {
 	global.chemg_god_mode = 1 - global.chemg_god_mode
@@ -112,11 +145,15 @@ if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pre
 		window_set_size(640, 480)
 	alarm[1] = 1
 }
+
+
 if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pressed(ord("I")))
 {
 	snd_play_pitch(snd_egg, 1.2)
 	interactshower = 1 - interactshower
 }
+
+
 if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pressed(ord("M")))
 {
 	scr_change_language()

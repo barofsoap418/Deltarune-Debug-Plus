@@ -8,6 +8,7 @@ global.launcher = launch_data.is_launcher
 textures_loaded = false
 if (global.is_console)
 	texture_set_interpolation(false)
+	
 if (global.launcher)
 {
 	if (scr_is_switch_os() && !variable_global_exists("switchlogin"))
@@ -21,6 +22,7 @@ if (global.launcher)
 			switch_accounts_open_user(global.switchlogin)
 	}
 }
+
 else if (scr_is_switch_os() && !variable_global_exists("switchlogin"))
 {
 	var _id = -1
@@ -29,6 +31,7 @@ else if (scr_is_switch_os() && !variable_global_exists("switchlogin"))
 	global.switchlogin = _id
 	switch_accounts_open_user(global.switchlogin)
 }
+
 if (global.is_console)
 {
 	if (!instance_exists(obj_event_manager))
@@ -38,6 +41,7 @@ if (global.is_console)
 			init()
 	}
 }
+
 global.screen_border_id = stringsetloc("Dynamic", "obj_initializer2_slash_Create_0_gml_22_0")
 global.screen_border_active = true
 global.screen_border_alpha = 0
@@ -60,6 +64,7 @@ global.pause_plat = false
 global.game_won = false
 global.parallax_focal_length = 160
 scr_input_manager_init()
+
 if (global.is_console)
 {
 	ossafe_init()
@@ -85,6 +90,7 @@ else
 	if (!instance_exists(obj_time))
 		instance_create(0, 0, obj_time)
 }
+
 if (!variable_global_exists("entrance_animation"))
 {
 	global.start_in_platmode = UnknownEnum.Value_0

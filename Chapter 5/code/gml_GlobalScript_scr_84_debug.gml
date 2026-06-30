@@ -6,6 +6,7 @@ function scr_84_debug(arg0)
         global.chemg_menu_indices = array_create(0)
         global.chemg_menu_indices[0] = 0
         global.chemg_menu_depth = 0
+        
         ossafe_ini_open("DebugPlus.ini")
         global.chemg_god_mode = ini_read_real("AshleysDebug", "chemg_god_mode", 0)
         global.chemg_show_room = ini_read_real("AshleysDebug", "chemg_show_room", 1)
@@ -15,10 +16,14 @@ function scr_84_debug(arg0)
         global.chemg_show_interact = ini_read_real("AshleysDebug", "chemg_show_interact", 0)
         global.chemg_show_entrance = ini_read_real("AshleysDebug", "chemg_show_entrance", 0)
         global.debug_fps_display = ini_read_real("AshleysDebug", "debug_fps_display", 0)
+        global.chemg_display_flag_changes = ini_read_real("AshleysDebug", "chemg_display_flag_changes", 0)
+        global.chemg_flag_detection = ini_read_real("AshleysDebug", "chemg_flag_detection", 1)
         global.chemg_menu_key = ini_read_real("AshleysDebug", "chemg_menu_key", vk_f1)
         ossafe_ini_close()
+        
         global.chemg_rebinding = false
         global.chemg_font_test = false
+        
         var parent = ds_list_create()
         show_debug_message("init debug")
         var group = ds_list_create()
@@ -171,6 +176,10 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Give Key Item")
         scr_84_push(parent)
         parent = group
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Chapter 1")
+        scr_84_push(parent)
+        parent = group
         scr_84_add_menu_item(parent, "[keyitem]", 1, "Cell Phone")
         scr_84_add_menu_item(parent, "[keyitem]", 2, "Egg")
         scr_84_add_menu_item(parent, "[keyitem]", 3, "BrokenCake")
@@ -178,7 +187,12 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[keyitem]", 5, "Door Key")
         scr_84_add_menu_item(parent, "[keyitem]", 6, "Broken Key B")
         scr_84_add_menu_item(parent, "[keyitem]", 7, "Broken Key C")
+        parent = scr_84_pop()
         
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Chapter 2")
+        scr_84_push(parent)
+        parent = group
         scr_84_add_menu_item(parent, "[keyitem]", 8, "Lancer")
         scr_84_add_menu_item(parent, "[keyitem]", 9, "Rouxls Kaard")
         scr_84_add_menu_item(parent, "[keyitem]", 10, "EmptyDisk")
@@ -187,12 +201,30 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[keyitem]", 13, "ShadowCrystal")
         scr_84_add_menu_item(parent, "[keyitem]", 14, "StarWalker")
         scr_84_add_menu_item(parent, "[keyitem]", 15, "PureCrystal")
+        parent = scr_84_pop()
         
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Chapter 3")
+        scr_84_push(parent)
+        parent = group
         scr_84_add_menu_item(parent, "[keyitem]", 16, "OddController")
         scr_84_add_menu_item(parent, "[keyitem]", 17, "BackstagePass")
         scr_84_add_menu_item(parent, "[keyitem]", 18, "TripTicket")
         scr_84_add_menu_item(parent, "[keyitem]", 19, "LancerCon")
+        parent = scr_84_pop()
         
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Chapter 4")
+        scr_84_push(parent)
+        parent = group
+        scr_84_add_menu_item(parent, "[keyitem]", 30, "SheetMusic") // why does chapter 4 skip to here...
+        scr_84_add_menu_item(parent, "[keyitem]", 31, "ClaimbClaws")
+        parent = scr_84_pop()
+        
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Chapter 5")
+        scr_84_push(parent)
+        parent = group
         scr_84_add_menu_item(parent, "[keyitem]", 20, "Scissors")
         scr_84_add_menu_item(parent, "[keyitem]", 21, "YellowShred")
         scr_84_add_menu_item(parent, "[keyitem]", 22, "BootOil")
@@ -204,12 +236,9 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[keyitem]", 28, "TrainPlan")
         scr_84_add_menu_item(parent, "[keyitem]", 29, "YellowKey")
         
-        scr_84_add_menu_item(parent, "[keyitem]", 30, "SheetMusic") // why does chapter 4 skip to here...
-        scr_84_add_menu_item(parent, "[keyitem]", 31, "ClaimbClaws")
-        
         scr_84_add_menu_item(parent, "[keyitem]", 32, "MysteryKey")
         scr_84_add_menu_item(parent, "[keyitem]", 33, "BromideF")
-        
+        parent = scr_84_pop()
         parent = scr_84_pop()
         
         
@@ -603,6 +632,10 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_foyer, "room_dw_fcastle_foyer")
         
         // Left path
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Left Path")
+        scr_84_push(parent)
+        parent = group
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_shinobeetle_encounter, "room_dw_fcastle_shinobeetle_encounter")
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_left_wing_floweryscene, "room_dw_fcastle_left_wing_floweryscene")
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_bounce_1, "room_dw_fcastle_bounce_1")
@@ -617,8 +650,13 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_shinobeetle_3d, "room_dw_fcastle_shinobeetle_3d")
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_yellowjail, "room_dw_fcastle_yellowjail")
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_onsen, "room_dw_fcastle_onsen")
+        parent = scr_84_pop()
         
         // Right path
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Right Path")
+        scr_84_push(parent)
+        parent = group
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_cafe, "room_dw_fcastle_cafe")
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_terracotta_encounter, "room_dw_fcastle_terracotta_encounter")
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_terracotta_bonus, "room_dw_fcastle_terracotta_bonus")
@@ -641,6 +679,7 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_heldmushrooms, "room_dw_fcastle_heldmushrooms")
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_green_orange_battle, "room_dw_fcastle_green_orange_battle")
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_right_endingscene, "room_dw_fcastle_right_endingscene")
+        parent = scr_84_pop()
         
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_fcastle_asgore, "room_dw_fcastle_asgore")
         parent = scr_84_pop()
@@ -745,6 +784,7 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_entrance", "Toggle Entrance")
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "debug_fps_display", "Toggle FPS")
         parent = scr_84_pop()
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_flag_detection", "Always Detect Flag Changes")
         scr_84_add_menu_item(parent, "[menukey]", "", "Menu Keybind");
         scr_84_add_menu_item(parent, "[restart]", "", "Restart Room")
         scr_84_add_menu_item(parent, "[loadj]", "", "Reload Japanese")
@@ -858,6 +898,8 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[flagset]", 16, "Music Volume (UNUSED)")
         scr_84_add_menu_item(parent, "[flagset]", 17, "Master Volume")
         parent = scr_84_pop()
+        
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Game Control")
         scr_84_push(parent)
@@ -871,6 +913,8 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[flagset]", 31, "Disable Walking Sounds")
         scr_84_add_menu_item(parent, "[flagset]", 32, "Disable Item/Gear Comments")
         parent = scr_84_pop()
+        
+        
         scr_84_add_menu_item(parent, "[flagset]", 40, "Enemy Kills")
         scr_84_add_menu_item(parent, "[flagset]", 254, "Starwalker Flag")
         
@@ -1331,7 +1375,7 @@ function scr_84_debug(arg0)
             }
             else if (choice == "[gotoroom]")
             {
-                var varname = get_string("Enter Room ID (ex. room_dark1)", "")
+                var varname = get_string("Enter Room ID (ex. room_castle_tutorial)", "")
                 if (room_exists(asset_get_index(varname)))
                     room_goto(asset_get_index(varname))
                 else if varname != ""
@@ -1481,23 +1525,30 @@ function scr_84_debug(arg0)
                 if (newmag != "")
                     global.mag[choice_data] = real(newmag)
             }
-            else if (choice == "[idealall]")
+            else if (choice == "[idealall]") // idealize stats (make them the maximum they'd be after defeating each enemy with violence)
             {
-                global.maxhp[1] = 186
-                global.hp[1] = 186
-                global.at[1] = 15
+                // kris
+                global.maxhp[1] = 272
+                global.hp[1] = 272
+                global.at[1] = 18
                 global.df[1] = 2
                 global.mag[1] = 0
-                global.maxhp[2] = 222
-                global.hp[2] = 222
-                global.at[2] = 19
+                
+                // susie
+                global.maxhp[2] = 330
+                global.hp[2] = 330
+                global.at[2] = 23
                 global.df[2] = 2
-                global.mag[2] = 3
-                global.maxhp[3] = 166
-                global.hp[3] = 166
-                global.at[3] = 13
+                global.mag[2] = 4
+                
+                // ralsei
+                global.maxhp[3] = 242
+                global.hp[3] = 242
+                global.at[3] = 16
                 global.df[3] = 2
-                global.mag[3] = 12
+                global.mag[3] = 16
+                
+                // noelle
                 global.maxhp[4] = 166
                 global.hp[4] = 166
                 global.at[4] = 8
@@ -1520,18 +1571,9 @@ function scr_84_debug(arg0)
                     show_message("Party member " + string(choice_data) + " set, requires room restart to take effect.\nSome rooms set the party automatically in debug mode, so if it doesn't work that's probably why.")
                 }
             }
-            else if (choice == "[ashley]")
+            else if (choice == "[ashley]") // the most important option
             {
                 url_open("https://twitter.com/barofsoap418")
-            }
-            else if (choice == "[plot]")
-            {
-                var plotvalue = get_string("Enter new plot value (currently: " + string(global.plot) + ")", "");
-                
-                if (plotvalue != "")
-                {
-                    global.plot = real(plotvalue)
-                }
             }
             else if (choice == "[globalset]")
             {
@@ -1642,7 +1684,6 @@ function scr_84_debug(arg0)
                     case 11: // sword route board 1
                         global.plot = 121
                         roomtogo = room_board_1_sword
-                        scr_losechar()
                         break
                         
                     case 12: // pre board 2 cutscene
@@ -1678,22 +1719,16 @@ function scr_84_debug(arg0)
                     case 18: // sword route board 2
                         global.plot = 160
                         roomtogo = room_board_2_sword
-                        scr_losechar()
-                        global.flag[1055] = 1
                         break
                         
                     case 19: // sword route board 2 (no ice key)
                         global.plot = 160
                         roomtogo = room_board_2_sword
-                        scr_losechar()
-                        global.flag[1055] = 0
                         break
                         
                     case 20: // sword route board 2 dungeon
                         global.plot = 160
                         roomtogo = room_board_dungeon_2
-                        scr_losechar()
-                        global.flag[1055] = 1.50
                         break
                         
                     case 21: // finding toriel
@@ -1718,36 +1753,27 @@ function scr_84_debug(arg0)
                         
                     case 21.4: // green room 3
                         global.plot = 200
-                        global.flag[1057] = 1
                         scr_losechar()
                         roomtogo = room_dw_b3bs_interstitial
                         break
                         
                     case 21.5: // backstage entrance
                         global.plot = 200
-                        global.flag[1057] = 1
                         roomtogo = room_dw_b3bs_intro
                         break
                         
                     case 21.6: // backstage rouxls encounter
                         global.plot = 200
-                        global.flag[1057] = 2
                         roomtogo = room_dw_b3bs_rouxls_lanina
                         break
                         
                     case 21.7: // back to board 3
                         global.plot = 215
-                        global.flag[1057] = 2
-                        global.flag[1097] = 2
-                        global.flag[1055] = 0
                         roomtogo = room_dw_b3bs_interstitial
                         break
                         
                     case 21.8: // back to board 3 (sword route)
                         global.plot = 215
-                        global.flag[1057] = 2
-                        global.flag[1097] = 2
-                        global.flag[1055] = 6
                         roomtogo = room_dw_b3bs_interstitial
                         break
                         
@@ -1794,36 +1820,11 @@ function scr_84_debug(arg0)
                     case 29: // pipis scene (no spamton)
                         global.plot = 255
                         roomtogo = room_dw_tv_closet
-                        if scr_weaponcheck_inventory(21)
-                            scr_weaponremove(21)
-                        
-                        for (i = 0; i < 4; i ++)
-                        {
-                            if global.charweapon[i] == 21
-                                global.charweapon[i] = 0
-                        }
-                        
-                        if scr_armorcheck_inventory(21)
-                            scr_armorremove(21)
-                            
-                        for (i = 0; i < 4; i ++)
-                        {
-                            if global.chararmor1[i] == 21
-                                global.chararmor1[i] = 0
-                            if global.chararmor2[i] == 21
-                                global.chararmor2[i] = 0
-                        }
-                        
-                        
                         break
                         
                     case 30: // pipis scene (spamton variant)
                         global.plot = 255
                         roomtogo = room_dw_tv_closet
-                        if !scr_weaponcheck_inventory(21)
-                            scr_weaponget(21)
-                        if !scr_armorcheck_inventory(21)
-                            scr_armorget(21)
                         break
                         
                     case 31: // stealth group scene
@@ -1854,43 +1855,31 @@ function scr_84_debug(arg0)
                     case 36: // ramb half-stone scene
                         global.plot = 200
                         roomtogo = room_dw_console_room
-                        scr_losechar()
-                        global.flag[1055] = 3
                         break
                         
                     case 37: // sword route board 3
                         global.plot = 200
                         roomtogo = room_board_3_sword
-                        scr_losechar()
-                        global.flag[1055] = 3
                         break
                         
                     case 38: // sword route board 3 dungeon
                         global.plot = 200
                         roomtogo = room_board_dungeon_3
-                        scr_losechar()
-                        global.flag[1055] = 4
                         break
                         
                     case 39: // pre-shadow mantle battle
                         global.plot = 200
                         roomtogo = room_board_preshadowmantle
-                        scr_losechar()
-                        global.flag[1055] = 5
                         break
                         
                     case 40: // shadow mantle battle
                         global.plot = 200
                         roomtogo = room_shadowmantle
-                        scr_losechar()
-                        global.flag[1055] = 5
                         break
                         
                     case 41: // post-shadow mantle battle
                         global.plot = 200
                         roomtogo = room_board_prepostshadowmantle
-                        scr_losechar()
-                        global.flag[1055] = 6
                         break
                     
                     case 42: // tenna battle
@@ -1906,18 +1895,15 @@ function scr_84_debug(arg0)
                     case 44: // light world scene
                         global.plot = 340
                         roomtogo = room_town_krisyard_dark
-                        global.darkzone = 0
                         break
                     
                     // template
-                    case 99: // 
+                    case -1: // 
                         global.plot = 0
-                        roomtogo = room_dw_tv_cutscene1g
+                        roomtogo = room
                         break
                 }
                 snd_free_all()
-                global.flag[1173] = 5
-                global.flag[1174] = 5
                 room_goto(roomtogo)
                 global.chemg_menu_depth = 0
             }

@@ -30,26 +30,28 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 			}
 		}
 		
-		// extra code that adds onto names and stuff
+		// extra code that adds onto option names in the menu
+		// in truth the code in this script was updated after chapter 2 presumably to make this work without chain of
+		// else ifs, but i don't feel like figuring it out so this script has been reverted to the ch2 version lol
 		if (type == "[group]")
             name = "[ " + name + "... ]";
-        else if (type == "[flagset]")
+        else if (type == "[flagset]") // display ID of a flag beside the name and display its current value beside that
             name += "(" + string(item) + ") : " + string(global.flag[item]);
-        else if (type == "[globalset]")
+        else if (type == "[globalset]") // display global variable's current value
             name += ": " + string(variable_global_get(item));
-        else if (type == "[globalset_multi]")
+        else if (type == "[globalset_multi]") // same but for multiple global variables
             name += ": " + string(variable_global_get(item[0]));
-        else if (type == "[platswap]")
+        else if (type == "[platswap]") // gray out the platswap string if it's unavailable
         {
             if (!instance_exists(obj_platswap))
                 draw_set_color(c_gray);
         }
-        else if type == "[ashley]"
+        else if type == "[ashley]" // make the super important option rainbow lmaoo
         {
             colsiner++
             draw_set_color(make_color_hsv((colsiner * 8) % 255, 60 + (sin(colsiner / 10) * 15), 255))
         }
-        else if (type == "[menukey]")
+        else if (type == "[menukey]") // display menu key
         {
             if (global.chemg_rebinding)
                 name += ": <Press Key>";

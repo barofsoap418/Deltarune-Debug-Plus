@@ -12,3 +12,16 @@ if (interactshower == 1)
     draw_text_outline(20, 20, "global.interact=" + string(global.interact), 0)
     draw_set_color(c_white)
 }
+
+if displaySetFlagsArray
+{
+    draw_set_font(fnt_main)
+    draw_set_halign(fa_right)
+    draw_set_color(c_green)
+    for (var i = 0; i < maxFlags; i ++)
+    {
+        draw_text_outline(640 - 4, 18 + (i * 17), flagSetArray[i], c_black)
+    }
+    draw_set_color(c_white)
+    draw_set_halign(fa_left)
+}
