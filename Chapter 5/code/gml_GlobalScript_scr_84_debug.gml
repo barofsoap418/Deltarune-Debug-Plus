@@ -1665,7 +1665,7 @@ function scr_84_debug(arg0)
             }
             else if choice == "[credits]"
             {
-                show_message("i am lesbian kris deltarune and this is my credits window") // todo
+                show_message("8-4 Ltd: Original Menu from Chapter 1.\nTenna Save Editor: Flag list.\nbarofsoap418: Restored the menu in all chapters and updated most things for them/added most new features.\nVRadExe: Chapter 5 Room list, figured out how to add onto menu entries using scr_84_draw_menu, made room warp types function properly+added one for starting in platforming mode, updated font list.\nZender Troop: Documented most global.plot changes in Chapter 5, which were used as reference for the Plot Warp menu.")
             }
             else if (choice == "[warp]")
             {
