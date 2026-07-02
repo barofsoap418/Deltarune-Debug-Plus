@@ -34,13 +34,17 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 		// in truth the code in this script was updated after chapter 2 presumably to make this work without chain of
 		// else ifs, but i don't feel like figuring it out so this script has been reverted to the ch2 version lol
 		if (type == "[group]")
-            name = "[ " + name + "... ]";
+            name = "[ " + name + "... ]"
         else if (type == "[flagset]") // display ID of a flag beside the name and display its current value beside that
-            name += "(" + string(item) + ") : " + string(global.flag[item]);
+            name += "(" + string(item) + ") : " + string(global.flag[item])
         else if (type == "[globalset]") // display global variable's current value
-            name += ": " + string(variable_global_get(item));
+            name += ": " + string(variable_global_get(item))
         else if (type == "[globalset_multi]") // same but for multiple global variables
-            name += ": " + string(variable_global_get(item[0]));
+            name += ": " + string(variable_global_get(item[0]))
+        else if type == "[toggle_global_saveto_ini]"
+            name += ": " + string(variable_global_get(item))
+        else if type == "[flagchangeGUI]"
+            name += ": " + string(variable_global_get("chemg_display_flag_changes"))
         else if (type == "[platswap]") // gray out the platswap string if it's unavailable
         {
             if (!instance_exists(obj_platswap))
@@ -54,9 +58,9 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
         else if (type == "[menukey]") // display menu key
         {
             if (global.chemg_rebinding)
-                name += ": <Press Key>";
+                name += ": <Press Key>"
             else
-                name += ": " + global.asc_def[global.chemg_menu_key];
+                name += ": " + global.asc_def[global.chemg_menu_key]
         }
             
 		scr_84_draw_text_outline(xx, yy, prefix + name)

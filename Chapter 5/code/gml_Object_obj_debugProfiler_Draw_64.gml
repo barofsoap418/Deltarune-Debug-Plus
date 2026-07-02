@@ -22,6 +22,12 @@ if displaySetFlagsArray
     {
         draw_text_outline(640 - 4, 18 + (i * 17), flagSetArray[i], c_black)
     }
-    draw_set_color(c_white)
     draw_set_halign(fa_left)
+    
+    if !global.chemg_flag_detection && !global.chemg_display_flag_changes
+    {
+        draw_set_color(c_red)
+        draw_text_outline(4, 178, "flag detection is disabled! please enable it or\nenable flag change messages to have this function.", c_black)
+    }
+    draw_set_color(c_white)
 }

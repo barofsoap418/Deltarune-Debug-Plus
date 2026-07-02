@@ -73,7 +73,7 @@ if global.chemg_display_flag_changes == 1 || global.chemg_flag_detection == 1
     }
 }
 
-if keyboard_check(vk_control) && keyboard_check(vk_shift) && keyboard_check_pressed(ord("F"))
+if /*keyboard_check(vk_control) && */keyboard_check(vk_shift) && keyboard_check_pressed(ord("F"))
 {
     displaySetFlagsArray = !displaySetFlagsArray
     snd_play_x(snd_txttor, 1, 0.5 + displaySetFlagsArray / 2)
