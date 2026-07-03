@@ -1176,6 +1176,9 @@ function scr_84_debug(arg0)
     }
     if (process)
         return global.chemg_menu_depth > 0;
+        
+    // block input to other parts of the game (idk if this even works)
+    sunkus_kb_block()
     
     // Store old states of draw parameters so we can avoid messing with how other menus look
     var old_color = draw_get_color()
@@ -1223,7 +1226,7 @@ function scr_84_debug(arg0)
             && !global.chemg_rebinding)
         {
             debug_movetimer += timeinc
-            if (debug_movetimer >= 0.75)
+            if (debug_movetimer >= 3.25)
             {
                 if (keyboard_check(vk_up) || gamepad_button_check(obj_gamecontroller.gamepad_id, gp_padu))
                     debug_upmove = 1
@@ -2406,15 +2409,6 @@ function scr_84_debug(arg0)
             global.input_held[i] = 0
             global.input_released[i] = 0
         }
-        keyboard_clear(vk_up)
-        keyboard_clear(vk_down)
-        keyboard_clear(vk_left)
-        keyboard_clear(vk_right)
-        keyboard_clear(vk_escape)
-        keyboard_clear(vk_enter)
-        keyboard_clear(ord("X"))
-        keyboard_clear(ord("Z"))
-        keyboard_clear(global.chemg_menu_key)
 
         if (change != 0)
             global.chemg_menu_indices[depth_ndx] = (global.chemg_menu_indices[depth_ndx] + num_choices + change) % num_choices
