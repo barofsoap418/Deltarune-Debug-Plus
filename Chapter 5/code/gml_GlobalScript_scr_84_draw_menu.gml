@@ -41,14 +41,21 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
             name += ": " + string(variable_global_get(item))
         else if (type == "[globalset_multi]") // same but for multiple global variables
             name += ": " + string(variable_global_get(item[0]))
-        else if type == "[toggle_global_saveto_ini]"
-            name += ": " + string(variable_global_get(item))
-        else if type == "[flagchangeGUI]"
-            name += ": " + string(variable_global_get("chemg_display_flag_changes"))
+        else if type == "[toggle_global_saveto_ini]" // debug menu settings, display "ON" or "OFF" instead of a number
+            name += ": " + (variable_global_get(item) ? "ON" : "OFF")
+        else if type == "[flagchangeGUI]" // same but for flag change hud
+            name += ": " + (variable_global_get("chemg_display_flag_changes") ? "ON" : "OFF")
         else if (type == "[platswap]") // gray out the platswap string if it's unavailable
         {
             if (!instance_exists(obj_platswap))
+            {
                 draw_set_color(c_gray);
+                name += ": UNAVAILABLE"
+            }
+            else
+            {
+                name += ": " + (obj_platswap.mode ? "ON" : "OFF")
+            }
         }
         else if type == "[ashley]" // make the super important option rainbow lmaoo
         {
