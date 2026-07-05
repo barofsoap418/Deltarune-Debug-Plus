@@ -10,7 +10,6 @@ function scr_84_debug(arg0)
         ossafe_ini_open("DebugPlus.ini")
         global.chemg_god_mode = ini_read_real("AshleysDebug", "chemg_god_mode", 0)
         global.chemg_show_room = ini_read_real("AshleysDebug", "chemg_show_room", 1)
-        global.chemg_show_val = ini_read_real("AshleysDebug", "chemg_show_val", 1)
         global.chemg_show_plot = ini_read_real("AshleysDebug", "chemg_show_plot", 1)
         global.chemg_show_encounterno = ini_read_real("AshleysDebug", "chemg_show_encounterno", 0)
         global.chemg_show_interact = ini_read_real("AshleysDebug", "chemg_show_interact", 0)
@@ -758,7 +757,7 @@ function scr_84_debug(arg0)
         scr_84_push(parent)
         parent = group
         
-        for (var rooms = 0; rooms < (room_last + ROOM_INITIALIZE); rooms++)
+        for (var rooms = 0; rooms <= room_last; rooms++)
             scr_84_add_menu_item(parent, "[roomgeneric]", rooms, room_get_name(rooms))
         
         parent = scr_84_pop()
@@ -771,17 +770,17 @@ function scr_84_debug(arg0)
         scr_84_push(parent)
         parent = group
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_god_mode", "God Mode")
-        scr_84_add_menu_item(parent, "[platswap]", "", "Toggle Platformer Mode")
-        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_room", "Toggle Room Name")
+        scr_84_add_menu_item(parent, "[platswap]", "", "Platformer Mode")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_room", "Show Room Name")
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Additional Visibility Toggles")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_plot", "Toggle Plot")
-        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_encounterno", "Toggle Encounterno")
-        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_interact", "Toggle Interact")
-        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_entrance", "Toggle Entrance")
-        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "debug_fps_display", "Toggle FPS")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_plot", "Show Plot")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_encounterno", "Show Encounterno")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_interact", "Show Interact")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_entrance", "Show Entrance")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "debug_fps_display", "Show FPS")
         parent = scr_84_pop()
         scr_84_add_menu_item(parent, "[flagchangeGUI]", "", "Toggle Flag Change Display")
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_flag_detection", "Always Detect Flag Changes")
@@ -966,7 +965,8 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[set_global_any_real]", 0, "Set Any Global Variable (Number)")
         scr_84_add_menu_item(parent, "[set_global_any_string]", 0, "Set Any Global Variable (String)")
         scr_84_add_menu_item(parent, "[globalset]", "plot", "Set Plot Value")
-        scr_84_add_menu_item(parent, "[globalset]", "interact", "Set Interact Value")
+        // Menu overrides global.interact, so set the value to switch back to instead
+        scr_84_add_menu_item(parent, "[globalset]", "chemg_interact", "Set Interact Value")
         scr_84_add_menu_item(parent, "[globalset]", "darkzone", "Set Darkzone Value")
         parent = scr_84_pop()
         
@@ -2469,7 +2469,7 @@ function scr_84_debug(arg0)
     {
         draw_set_font(fnt_main)
         if draw_get_color() == c_yellow
-            draw_set_color(c_green)
+            draw_set_color(c_lime)
         var barofsoap418 = "Restored/Improved by barofsoap418"
         scr_84_draw_text_outline(635 - string_width(barofsoap418), 475 - string_height(barofsoap418), barofsoap418)
     }
@@ -2682,13 +2682,16 @@ function scr_84_debug(arg0)
         global.chemg_font_type_ndx = (global.chemg_font_type_ndx + change + num_types) % num_types
         var fndx = global.chemg_font_type_ndx * 2
         var xx = 10
-        var yy = 250
+        var yy = 200
         var strings
-        strings[0] = "Pack my box with five"
+        strings[0] = "pack my box with five"
         strings[1] = "dozen liquor jugs."
-        strings[2] = "これは日本語です。"
-        strings[3] = "魔物に食われない！"
-        strings[4] = "1234567890+-%/"
+        strings[2] = "PACK MY BOX WITH FIVE"
+        strings[3] = "DOZEN LIQUOR JUGS!"
+        // I don't speak japanese so idk if there's a better test to do here - kelsey
+        strings[4] = "これは日本語です。"
+        strings[5] = "魔物に食われない！"
+        strings[6] = "1234567890+-%/$"
         var typer = ft[fndx]
         var font, vspacing, msg, clr
         if (typer >= 0)
@@ -2713,9 +2716,9 @@ function scr_84_debug(arg0)
             // Indicate runtime generated fonts
             var fontname = font_get_name(font)
             if (string_starts_with(fontname, "__newfont"))
-                msg = "runtime sprite font [" + string(font) + "]"
+                msg = "runtime sprite font (" + font_get_fontname(font) + ")"
             else
-                msg = "font: " + fontname
+                msg = "font: " + fontname + " (" + font_get_fontname(font) + ")"
             vspacing = font_get_size(font) + 2
         }
         draw_set_font(font)
