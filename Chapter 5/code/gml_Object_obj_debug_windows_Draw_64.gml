@@ -2,9 +2,57 @@ bspace = 30
 padding = 5
 wd = 160
 ht = 40 + (bspace * button_amount)
-// window mouse position is better here since it's drawn in the GUI layer
-mx = window_views_mouse_get_x() // mouse_x - camerax()
-my = window_views_mouse_get_y() // mouse_y - cameray()
+// these functions return the right mouse position in the GUI regardless of views, DPI scaling, etc.
+mx = device_mouse_x_to_gui(0) // mouse_x - camerax()
+my = device_mouse_y_to_gui(0) // mouse_y - cameray()
+
+
+// ignore clicks on other buttons while dragging
+if (button_clicked[0] == 1)
+{
+    if (mouse_check_button(mb_left))
+    {
+        xx = mx - relxx
+        yy = my - relyy
+    }
+    else
+    {
+        button_clicked[0] = 0
+    }
+}
+else
+{
+    for (i = 0; i < button_amount; i++)
+    {
+        button_state[i] = 0
+        if (point_in_rectangle(mx, my, xx + 10, yy + (bspace * i) + padding, (xx + wd) - 10, yy + ((bspace + 1) * i) + bspace))
+        {
+            if (i > 0)
+            {
+                button_state[i] = 1
+                if (mouse_check_button(mb_left))
+                    button_state[i] = 2
+                if (mouse_check_button_released(mb_left))
+                {
+                    button_state[i] = 3
+                    button_clicked[i] = 1
+                }
+            }
+            else
+            {
+                button_state[i] = 1
+                if (mouse_check_button(mb_left))
+                {
+                    button_clicked[i] = 1
+                    button_state[i] = 3
+                    
+                    relxx = mx - xx;
+                    relyy = my - yy;
+                }
+            }
+        }
+    }
+}
 
 // moved this before drawing so it doesn't flash offscreen for 1 frame - kelsey
 xx = clamp(xx, 4, 640 - wd - 4)
@@ -14,33 +62,7 @@ draw_set_color(c_black)
 draw_rectangle(xx - 4, yy - 4, xx + wd + 4, yy + ht + 4, false)
 draw_set_color(c_ltgray)
 draw_rectangle(xx, yy, xx + wd, yy + ht, false)
-for (i = 0; i < button_amount; i++)
-{
-    button_state[i] = 0
-    if (point_in_rectangle(mx, my, xx + 10, yy + (bspace * i) + padding, (xx + wd) - 10, yy + ((bspace + 1) * i) + bspace))
-    {
-        if (i > 0)
-        {
-            button_state[i] = 1
-            if (mouse_check_button(mb_left))
-                button_state[i] = 2
-            if (mouse_check_button_released(mb_left))
-            {
-                button_state[i] = 3
-                button_clicked[i] = 1
-            }
-        }
-        else
-        {
-            button_state[i] = 1
-            if (mouse_check_button(mb_left))
-            {
-                button_clicked[i] = 1
-                button_state[i] = 3
-            }
-        }
-    }
-}
+
 draw_set_font(fnt_main)
 for (i = 0; i < button_amount; i++)
 {
@@ -60,18 +82,6 @@ for (i = 0; i < button_amount; i++)
     draw_set_color(c_red)
     draw_text(xx + 10, yy + (bspace * i) + padding, button_text[i])
     draw_set_color(c_black)
-}
-if (button_clicked[0] == 1)
-{
-    if (mouse_check_button(mb_left))
-    {
-        xx += (mx - remmx)
-        yy += (my - remmy)
-    }
-    else
-    {
-        button_clicked[0] = 0
-    }
 }
 if (type == 0) // right clicked on object
 {
@@ -281,7 +291,5 @@ else if (type == 1)
         button_clicked[5] = 0
     }
 }
-// store old mouse position
-remmx = mx
-remmy = my
+
 draw_sprite(spr_maus_cursor, 0, mx, my)

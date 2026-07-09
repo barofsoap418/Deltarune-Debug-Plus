@@ -12,5 +12,6 @@ for (i = 0; i < button_amount; i++)
     button_state[i] = 0
     button_clicked[i] = 0
 }
-remmx = mouse_x - camerax()
-remmy = mouse_y - cameray()
+// new way of dragging
+relxx = 0;
+relyy = 0;
