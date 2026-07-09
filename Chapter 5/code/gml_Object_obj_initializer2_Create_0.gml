@@ -54,11 +54,11 @@ global.savedata_error = false
 global.savedata_debuginfo = ""
 
 // Version number - don't forget to update this when DR updates!!!
-global.versionno = "v0.0.243"
+global.versionno = "v0.0.247"
 if (scr_is_switch_os())
-	global.versionno = "v0.0.243"
+	global.versionno = "v0.0.247"
 else if (os_type == os_ps4 || os_type == os_ps5)
-	global.versionno = "v0.0.243"
+	global.versionno = "v0.0.247"
 	
 global.pause_plat = false
 global.game_won = false
