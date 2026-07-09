@@ -193,7 +193,7 @@ if (main_focus)
     draw_line_width(x + 16, y + 16, x + 2, y + 2, 5)
     draw_set_color(c_white)
     draw_line_width(x + 12, y + 12, x + 3, y + 3, 4)
-    draw_set_color(make_color_hsv(siner * 6, 255, 255))
+    draw_set_color(make_color_hsv((siner * 6) % 256, 255, 255))
     draw_line_width(x + 7, y + 7, x + 3, y + 3, 3)
 }
 
