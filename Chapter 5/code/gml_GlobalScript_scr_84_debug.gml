@@ -1278,7 +1278,7 @@ function scr_84_debug(arg0)
         {
             change = 1
         }
-        else if (keyboard_check_pressed(ord("Z")) || keyboard_check_pressed(vk_enter) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_face2))
+        else if (keyboard_check_pressed(ord("Z")) || keyboard_check_pressed(vk_enter) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_face1))
         {
             if (choice == "[group]")
             {
@@ -2396,7 +2396,7 @@ function scr_84_debug(arg0)
                 show_debug_message("unknown menu cmd:" + choice)
             }
         }
-        else if (keyboard_check_pressed(ord("X")) || keyboard_check_pressed(vk_escape) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_face1))
+        else if (keyboard_check_pressed(ord("X")) || keyboard_check_pressed(vk_escape) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_face2))
         {
             if (global.chemg_menu_depth > 0)
                 global.chemg_menu_depth -= 1
