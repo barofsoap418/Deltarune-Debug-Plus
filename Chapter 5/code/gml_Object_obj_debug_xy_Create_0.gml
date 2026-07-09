@@ -22,5 +22,5 @@ actor_selected_before = 0
 actor_previously_selected = -1
 panremx = camerax()
 panremy = cameray()
-enable_mouse_wheel = 0
+enable_mouse_wheel = 1
 old_right_click = 0

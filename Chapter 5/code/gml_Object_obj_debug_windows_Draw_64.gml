@@ -2,8 +2,14 @@ bspace = 30
 padding = 5
 wd = 160
 ht = 40 + (bspace * button_amount)
-mx = mouse_x - camerax()
-my = mouse_y - cameray()
+// window mouse position is better here since it's drawn in the GUI layer
+mx = window_views_mouse_get_x() // mouse_x - camerax()
+my = window_views_mouse_get_y() // mouse_y - cameray()
+
+// moved this before drawing so it doesn't flash offscreen for 1 frame - kelsey
+xx = clamp(xx, 4, 640 - wd - 4)
+yy = clamp(yy, 4, 480 - ht - 4)
+
 draw_set_color(c_black)
 draw_rectangle(xx - 4, yy - 4, xx + wd + 4, yy + ht + 4, false)
 draw_set_color(c_ltgray)
@@ -67,7 +73,7 @@ if (button_clicked[0] == 1)
         button_clicked[0] = 0
     }
 }
-if (type == 0)
+if (type == 0) // right clicked on object
 {
     if (button_clicked[1] == 1)
     {
@@ -95,7 +101,13 @@ if (type == 0)
                     var foundvar = variable_instance_get(so, varname)
                     foundvar = string(foundvar)
                     var newvalue = get_string(varname + " is " + foundvar + ". Enter new REAL NUMBER value.", "")
-                    variable_instance_set(so, varname, real(newvalue))
+                    
+                    try
+                    {
+                        variable_instance_set(so, varname, real(newvalue))
+                    }
+                    catch(e)
+                        show_message("that's not a number silly")
                 }
                 else
                 {
@@ -178,14 +190,19 @@ else if (type == 1)
         whatflag = get_string("Which flag? ", "")
         if (whatflag != "")
         {
-            whatflag = real(string_digits(whatflag))
-            if (whatflag > 0)
+            try
             {
-                var flagvalue = global.flag[whatflag]
-                flagvalue = get_string("Flag [" + string(whatflag) + "] is " + string(flagvalue) + ". Enter new value.", "")
-                if (flagvalue != "")
-                    global.flag[whatflag] = real(string_digits(flagvalue))
+                whatflag = real(string_digits(whatflag))
+                if (whatflag >= 0 && whatflag < array_length(global.flag))
+                {
+                    var flagvalue = global.flag[whatflag]
+                    flagvalue = get_string("Flag [" + string(whatflag) + "] is " + string(flagvalue) + ". Enter new value.", "")
+                    if (flagvalue != "")
+                        global.flag[whatflag] = real(string_digits(flagvalue))
+                }
             }
+            catch(e)
+                show_message("that's not a number silly")
         }
         button_clicked[1] = 0
     }
@@ -195,11 +212,16 @@ else if (type == 1)
         whatflag = get_string("Flag to watch? ", "")
         if (whatflag != "")
         {
-            whatflag = real(string_digits(whatflag))
-            if (whatflag > 0)
-                watchflag = whatflag
-            button_clicked[2] = 0
+            try
+            {
+                whatflag = real(string_digits(whatflag))
+                if (whatflag >= 0 && whatflag < array_length(global.flag))
+                    watchflag = whatflag
+            }
+            catch(e)
+                show_message("that's not a number silly")
         }
+        button_clicked[2] = 0
     }
     if (watchflag > 0)
         button_text[2] = "Flag [" + string(watchflag) + "] : " + string(global.flag[watchflag])
@@ -214,8 +236,12 @@ else if (type == 1)
                 var newval = get_string("The value of " + varname + " is " + string(varval) + ". What to set it to?", "")
                 if (newval != "")
                 {
-                    if (real(string_digits(newval)) > 0)
+                    try
+                    {
                         variable_global_set(varname, real(newval))
+                    }
+                    catch(e)
+                        show_message("that's not a number silly")
                 }
             }
             else
@@ -255,8 +281,7 @@ else if (type == 1)
         button_clicked[5] = 0
     }
 }
-xx = clamp(xx, 40, 500)
-yy = clamp(yy, 40, 340)
-remmx = mouse_x - camerax()
-remmy = mouse_y - cameray()
+// store old mouse position
+remmx = mx
+remmy = my
 draw_sprite(spr_maus_cursor, 0, mx, my)

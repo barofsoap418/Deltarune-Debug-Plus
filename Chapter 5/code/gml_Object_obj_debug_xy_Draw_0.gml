@@ -106,6 +106,12 @@ if (keyboard_check_pressed(ord("V")))
     else
         show_invisible = 0
 }
+
+if (keyboard_check_pressed(vk_end))
+{
+    old_right_click = !old_right_click
+}
+
 if (siner >= 5 && mouse_check_button_pressed(mb_middle))
 {
     instance_destroy()
@@ -179,13 +185,18 @@ if (show_all_object_xy == 1)
     draw_set_color(c_fuchsia)
     draw_text(x, y - 20, string_hash_to_newline(string(fox) + " , " + string(foy)))
 }
-draw_set_color(c_black)
-draw_line_width(x + 16, y + 16, x + 2, y + 2, 5)
-draw_set_color(c_white)
-draw_line_width(x + 12, y + 12, x + 3, y + 3, 4)
-draw_set_color(make_color_hsv(siner * 6, 255, 255))
-draw_line_width(x + 7, y + 7, x + 3, y + 3, 3)
-old_right_click = 0
+
+// don't draw main cursor if out of focus
+if (main_focus)
+{
+    draw_set_color(c_black)
+    draw_line_width(x + 16, y + 16, x + 2, y + 2, 5)
+    draw_set_color(c_white)
+    draw_line_width(x + 12, y + 12, x + 3, y + 3, 4)
+    draw_set_color(make_color_hsv(siner * 6, 255, 255))
+    draw_line_width(x + 7, y + 7, x + 3, y + 3, 3)
+}
+
 if (!old_right_click)
 {
     if (mouse_check_button_pressed(mb_right))
