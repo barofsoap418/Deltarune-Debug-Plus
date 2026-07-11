@@ -954,7 +954,9 @@ function global_flagname_init()
     global.flagname[1312] = "pink_coins"
     global.flagname[1324] = "town_time_of_day"
     global.flagname[1365] = "scissors_puzzle_flags"
+    global.flagname[1391] = "voice_clips_enabled"
     global.flagname[1399] = "hopschef_progress_flag"
+    global.flagname[1404] = "ribbon_chest_state"
     global.flagname[1411] = "flowery_dollars"
     // Chapter 5 Thrash Fit
     global.flagname[1421] = "thrash_fit_hair"
@@ -962,6 +964,14 @@ function global_flagname_init()
     global.flagname[1423] = "thrash_fit_pants"
     global.flagname[1424] = "thrash_fit_hat"
     global.flagname[1425] = "thrash_fit_shoes"
+    
+    global.flagname[1435] = "talked_toriel_toast_request"
+    global.flagname[1438] = "looked_at_microwave"
+    global.flagname[1440] = "castle_climb_hiscore"
+    global.flagname[1443] = "seen_how_to_draw_dragons"
+    // Chapter 5 Castle Progress
+    global.flagname[1454] = "castle_left_plot"
+    global.flagname[1455] = "castle_right_plot"
     // Chapter 4 Dark Sanctuary
     global.flagname[1500] = "moneyfountain_donation_over_100"
     global.flagname[1501] = "candy_bowl_progress"
@@ -1142,6 +1152,8 @@ function global_flagname_init()
     global.flagname[1702] = "unlocked_mike_minigames"
     global.flagname[1703] = "obtained_tv_zone_3_chest"
     global.flagname[1704] = "kris_noelle_escape_weird_abort"
+    
+    global.flagname[1747] = "talked_toriel_last_night"
     // Chapter 4 encounters
     global.flagname[1780] = "balthizard_encounter_outcome"
     global.flagname[1781] = "balthizard_oldman_encounter_outcome"
@@ -1162,8 +1174,14 @@ function global_flagname_init()
     global.flagname[1796] = "bibliox_encounter_outcome"
     global.flagname[1797] = "scented_candles_encounter_outcome"
     global.flagname[1798] = "second_mizzle_encounter_outcome"
+    
+    global.flagname[1846] = "pink_progress"
+    global.flagname[1904] = "platmode_jump_count"
+    global.flagname[1905] = "platmode_swing_count"
+    global.flagname[1908] = "defeated_pink"
 }
 
 function global_flagname_menu_init(arg0, arg1, arg2, arg3)
 {
+    // unsure what this was intended for...for DDP we are just generating the flag menu in scr_84_debug
 }
