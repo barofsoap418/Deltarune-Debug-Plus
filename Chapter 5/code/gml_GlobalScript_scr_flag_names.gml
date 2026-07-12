@@ -1225,12 +1225,29 @@ function global_flagname_init()
     
     
     global.flagname[1312] = "pink_coins"
-    
+    // 0 = nohit, 1 = chain, 2 = fan, 3 = circle, 4 = omega
+    global.flagname[1313] = "most_hit_aqua_attack"
+    global.flagname[1314] = "netskie_climb_flags"
+    global.flagname[1315] = "saw_fishing_scene"
+    global.flagname[1316] = "obscured_bullets_flags"
+    global.flagname[1317] = "castle_side_puzzles_flags"
+    global.flagname[1318] = "train_room_flags"
+    global.flagname[1319] = "saw_cowboy_show"
+    global.flagname[1320] = "gloves_tower_flags"
+    global.flagname[1321] = "final_dash_flags"
+    global.flagname[1322] = "susie_hair_trash_response"
+    global.flagname[1323] = "school_door_response"
     global.flagname[1324] = "town_time_of_day"
+    
+    global.flagname[1326] = "interacted_with_mewmew_figure"
+    global.flagname[1327] = "talked_asgore_day"
+    global.flagname[1328] = "talked_asgore_morning"
+    global.flagname[1329] = "asgore_serious_response"
     
     global.flagname[1365] = "scissors_puzzle_flags"
     
     global.flagname[1391] = "voice_clips_enabled"
+    global.flagname[1392] = "ralseis_enabled"
     
     global.flagname[1399] = "hopschef_progress_flag"
     
