@@ -1,6 +1,6 @@
 function scr_debug_print(arg0)
 {
-	if (!scr_debug())
+	if (!scr_debug() || !global.chemg_debug_messages)
         exit
     if (!instance_exists(obj_debug_gui))
     {

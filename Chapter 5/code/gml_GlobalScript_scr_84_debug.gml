@@ -18,6 +18,7 @@ function scr_84_debug(arg0)
         global.chemg_display_flag_changes = ini_read_real("AshleysDebug", "chemg_display_flag_changes", 0)
         global.chemg_flag_detection = ini_read_real("AshleysDebug", "chemg_flag_detection", 1)
         global.chemg_menu_key = ini_read_real("AshleysDebug", "chemg_menu_key", vk_f1)
+        global.chemg_debug_messages = ini_read_real("AshleysDebug", "chemg_debug_messages", 1)
         ossafe_ini_close()
         
         global.chemg_rebinding = false
@@ -782,7 +783,8 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_entrance", "Show Entrance")
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "debug_fps_display", "Show FPS")
         parent = scr_84_pop()
-        scr_84_add_menu_item(parent, "[flagchangeGUI]", "", "Toggle Flag Change Display")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_debug_messages", "Show Debug Messages")
+        scr_84_add_menu_item(parent, "[flagchangeGUI]", "", "Show Flag Changes")
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_flag_detection", "Always Detect Flag Changes")
         scr_84_add_menu_item(parent, "[menukey]", "", "Menu Keybind");
         scr_84_add_menu_item(parent, "[restart]", "", "Restart Room")
