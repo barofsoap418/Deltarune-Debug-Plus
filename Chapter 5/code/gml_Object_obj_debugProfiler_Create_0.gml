@@ -25,3 +25,6 @@ maxFlags = 27
 for (var i = 0; i < maxFlags; i ++)
     flagSetArray[i] = ""
 displaySetFlagsArray = false
+
+// Ch5 code expects this to be here, no clue what it does - gmlive related maybe?
+rmdebug = false;
