@@ -1436,13 +1436,21 @@ function scr_84_debug(arg0)
             }
             else if (choice == "[setgold]")
             {
-                var varname = get_string("Enter Amount", "")
-                global.gold = ceil(varname)
+                /*var varname = get_string("Enter Amount", "")
+                global.gold = ceil(varname)*/
+                
+                ossafe_get_integer("Enter Amount", "", function(varname) { 
+                    global.gold = ceil(varname)
+                })
             }
             else if (choice == "[setgoldlight]")
             {
-                var varname = get_string("Enter Amount", "")
-                global.lgold = ceil(varname)
+                /*var varname = get_integer("Enter Amount", "")
+                global.lgold = ceil(varname)*/
+                
+                ossafe_get_integer("Enter Amount", "", function(varname) { 
+                    global.lgold = ceil(varname)
+                })
             }
             else if (choice == "[flagset]")
             {
