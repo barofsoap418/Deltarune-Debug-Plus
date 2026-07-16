@@ -1,4 +1,5 @@
-_selected_string = "No object!#MouseL:Choose&Drag#MouseR:Drag From Anchor"
+_selected_string = "No object!#MouseL:Choose&Drag#MouseR:"
+_selected_string += old_right_click ? "Drag From Anchor" : "Options"
 if (i_ex(selected_object))
 {
     so = selected_object

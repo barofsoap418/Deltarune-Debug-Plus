@@ -24,3 +24,6 @@ panremx = camerax()
 panremy = cameray()
 enable_mouse_wheel = 1
 old_right_click = 0
+
+relx = 0
+rely = 0

@@ -10,49 +10,65 @@ if (main_focus)
     if (mouse_check_button_pressed(mb_left) && mousebuffer < 0)
     {
         mouse_held = 0
-        obj_check = collision_rectangle(x - 2, y - 2, x + 2, y + 2, all, false, true)
-        if (obj_check != -4)
+        var obj_list = ds_list_create();
+        var obj_count = collision_rectangle_list(x - 2, y - 2, x + 2, y + 2, all, false, true, obj_list, false)
+        selected_object = -898
+        if (obj_count > 0)
         {
-            visiblecheck = 0
-            if (show_invisible == 1)
-                visiblecheck = 1
-            else if (obj_check.visible == 1)
-                visiblecheck = 1
-            if (visiblecheck == 1 && obj_check.image_alpha > 0)
-                selected_object = obj_check
-        }
-        else
-        {
-            selected_object = -898
-        }
-        if (instance_exists(obj_actor))
-        {
-            obj_check = collision_rectangle(x - 2, y - 2, x + 2, y + 2, obj_actor, false, true)
-            if (obj_check != -4)
+            var last_depth = infinity;
+            var actors_only = false;
+            for (var i = 0; i < ds_list_size(obj_list); i++)
             {
-                visiblecheck = 0
-                if (show_invisible == 1)
-                    visiblecheck = 1
-                else if (obj_check.visible == 1)
-                    visiblecheck = 1
-                if (visiblecheck == 1 && obj_check.image_alpha > 0)
-                    selected_object = obj_check
+                var obj_check = ds_list_find_value(obj_list, i);
+                //scr_debug_print("obj_check=" + string(obj_check) + " (depth " + string(obj_check.depth) + ")")
+                
+                if (!show_invisible && !(obj_check.visible && obj_check.image_alpha > 0))
+                    continue;
+                
+                // Ignore anything that covers the whole room since these are usually not very useful to select
+                if (obj_check.x <= 0 && obj_check.y <= 0 && obj_check.image_xscale >= room_width && obj_check.image_yscale >= room_height)
+                    continue;
+                
+                // If obj_actors are under the cursor, only select those (matches old behavior)
+                if (old_right_click)
+                {
+                    if (actors_only && obj_check.object_index != obj_actor)
+                    {
+                        continue;
+                    }
+                    else if (!actors_only && obj_check.object_index == obj_actor)
+                    {
+                        last_depth = infinity;
+                        actors_only = true;
+                    }
+                }
+                
+                // Prioritize whatever is visually in front
+                if (obj_check.depth < last_depth)
+                {
+                    selected_object = obj_check;
+                    last_depth = obj_check.depth;
+                }   
+            }
+            
+            if (i_ex(selected_object))
+            {
+                relx = x - selected_object.x;
+                rely = y - selected_object.y;
             }
         }
+        ds_list_destroy(obj_list);
     }
-}
-if (main_focus)
-{
     if (mouse_check_button(mb_left) && i_ex(selected_object))
     {
         mouse_held++
         mouse_held_minimum = 5
         if (selected_object.object_index == obj_actor)
             mouse_held_minimum = 15
-        if (mouse_held >= mouse_held_minimum && i_ex(selected_object))
+        if (mouse_held >= mouse_held_minimum)
         {
-            selected_object.x = x - (selected_object.sprite_width / 2)
-            selected_object.y = y - (selected_object.sprite_height / 2)
+            selected_object.x = x - relx
+            selected_object.y = y - rely
         }
     }
     else
