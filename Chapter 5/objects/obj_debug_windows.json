@@ -1,0 +1,40 @@
+{
+  "$type": "GameObject",
+  "DataName": null,
+  "Sprite": null,
+  "Visible": true,
+  "Solid": false,
+  "Depth": 0,
+  "Persistent": true,
+  "ParentObject": null,
+  "MaskSprite": null,
+  "UsesPhysics": false,
+  "IsSensor": false,
+  "CollisionShape": "Box",
+  "Density": 0.5,
+  "Restitution": 0.1,
+  "Group": 0,
+  "LinearDamping": 0.1,
+  "AngularDamping": 0.1,
+  "Friction": 0.2,
+  "Awake": true,
+  "Kinematic": false,
+  "PhysicsVertices": [],
+  "Events": [
+    {
+      "Category": "Create",
+      "Subtype": "",
+      "CodeEntry": "gml_Object_obj_debug_windows_Create_0"
+    },
+    {
+      "Category": "Other",
+      "Subtype": "User15",
+      "CodeEntry": "gml_Object_obj_debug_windows_Other_25"
+    },
+    {
+      "Category": "Draw",
+      "Subtype": "DrawGUI",
+      "CodeEntry": "gml_Object_obj_debug_windows_Draw_64"
+    }
+  ]
+}

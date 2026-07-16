@@ -1,7 +1,5 @@
-xx = mouse_x - 40
-yy = mouse_y - 20
-xx = clamp(xx, 40, 520)
-yy = clamp(yy, 40, 340)
+xx = device_mouse_x_to_gui(0) + 4
+yy = device_mouse_y_to_gui(0) + 4
 type = 0
 button_text[0] = "Drag Window!"
 event_user(15)

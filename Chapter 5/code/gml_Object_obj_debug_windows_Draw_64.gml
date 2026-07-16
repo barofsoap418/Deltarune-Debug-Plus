@@ -85,6 +85,12 @@ for (i = 0; i < button_amount; i++)
 }
 if (type == 0) // right clicked on object
 {
+    if (!i_ex(obj_debug_xy.selected_object))
+    {
+        instance_destroy()
+        exit
+    }
+    
     if (button_clicked[1] == 1)
     {
         if (i_ex(obj_debug_xy))
