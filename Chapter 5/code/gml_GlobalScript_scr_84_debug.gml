@@ -1224,15 +1224,15 @@ function scr_84_debug(arg0)
         var timeinc = 0.25
         if (debug_movecooldown > 0)
             debug_movecooldown -= 1
-        if ((keyboard_check(vk_up) || gamepad_button_check(obj_gamecontroller.gamepad_id, gp_padu) || keyboard_check(vk_down) || gamepad_button_check(obj_gamecontroller.gamepad_id, gp_padd))
+        if ((keyboard_check(global.input_k[2]) || gamepad_button_check(obj_gamecontroller.gamepad_id, global.input_g[2]) || keyboard_check(global.input_k[0]) || gamepad_button_check(obj_gamecontroller.gamepad_id, global.input_g[0]))
             && !global.chemg_rebinding)
         {
             debug_movetimer += timeinc
             if (debug_movetimer >= 3.25)
             {
-                if (keyboard_check(vk_up) || gamepad_button_check(obj_gamecontroller.gamepad_id, gp_padu))
+                if (keyboard_check(global.input_k[2]) || gamepad_button_check(obj_gamecontroller.gamepad_id, global.input_g[2]))
                     debug_upmove = 1
-                else if (keyboard_check(vk_down) || gamepad_button_check(obj_gamecontroller.gamepad_id, gp_padd))
+                else if (keyboard_check(global.input_k[0]) || gamepad_button_check(obj_gamecontroller.gamepad_id, global.input_g[0]))
                     debug_downmove = 1
                 debug_movetimer = 0
                 debug_movecooldown = 1
@@ -1249,14 +1249,14 @@ function scr_84_debug(arg0)
         if (global.chemg_rebinding)
         {
             // Disallow binding navigation keys
-            if (keyboard_check_pressed(vk_up) ||
-                keyboard_check_pressed(vk_down) ||
-                keyboard_check_pressed(vk_left) ||
-                keyboard_check_pressed(vk_right) ||
+            if (keyboard_check_pressed(global.input_k[0]) ||
+                keyboard_check_pressed(global.input_k[1]) ||
+                keyboard_check_pressed(global.input_k[2]) ||
+                keyboard_check_pressed(global.input_k[3]) ||
                 keyboard_check_pressed(vk_escape) ||
                 keyboard_check_pressed(vk_enter) ||
-                keyboard_check_pressed(ord("X")) ||
-                keyboard_check_pressed(ord("Z")))
+                keyboard_check_pressed(global.input_k[4]) ||
+                keyboard_check_pressed(global.input_k[5]))
             {
                 scr_debug_print("Can't bind menu to this key");
                 snd_play(snd_cantselect);
@@ -1272,15 +1272,15 @@ function scr_84_debug(arg0)
                 ossafe_ini_close();
             }
         }
-        else if (keyboard_check_pressed(vk_up) || (debug_upmove >= 1 && debug_movecooldown <= 0) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_padu))
+        else if (keyboard_check_pressed(global.input_k[2]) || (debug_upmove >= 1 && debug_movecooldown <= 0) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[2]))
         {
             change = -1
         }
-        else if (keyboard_check_pressed(vk_down) || (debug_downmove >= 1 && debug_movecooldown <= 0) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_padd))
+        else if (keyboard_check_pressed(global.input_k[0]) || (debug_downmove >= 1 && debug_movecooldown <= 0) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[0]))
         {
             change = 1
         }
-        else if (keyboard_check_pressed(ord("Z")) || keyboard_check_pressed(vk_enter) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_face1))
+        else if (keyboard_check_pressed(global.input_k[4]) || keyboard_check_pressed(vk_enter) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_k[4]))
         {
             if (choice == "[group]")
             {
@@ -1665,7 +1665,7 @@ function scr_84_debug(arg0)
             else if (choice == "[menukey]")
             {
                 // Ignore controller since only keyboard mapping is currently supported
-                if (!gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_face1))
+                if (!gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[4]))
                     global.chemg_rebinding = true;
             }
             else if choice == "[credits]"
@@ -2398,7 +2398,7 @@ function scr_84_debug(arg0)
                 show_debug_message("unknown menu cmd:" + choice)
             }
         }
-        else if (keyboard_check_pressed(ord("X")) || keyboard_check_pressed(vk_escape) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_face2))
+        else if (keyboard_check_pressed(global.input_k[5]) || keyboard_check_pressed(vk_escape) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[5]))
         {
             if (global.chemg_menu_depth > 0)
                 global.chemg_menu_depth -= 1
@@ -2677,9 +2677,9 @@ function scr_84_debug(arg0)
         var ft = global.chemg_font_types
         var num_types = array_length_1d(ft) / 2
         var change = 0
-        if (keyboard_check_pressed(vk_right) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_padr))
+        if (keyboard_check_pressed(global.input_k[1]) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[1]))
             change = 1
-        else if (keyboard_check_pressed(vk_left) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_padl))
+        else if (keyboard_check_pressed(global.input_k[3]) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[3]))
             change = -1
         global.chemg_font_type_ndx = (global.chemg_font_type_ndx + change + num_types) % num_types
         var fndx = global.chemg_font_type_ndx * 2
