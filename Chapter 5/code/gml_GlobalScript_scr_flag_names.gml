@@ -371,7 +371,7 @@ function global_flagname_init()
     global.flagname[453] = "talked_to_spamton_behind_basement_door"
     global.flagname[454] = "obtained_dealmaker"
     global.flagname[455] = "ride_with_me"
-    global.flagname[456] = "defeated_snowgrave_neo"
+    global.flagname[456] = "defeated_sideb_spamton_neo"
     global.flagname[457] = "spared_berdly_all_three_times"
     global.flagname[458] = "houses_hit"
     global.flagname[459] = "put_disk_mannequin"
@@ -416,7 +416,7 @@ function global_flagname_init()
     global.flagname[552] = "scripted_encounter_outcome"
     global.flagname[553] = "triple_ambyu_lance_encounter_outcome"
     global.flagname[554] = "tasque_virovirokun_encounter_outcome"
-    global.flagname[555] = "snowgrave_maice_1_encounter_outcome"
+    global.flagname[555] = "sideb_maice_1_encounter_outcome"
     global.flagname[556] = "fleeing_tasque_encounter_outcome"
     global.flagname[557] = "dining_hall_pipis_encounter_outcome"
     global.flagname[558] = "returning_tasque_encounter_outcome"
@@ -427,9 +427,9 @@ function global_flagname_init()
     global.flagname[563] = "road_tasque_encounter_outcome"
     global.flagname[564] = "road_virovirokun_encounter_outcome"
     global.flagname[565] = "road_werewire_encounter_outcome"
-    global.flagname[566] = "snowgrave_maice_2_encounter_outcome"
-    global.flagname[567] = "snowgrave_double_poppup_encounter_outcome"
-    global.flagname[569] = "snowgrave_werewerewire_encounter_outcome"
+    global.flagname[566] = "sideb_maice_2_encounter_outcome"
+    global.flagname[567] = "sideb_double_poppup_encounter_outcome"
+    global.flagname[569] = "sideb_werewerewire_encounter_outcome"
     global.flagname[570] = "ultimate_heal_ambyu_lance_encounter_outcome"
     global.flagname[571] = "spamton_neo_encounter_outcome"
     global.flagname[572] = "vase_poppup_encounter_outcome"
@@ -499,16 +499,16 @@ function global_flagname_init()
     
     global.flagname[913] = "interacted_with_man_car"
     global.flagname[914] = "starting_chapter"
-    global.flagname[915] = "snowgrave_route_progress"
-    global.flagname[916] = "snowgrave_fail"
+    global.flagname[915] = "sideb_progress"
+    global.flagname[916] = "sideb_fail"
     global.flagname[917] = "egg_room_progress_ch2"
     global.flagname[918] = "obtained_egg_ch2"
     global.flagname[919] = "noelle_level_up_count"
     global.flagname[920] = "obtained_moss_ch2"
     global.flagname[921] = "ate_moss_with_noelle"
     global.flagname[922] = "ate_moss_with_susie"
-    global.flagname[923] = "failed_snowgrave_without_thorn_ring"
-    global.flagname[924] = "snowgrave_kill_command_count"
+    global.flagname[923] = "failed_sideb_without_thorn_ring"
+    global.flagname[924] = "sideb_kill_command_count"
     global.flagname[925] = "iceshocks"
     global.flagname[926] = "iceshocked_encounters"
     // You Tuube...is that like the spooky steps?
@@ -1221,20 +1221,20 @@ function global_flagname_init()
     global.flagname[676] = "recruited_netskie"
     global.flagname[677] = "recruited_terakota"
     
-    global.flagname[721] = "recruit_trashy_trio" // Technically...
+    global.flagname[721] = "recruit_trashy_trio" // Technically, and nothing else uses this flag...
     
     
     global.flagname[1312] = "pink_coins"
     // 0 = nohit, 1 = chain, 2 = fan, 3 = circle, 4 = omega
     global.flagname[1313] = "most_hit_aqua_attack"
-    global.flagname[1314] = "netskie_climb_flags"
+    global.flagname[1314] = "netskieclimb_flags"
     global.flagname[1315] = "saw_fishing_scene"
     global.flagname[1316] = "obscured_bullets_flags"
     global.flagname[1317] = "castle_side_puzzles_flags"
-    global.flagname[1318] = "train_room_flags"
+    global.flagname[1318] = "trainroom_flags"
     global.flagname[1319] = "saw_cowboy_show"
     global.flagname[1320] = "gloves_tower_flags"
-    global.flagname[1321] = "final_dash_flags"
+    global.flagname[1321] = "finaldash_flags_1"
     global.flagname[1322] = "susie_hair_trash_response"
     global.flagname[1323] = "school_door_response"
     global.flagname[1324] = "town_time_of_day"
@@ -1243,6 +1243,33 @@ function global_flagname_init()
     global.flagname[1327] = "talked_asgore_day"
     global.flagname[1328] = "talked_asgore_morning"
     global.flagname[1329] = "asgore_serious_response"
+    global.flagname[1330] = "interacted_with_roses_day"
+    global.flagname[1331] = "talked_flowers_day"
+    global.flagname[1332] = "carried_object_persistence"
+    // 1 = kris, 2 = susie, 3 = noelle, 4 = berdly/queen
+    global.flagname[1333] = "festival_king_vote"
+    global.flagname[1334] = "festival_queen_vote"
+    // 1 = showed noelle, 2 = hid from noelle
+    global.flagname[1335] = "showed_ballot_status"
+    global.flagname[1336] = "jockington_grows_the_beard"
+    global.flagname[1337] = "talked_berdly_ch5"
+    global.flagname[1338] = "listened_berdly_poem"
+    global.flagname[1339] = "berdly_poem_response"
+    global.flagname[1340] = "times_flattered_floradinn"
+    global.flagname[1341] = "times_convinced_floradinn"
+    global.flagname[1342] = "times_flirted_floradinn"
+    global.flagname[1343] = "talked_berdly_ch5_injured"
+    global.flagname[1344] = "talked_sans_ch5"
+    global.flagname[1345] = "susie_tried_takoyaki"
+    global.flagname[1346] = "noelle_tried_takoyaki"
+    global.flagname[1347] = "kris_tried_takoyaki"
+    global.flagname[1348] = "interacted_with_dunk_tank"
+    global.flagname[1349] = "finaldash_flags_2"
+    global.flagname[1350] = "talked_vulkin_ch5"
+    global.flagname[1351] = "talked_child_ch5"
+    // 1 = kris+noelle, 2 = kris+susie, 3 = susie+noelle, 4 = declined
+    global.flagname[1352] = "ferris_wheel_status"
+    global.flagname[1353] = "ferris_wheel_status_2"
     
     global.flagname[1365] = "scissors_puzzle_flags"
     
@@ -1251,9 +1278,20 @@ function global_flagname_init()
     
     global.flagname[1399] = "hopschef_progress_flag"
     
+    global.flagname[1402] = "bpants_event_seen"
+    // 1 = bratty, 2 = nice cream guy, 3 = catty
+    global.flagname[1403] = "bpants_event_outcome"
     global.flagname[1404] = "ribbon_chest_state"
     
+    global.flagname[1406] = "nicecream_dialogue_progress"
+    global.flagname[1407] = "catty_dialogue_progress"
+    global.flagname[1408] = "bratty_dialogue_progress"
+    global.flagname[1408] = "talked_milklooker_post_bpants"
+    
     global.flagname[1411] = "flowery_dollars"
+    
+    global.flagname[1415] = "nicecream_bratty_dialogue_progress"
+    global.flagname[1416] = "party_uses_unhappy_sprites"
     
     // Chapter 5 Thrash Fit
     global.flagname[1421] = "thrash_fit_hair"
@@ -1264,20 +1302,48 @@ function global_flagname_init()
     
     global.flagname[1435] = "talked_toriel_toast_request"
     
-    global.flagname[1438] = "looked_at_microwave"
+    global.flagname[1438] = "interacted_with_microwave"
     
     global.flagname[1440] = "castle_climb_hiscore"
     
     global.flagname[1443] = "seen_how_to_draw_dragons"
     
+    global.flagname[1451] = "interacted_catti_window"
+    global.flagname[1453] = "talked_milklooker_mid_bpants"
     // Chapter 5 Castle Progress
     global.flagname[1454] = "castle_left_plot"
     global.flagname[1455] = "castle_right_plot"
+    
+    global.flagname[1725] = "interacted_with_susie_wardrobe"
+    global.flagname[1726] = "interacted_with_susie_statue"
+    global.flagname[1727] = "nuzzled_susie_plush"
+    global.flagname[1728] = "interacted_with_ralsei_closet"
+    global.flagname[1729] = "interacted_with_ralsei_tea"
+    global.flagname[1730] = "interacted_with_ralsei_cusion"
+    global.flagname[1731] = "cutdown_tutorial_flags"
+    global.flagname[1732] = "obtained_50_flowery_dollars"
+    global.flagname[1733] = "sideb_went_to_beach_without_ice_cream"
+    global.flagname[1734] = "sideb_interacted_with_church"
+    global.flagname[1735] = "sideb_ferris_wheel_status"
+    global.flagname[1736] = "sideb_interacted_with_school_door"
+    global.flagname[1737] = "foxhunt_flags"
+    global.flagname[1738] = "talked_catty_dad"
   
-    global.flagname[1747] = "talked_toriel_last_night"    
+    global.flagname[1747] = "talked_toriel_last_night"
+    
+    global.flagname[1753] = "talked_takoyaki_donut_guy"
+    
+    global.flagname[1757] = "susie_diner_response"
+    global.flagname[1758] = "interacted_bratty_window"
+    global.flagname[1759] = "sans_hate_response_ch5"
+    
+    global.flagname[1808] = "sideb_interacted_with_takoyaki"
     
     global.flagname[1846] = "pink_progress"
     
+    global.flagname[1859] = "eastcliff_flags"
+    
+    global.flagname[1900] = "talked_milklooker_pre_bpants"
     global.flagname[1904] = "platmode_jump_count"
     global.flagname[1905] = "platmode_swing_count"
     
