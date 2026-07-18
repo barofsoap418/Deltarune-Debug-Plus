@@ -284,6 +284,8 @@ if (movenoise == 1)
 	snd_play(snd_menumove)
 	movenoise = 0
 }
+
+// moved to obj_time
 /*if (scr_debug())
 {
 	if (sunkus_kb_check_pressed(ord("S")))

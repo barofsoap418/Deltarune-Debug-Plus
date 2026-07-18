@@ -77,6 +77,18 @@ if (scr_debug())
 		room_restart()
 		global.interact = 0
 	}
+	
+	if sunkus_kb_check(vk_rshift) && sunkus_kb_check_pressed(ord("P"))
+	{
+	   scr_exportsheets("spr_sans_d")
+	   scr_exportsheets("spr_face_n_matome")
+	   scr_exportsheets("spr_flowery_walk_right")
+	   scr_exportsheets("spr_susie_dance")
+	   scr_exportsheets("spr_ralsei_pirouette")
+	   
+	   var _dumpme = ["spr_susieb_idle", "spr_krisb_pirouette", "spr_flowery_pirouette", "spr_face_n_matome", "spr_asgored", "spr_asgoreu", "spr_asgorel", "spr_asgorer", "spr_tenna_dance_cabbage_smol", "spr_spamton_idle"]
+	   scr_exportsheets_list("test dump", _dumpme)
+	}
 }
 if (global.is_console && sunkus_kb_check_pressed(vk_pause))
 {
