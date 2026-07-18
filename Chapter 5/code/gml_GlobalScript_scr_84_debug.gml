@@ -978,48 +978,94 @@ function scr_84_debug(arg0)
         scr_84_push(parent)
         parent = group
         scr_84_add_menu_item(parent, "[idealall]", "", "Idealize Stats")
+        
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Kris Stats")
         scr_84_push(parent)
         parent = group
         scr_84_add_menu_item(parent, "[hp]", 1, "Set HP")
-        scr_84_add_menu_item(parent, "[hpmax]", 1, "Set HP and Max Hp")
+        scr_84_add_menu_item(parent, "[hpmax]", 1, "Set Max Hp")
         scr_84_add_menu_item(parent, "[attack]", 1, "Set Attack")
         scr_84_add_menu_item(parent, "[defense]", 1, "Set Defense")
         scr_84_add_menu_item(parent, "[magic]", 1, "Set Magic")
+        
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Spells")
+        scr_84_push(parent)
+        parent = group
+        for (var i = 0; i < 12; i ++)
+            scr_84_add_menu_item(parent, "[spell]", 1, concat(i, " : ", "Empty"))
         parent = scr_84_pop()
+        parent = scr_84_pop()
+        
+        
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Susie Stats")
         scr_84_push(parent)
         parent = group
         scr_84_add_menu_item(parent, "[hp]", 2, "Set HP")
-        scr_84_add_menu_item(parent, "[hpmax]", 2, "Set HP and Max Hp")
+        scr_84_add_menu_item(parent, "[hpmax]", 2, "Set Max Hp")
         scr_84_add_menu_item(parent, "[attack]", 2, "Set Attack")
         scr_84_add_menu_item(parent, "[defense]", 2, "Set Defense")
         scr_84_add_menu_item(parent, "[magic]", 2, "Set Magic")
+        
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Spells")
+        scr_84_push(parent)
+        parent = group
+        for (var i = 0; i < 12; i ++)
+            scr_84_add_menu_item(parent, "[spell]", 2, concat(i, " : ", "Empty"))
         parent = scr_84_pop()
+        parent = scr_84_pop()
+        
+        
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Ralsei Stats")
         scr_84_push(parent)
         parent = group
         scr_84_add_menu_item(parent, "[hp]", 3, "Set HP")
-        scr_84_add_menu_item(parent, "[hpmax]", 3, "Set HP and Max Hp")
+        scr_84_add_menu_item(parent, "[hpmax]", 3, "Set Max Hp")
         scr_84_add_menu_item(parent, "[attack]", 3, "Set Attack")
         scr_84_add_menu_item(parent, "[defense]", 3, "Set Defense")
         scr_84_add_menu_item(parent, "[magic]", 3, "Set Magic")
+        
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Spells")
+        scr_84_push(parent)
+        parent = group
+        for (var i = 0; i < 12; i ++)
+            scr_84_add_menu_item(parent, "[spell]", 3, concat(i, " : ", "Empty"))
         parent = scr_84_pop()
+        parent = scr_84_pop()
+        
+        
+        
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Noelle Stats")
         scr_84_push(parent)
         parent = group
         scr_84_add_menu_item(parent, "[hp]", 4, "Set HP")
-        scr_84_add_menu_item(parent, "[hpmax]", 4, "Set HP and Max Hp")
+        scr_84_add_menu_item(parent, "[hpmax]", 4, "Set Max Hp")
         scr_84_add_menu_item(parent, "[attack]", 4, "Set Attack")
         scr_84_add_menu_item(parent, "[defense]", 4, "Set Defense")
         scr_84_add_menu_item(parent, "[magic]", 4, "Set Magic")
+        
+        group = ds_list_create()
+        scr_84_add_menu_item(parent, "[group]", group, "Spells")
+        scr_84_push(parent)
+        parent = group
+        for (var i = 0; i < 12; i ++)
+            scr_84_add_menu_item(parent, "[spell]", 4, concat(i, " : ", "Empty"))
         parent = scr_84_pop()
-        scr_84_add_menu_item(parent, "[setmember]", 1, "Set Party Member 1")
-        scr_84_add_menu_item(parent, "[setmember]", 2, "Set Party Member 2")
+        parent = scr_84_pop()
+        
+        scr_84_add_menu_item(parent, "[setmember]", 0, "Set Party Member 1 (BROKEN)")
+        scr_84_add_menu_item(parent, "[setmember]", 1, "Set Party Member 2")
+        scr_84_add_menu_item(parent, "[setmember]", 2, "Set Party Member 3")
         parent = scr_84_pop()
         
         
@@ -1609,6 +1655,12 @@ function scr_84_debug(arg0)
                 global.mag[4] = 16
                 show_message("Idealized Stats")
             }
+            else if (choice == "[spell]")
+            {
+                var newspell = get_string("Enter new spell ", "")
+                if (newspell != "")
+                    global.spell[choice_data][real(string_char_at(choice_name, 1) + string_char_at(choice_name, 2))] = real(newspell)
+            }
             else if (choice == "[setmember]")
             {
                 var newmem = get_string("Set party member " + string(choice_data), "")
@@ -1670,7 +1722,7 @@ function scr_84_debug(arg0)
             }
             else if choice == "[credits]"
             {
-                show_message("8-4 Ltd: Original Menu from Chapter 1.\nTenna Save Editor: Flag list.\nbarofsoap418: Restored the menu in all chapters and updated most things for them/added most new features.\nVRadExe: Chapter 5 Room list, figured out how to add onto menu entries using scr_84_draw_menu, made room warp types function properly+added one for starting in platforming mode, updated font list.\nZender Troop: Documented most global.plot changes in Chapter 5, which were used as reference for the Plot Warp menu.")
+                show_message("8-4 Ltd: Original Menu from Chapter 1.\nTenna Save Editor: Flag list.\nbarofsoap418: Restored the menu in all chapters and updated most things for them/added most new features.\nVRadExe: Chapter 5 Room list, figured out how to add onto menu entries using scr_84_draw_menu, made room warp types function properly+added one for starting in platforming mode, updated font list.\nZender Troop: Documented most global.plot changes in Chapter 5, which were used as reference for the Plot Warp menu.\nFafuhnir: literally nothing but i wanna shout him out hi leon :wave:")
             }
             else if (choice == "[warp]")
             {
@@ -2398,7 +2450,7 @@ function scr_84_debug(arg0)
                 show_debug_message("unknown menu cmd:" + choice)
             }
         }
-        else if (keyboard_check_pressed(global.input_k[5]) || keyboard_check_pressed(vk_escape) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[5]))
+        else if (keyboard_check_pressed(global.input_k[5]) || keyboard_check_pressed(vk_escape) || keyboard_check_pressed(vk_shift) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[5]))
         {
             if (global.chemg_menu_depth > 0)
                 global.chemg_menu_depth -= 1

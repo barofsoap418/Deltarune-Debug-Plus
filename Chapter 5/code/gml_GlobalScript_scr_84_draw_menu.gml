@@ -36,7 +36,7 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 		if (type == "[group]")
             name = "[ " + name + "... ]"
         else if (type == "[flagset]") // display ID of a flag beside the name and display its current value beside that
-            name += "(" + string(item) + ") : " + string(global.flag[item])
+            name += " (" + string(item) + ") : " + string(global.flag[item])
         else if (type == "[globalset]") // display global variable's current value
             name += ": " + string(variable_global_get(item))
         else if (type == "[globalset_multi]") // same but for multiple global variables
@@ -69,6 +69,36 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
             else
                 name += ": " + global.asc_def[global.chemg_menu_key]
         }
+        else if type == "[item]" || type == "[lightitem]" || type == "[keyitem]" || type == "[weaponitem]" || type == "[armoritem]"
+        {
+            name += concat(" (", item,")")
+        }
+        else if type == "[room]" || type == "[roomdark]" || type == "[roomplat]" || type == "[roomgeneric]"
+        {
+            name += concat(" (", real(item),")")
+            //scr_get_room_by_id(item) getting to sleepy honk shoo mimimimimimimimi will do this another time ( if it's not already done)
+        }
+        else if type == "[spell]"
+        {
+            var _val = global.spell[item][real(string_char_at(name, 1) + string_char_at(name, 2))] // probably could have been done in a way that didn't DEPEND on the id being at the start of the string but i wanted the id to be at the start of the string anyway so like whatever lol
+            scr_spellinfo(_val)
+            
+            if string_pos("Empty", name) > 0 && spellname != " "
+                name = string_replace(name, "Empty", spellname)
+                
+            name += concat(" (", _val,")")
+            
+        }
+        else if type == "[hp]"
+            name += concat(" (", global.hp[item],")")
+        else if type == "[hpmax]"
+            name += concat(" (", global.maxhp[item],")")
+        else if type == "[attack]"
+            name += concat(" (", global.at[item],")")
+        else if type == "[defense]"
+            name += concat(" (", global.df[item],")")
+        else if type == "[magic]"
+            name += concat(" (", global.mag[item],")")
             
 		scr_84_draw_text_outline(xx, yy, prefix + name)
 		yy += vspacing

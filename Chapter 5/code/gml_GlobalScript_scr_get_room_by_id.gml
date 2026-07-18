@@ -44,8 +44,8 @@ function scr_room(arg0, arg1) constructor
 {
 	room_index = arg0
 	room_id = arg1
-	if (room_index == 141)
-		show_debug_message(string(141) + " " + string(room_id))
+	if (room_index == room_dw_garden_aquahole)
+		show_debug_message(string(room_dw_garden_aquahole) + " " + string(room_id))
 }
 function scr_get_room_list()
 {
