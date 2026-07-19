@@ -1326,1128 +1326,1140 @@ function scr_84_debug(arg0)
         {
             change = 1
         }
-        else if (keyboard_check_pressed(global.input_k[4]) || keyboard_check_pressed(vk_enter) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_k[4]))
+        else if (keyboard_check_pressed(global.input_k[4]) || keyboard_check_pressed(vk_enter) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[4]))
         {
-            if (choice == "[group]")
+            if (is_struct(choice))
             {
-                global.chemg_menu_indices[global.chemg_menu_depth] = 0
-                global.chemg_menu_depth += 1
+                // Chapter 3+ method, inferred from code in scr_84_draw_menu
+                var action_handler = variable_struct_get(choice, "action");
+        
+                if (action_handler)
+                    action_handler(choice_data, choice_name);
             }
-            else if (choice == "[loadj]")
+            else
             {
-                var type = scr_84_lang_load()
-                show_debug_message("loaded " + type + " lang file")
-                show_message("loaded " + type + " lang file")
-                global.chemg_menu_depth = 0
-            }
-            else if (choice == "[room]") // Light World rooms
-            {
-                global.darkzone = 0
-                global.start_in_platmode = 0;
-                room_goto(choice_data)
-                global.chemg_menu_depth = 0
-            }
-            else if (choice == "[roomdark]") // Dark World rooms
-            {
-                global.darkzone = 1
-                global.start_in_platmode = 0;
-                room_goto(choice_data)
-                global.chemg_menu_depth = 0
-            }
-            else if (choice == "[roomplat]") // DW rooms that expect to start in platformer mode, to save having to manually switch
-            {
-                global.darkzone = 1
-                global.start_in_platmode = 1
-                show_debug_message("room_goto: " + choice_name)
-                room_goto(choice_data)
-                global.chemg_menu_depth = 0
-            }
-            else if (choice == "[roomgeneric]") // Rooms that don't care about light/dark state
-            {
-                room_goto(choice_data)
-                global.chemg_menu_depth = 0
-            }
-            else if (choice == "[lang]")
-            {
-                show_debug_message("switch lang: " + choice_data)
-                if (ossafe_file_exists("true_config.ini"))
+                // Chapter 1/2 method, what most stuff is using since this was built off the chapter 1 switch version
+                if (choice == "[group]")
                 {
-                    ossafe_ini_open("true_config.ini")
-                    ini_write_string("LANG", "LANG", choice_data)
+                    global.chemg_menu_indices[global.chemg_menu_depth] = 0
+                    global.chemg_menu_depth += 1
+                }
+                else if (choice == "[loadj]")
+                {
+                    var type = scr_84_lang_load()
+                    show_debug_message("loaded " + type + " lang file")
+                    show_message("loaded " + type + " lang file")
+                    global.chemg_menu_depth = 0
+                }
+                else if (choice == "[room]") // Light World rooms
+                {
+                    global.darkzone = 0
+                    global.start_in_platmode = 0;
+                    room_goto(choice_data)
+                    global.chemg_menu_depth = 0
+                }
+                else if (choice == "[roomdark]") // Dark World rooms
+                {
+                    global.darkzone = 1
+                    global.start_in_platmode = 0;
+                    room_goto(choice_data)
+                    global.chemg_menu_depth = 0
+                }
+                else if (choice == "[roomplat]") // DW rooms that expect to start in platformer mode, to save having to manually switch
+                {
+                    global.darkzone = 1
+                    global.start_in_platmode = 1
+                    show_debug_message("room_goto: " + choice_name)
+                    room_goto(choice_data)
+                    global.chemg_menu_depth = 0
+                }
+                else if (choice == "[roomgeneric]") // Rooms that don't care about light/dark state
+                {
+                    room_goto(choice_data)
+                    global.chemg_menu_depth = 0
+                }
+                else if (choice == "[lang]")
+                {
+                    show_debug_message("switch lang: " + choice_data)
+                    if (ossafe_file_exists("true_config.ini"))
+                    {
+                        ossafe_ini_open("true_config.ini")
+                        ini_write_string("LANG", "LANG", choice_data)
+                        ossafe_ini_close()
+                    }
+                    global.lang = choice_data
+                    global.chemg_menu_depth = 0
+                    scr_84_init_localization()
+                    room_restart()
+                }
+                else if (choice == "[restart]")
+                {
+                    show_debug_message("restart room")
+                    room_restart()
+                    global.chemg_menu_depth = 0
+                }
+                else if (choice == "[lightitem]")
+                {
+                    scr_litemget(choice_data)
+                }
+                else if (choice == "[item]")
+                {
+                    scr_itemget(choice_data)
+                }
+                else if (choice == "[keyitem]")
+                {
+                    scr_keyitemget(choice_data)
+                }
+                else if (choice == "[weaponitem]")
+                {
+                    scr_weaponget(choice_data)
+                }
+                else if (choice == "[armoritem]")
+                {
+                    scr_armorget(choice_data)
+                }
+                else if (choice == "[phone]")
+                {
+                    scr_phoneadd(202)
+                }
+                else if (choice == "[gold]")
+                {
+                    global.gold = max(0, global.gold + choice_data)
+                }
+                else if (choice == "[lightgold]")
+                {
+                    global.lgold = max(0, global.lgold + choice_data)
+                }
+                else if (choice == "[points]")
+                {
+                    global.flag[1044] = max(0, global.flag[1044] + choice_data)
+                }
+                else if choice == "[toggle_global_saveto_ini]"
+                {
+                    variable_global_set(choice_data, 1 - variable_global_get(choice_data))
+                    ossafe_ini_open("DebugPlus.ini")
+                    ini_write_real("AshleysDebug", choice_data, variable_global_get(choice_data))
                     ossafe_ini_close()
-                }
-                global.lang = choice_data
-                global.chemg_menu_depth = 0
-                scr_84_init_localization()
-                room_restart()
-            }
-            else if (choice == "[restart]")
-            {
-                show_debug_message("restart room")
-                room_restart()
-                global.chemg_menu_depth = 0
-            }
-            else if (choice == "[lightitem]")
-            {
-                scr_litemget(choice_data)
-            }
-            else if (choice == "[item]")
-            {
-                scr_itemget(choice_data)
-            }
-            else if (choice == "[keyitem]")
-            {
-                scr_keyitemget(choice_data)
-            }
-            else if (choice == "[weaponitem]")
-            {
-                scr_weaponget(choice_data)
-            }
-            else if (choice == "[armoritem]")
-            {
-                scr_armorget(choice_data)
-            }
-            else if (choice == "[phone]")
-            {
-                scr_phoneadd(202)
-            }
-            else if (choice == "[gold]")
-            {
-                global.gold = max(0, global.gold + choice_data)
-            }
-            else if (choice == "[lightgold]")
-            {
-                global.lgold = max(0, global.lgold + choice_data)
-            }
-            else if (choice == "[points]")
-            {
-                global.flag[1044] = max(0, global.flag[1044] + choice_data)
-            }
-            else if choice == "[toggle_global_saveto_ini]"
-            {
-                variable_global_set(choice_data, 1 - variable_global_get(choice_data))
-                ossafe_ini_open("DebugPlus.ini")
-                ini_write_real("AshleysDebug", choice_data, variable_global_get(choice_data))
-                ossafe_ini_close()
-                
-            }
-            else if choice == "[set_global_any_real]" || choice == "[set_global_any_string]"
-            {
-                var _globalvar = get_string("Enter the variable to set (don't include \"global.\")", "")
-                
-                if _globalvar != ""
-                {
-                    var _continue = 1
-                    if !variable_global_exists(_globalvar)
-                    {
-                        _continue = 0
-                        if show_question("A variable with this name doesn't exist.\nInitialize a variable with this name?")
-                            _continue = 1
-                    }
                     
-                    if _continue == 1
-                    {
-                        var _str = "Enter the variable's new value"
-                        if choice == "[set_global_any_real]"
-                            _str += " as a number."
-                        else if choice == "[set_global_any_string]"
-                            _str += " as a string."
-                        
-                        var _globalvarvalue = get_string(_str, "")
-                        
-                        if choice == "[set_global_any_real]"
-                        {
-                            try
-                                variable_global_set(_globalvar, real(_globalvarvalue))
-                            catch(exc)
-                                show_message("That's not a number silly")
-                        }
-                        else if choice == "[set_global_any_string]"
-                            variable_global_set(_globalvar, _globalvarvalue)
-                    }
                 }
-            }
-            else if (choice == "[fonttest]")
-            {
-                global.chemg_font_test = !global.chemg_font_test
-                global.chemg_menu_depth = 0
-            }
-            else if (choice == "[gotoroom]")
-            {
-                var varname = get_string("Enter Room ID (ex. room_castle_tutorial)", "")
-                if (room_exists(asset_get_index(varname)))
-                    room_goto(asset_get_index(varname))
-                else if varname != ""
-                    show_message("Doesn't exist vro.")
-            }
-            else if (choice == "[setgold]")
-            {
-                var varname = get_string("Enter Amount", "")
-                global.gold = ceil(varname)
-            }
-            else if (choice == "[setgoldlight]")
-            {
-                var varname = get_string("Enter Amount", "")
-                global.lgold = ceil(varname)
-            }
-            else if (choice == "[flagset]")
-            {
-                var varname = get_string("Enter new value for flag " + string(choice_data) + " (currently: " + string(global.flag[choice_data]) + ")", "")
-                if (varname != "")
+                else if choice == "[set_global_any_real]" || choice == "[set_global_any_string]"
                 {
-                    try
-                        global.flag[choice_data] = real(varname)
-                    catch(exc)
-                        show_message("Flags can only be set to numbers!!!!")
-                }
-            }
-            else if (choice == "[flagsetspec]")
-            {
-                var flagstr = get_string("Enter the flag name or numeric ID", "")
-                if (flagstr != "")
-                {
-                    var _continue = false
-                    var flagid = 0
-                    try
-                    {
-                        flagid = real(flagstr)
-                        _continue = true
-                    }
-                    catch(exc)
-                    {
-                        // non-numeric, check flagnames instead...this won't actually work until flagnames are implemented
-                        for (var i = 0; i < array_length(global.flagname); i++)
-                        {
-                            if (global.flagname[i] != undefined && 
-                                string_lower(global.flagname[i]) == string_lower(flagstr))
-                            {
-                                flagid = i
-                                _continue = true
-                                break
-                            }
-                        }
-                    }
+                    var _globalvar = get_string("Enter the variable to set (don't include \"global.\")", "")
                     
-                    if (_continue)
+                    if _globalvar != ""
                     {
-                        if (flagid <= array_length(global.flag))
+                        var _continue = 1
+                        if !variable_global_exists(_globalvar)
                         {
-                            var str = "Enter new value for flag " + string(flagid) + " " + scr_flag_name_get(flagid) + " (currently: " + string(global.flag[flagid]) + ")"
-                                
-                            var varname = get_string(str, "")
-                            if (varname != "")
+                            _continue = 0
+                            if show_question("A variable with this name doesn't exist.\nInitialize a variable with this name?")
+                                _continue = 1
+                        }
+                        
+                        if _continue == 1
+                        {
+                            var _str = "Enter the variable's new value"
+                            if choice == "[set_global_any_real]"
+                                _str += " as a number."
+                            else if choice == "[set_global_any_string]"
+                                _str += " as a string."
+                            
+                            var _globalvarvalue = get_string(_str, "")
+                            
+                            if choice == "[set_global_any_real]"
                             {
                                 try
-                                    global.flag[flagid] = real(varname)
+                                    variable_global_set(_globalvar, real(_globalvarvalue))
                                 catch(exc)
-                                    show_message("Flags can only be set to numbers!!!!")
+                                    show_message("That's not a number silly")
+                            }
+                            else if choice == "[set_global_any_string]"
+                                variable_global_set(_globalvar, _globalvarvalue)
+                        }
+                    }
+                }
+                else if (choice == "[fonttest]")
+                {
+                    global.chemg_font_test = !global.chemg_font_test
+                    global.chemg_menu_depth = 0
+                }
+                else if (choice == "[gotoroom]")
+                {
+                    var varname = get_string("Enter Room ID (ex. room_castle_tutorial)", "")
+                    if (room_exists(asset_get_index(varname)))
+                        room_goto(asset_get_index(varname))
+                    else if varname != ""
+                        show_message("Doesn't exist vro.")
+                }
+                else if (choice == "[setgold]")
+                {
+                    var varname = get_string("Enter Amount", "")
+                    global.gold = ceil(varname)
+                }
+                else if (choice == "[setgoldlight]")
+                {
+                    var varname = get_string("Enter Amount", "")
+                    global.lgold = ceil(varname)
+                }
+                else if (choice == "[flagset]")
+                {
+                    var varname = get_string("Enter new value for flag " + string(choice_data) + " (currently: " + string(global.flag[choice_data]) + ")", "")
+                    if (varname != "")
+                    {
+                        try
+                            global.flag[choice_data] = real(varname)
+                        catch(exc)
+                            show_message("Flags can only be set to numbers!!!!")
+                    }
+                }
+                else if (choice == "[flagsetspec]")
+                {
+                    var flagstr = get_string("Enter the flag name or numeric ID", "")
+                    if (flagstr != "")
+                    {
+                        var _continue = false
+                        var flagid = 0
+                        try
+                        {
+                            flagid = real(flagstr)
+                            _continue = true
+                        }
+                        catch(exc)
+                        {
+                            // non-numeric, check flagnames instead...this won't actually work until flagnames are implemented
+                            for (var i = 0; i < array_length(global.flagname); i++)
+                            {
+                                if (global.flagname[i] != undefined && 
+                                    string_lower(global.flagname[i]) == string_lower(flagstr))
+                                {
+                                    flagid = i
+                                    _continue = true
+                                    break
+                                }
+                            }
+                        }
+                        
+                        if (_continue)
+                        {
+                            if (flagid <= array_length(global.flag))
+                            {
+                                var str = "Enter new value for flag " + string(flagid) + " " + scr_flag_name_get(flagid) + " (currently: " + string(global.flag[flagid]) + ")"
+                                    
+                                var varname = get_string(str, "")
+                                if (varname != "")
+                                {
+                                    try
+                                        global.flag[flagid] = real(varname)
+                                    catch(exc)
+                                        show_message("Flags can only be set to numbers!!!!")
+                                }
+                            }
+                            else
+                            {
+                                show_message("Too high!! Max flag count is " + string(array_length(global.flag) - 1))
                             }
                         }
                         else
                         {
-                            show_message("Too high!! Max flag count is " + string(array_length(global.flag) - 1))
+                            show_message("Flag not found")
                         }
                     }
-                    else
+                }
+                else if (choice == "[flagtog]")
+                {
+                    global.flag[choice_data] = !global.flag[choice_data]
+                }
+                else if (choice == "[idealitem]")
+                {
+                    for (i = 0; i < 13; i++)
+                        global.item[i] = 0
+                    for (i = 0; i < 6; i++)
+                        scr_itemget(39)
+                    for (i = 0; i < 2; i++)
+                        scr_itemget(38)
+                    scr_itemget(7)
+                    for (i = 0; i < 3; i++)
+                        scr_itemget(2)
+                    scr_weaponget(14)
+                    scr_weaponget(23)
+                    scr_weaponget(24)
+                    scr_weaponget(7)
+                    scr_weaponget(18)
+                    scr_weaponget(19)
+                    scr_weaponget(21)
+                    scr_weaponget(25)
+                    for (i = 0; i < 4; i++)
+                        scr_armorget(22)
+                    scr_armorget(3)
+                    scr_armorget(9)
+                    scr_armorget(13)
+                    scr_armorget(7)
+                    scr_armorget(21)
+                    scr_armorget(23)
+                    for (i = 0; i < 3; i++)
+                        scr_armorget(24)
+                    for (i = 0; i < 3; i++)
+                        scr_armorget(27)
+                    show_message("Idealized Items/Gear")
+                }
+                else if (choice == "[hp]")
+                {
+                    var newhp = get_string("Enter their new HP value", "")
+                    if (newhp != "")
+                        global.hp[choice_data] = real(newhp)
+                }
+                else if (choice == "[hpmax]")
+                {
+                    var newhpmax = get_string("Enter their new max HP value", "")
+                    if (newhpmax != "")
                     {
-                        show_message("Flag not found")
+                        global.maxhp[choice_data] = real(newhpmax)
+                        global.hp[choice_data] = real(newhpmax)
                     }
                 }
-            }
-            else if (choice == "[flagtog]")
-            {
-                global.flag[choice_data] = !global.flag[choice_data]
-            }
-            else if (choice == "[idealitem]")
-            {
-                for (i = 0; i < 13; i++)
-                    global.item[i] = 0
-                for (i = 0; i < 6; i++)
-                    scr_itemget(39)
-                for (i = 0; i < 2; i++)
-                    scr_itemget(38)
-                scr_itemget(7)
-                for (i = 0; i < 3; i++)
-                    scr_itemget(2)
-                scr_weaponget(14)
-                scr_weaponget(23)
-                scr_weaponget(24)
-                scr_weaponget(7)
-                scr_weaponget(18)
-                scr_weaponget(19)
-                scr_weaponget(21)
-                scr_weaponget(25)
-                for (i = 0; i < 4; i++)
-                    scr_armorget(22)
-                scr_armorget(3)
-                scr_armorget(9)
-                scr_armorget(13)
-                scr_armorget(7)
-                scr_armorget(21)
-                scr_armorget(23)
-                for (i = 0; i < 3; i++)
-                    scr_armorget(24)
-                for (i = 0; i < 3; i++)
-                    scr_armorget(27)
-                show_message("Idealized Items/Gear")
-            }
-            else if (choice == "[hp]")
-            {
-                var newhp = get_string("Enter their new HP value", "")
-                if (newhp != "")
-                    global.hp[choice_data] = real(newhp)
-            }
-            else if (choice == "[hpmax]")
-            {
-                var newhpmax = get_string("Enter their new max HP value", "")
-                if (newhpmax != "")
+                else if (choice == "[attack]")
                 {
-                    global.maxhp[choice_data] = real(newhpmax)
-                    global.hp[choice_data] = real(newhpmax)
+                    var newat = get_string("Enter their new Attack value", "")
+                    if (newat != "")
+                        global.at[choice_data] = real(newat)
                 }
-            }
-            else if (choice == "[attack]")
-            {
-                var newat = get_string("Enter their new Attack value", "")
-                if (newat != "")
-                    global.at[choice_data] = real(newat)
-            }
-            else if (choice == "[defense]")
-            {
-                var newdf = get_string("Enter their new Defense value", "")
-                if (newdf != "")
-                    global.df[choice_data] = real(newdf)
-            }
-            else if (choice == "[magic]")
-            {
-                var newmag = get_string("Enter their new Magic value", "")
-                if (newmag != "")
-                    global.mag[choice_data] = real(newmag)
-            }
-            else if (choice == "[idealall]") // idealize stats (make them the maximum they'd be after defeating each enemy with violence)
-            {
-                // kris
-                global.maxhp[1] = 272
-                global.hp[1] = 272
-                global.at[1] = 18
-                global.df[1] = 2
-                global.mag[1] = 0
-                
-                // susie
-                global.maxhp[2] = 330
-                global.hp[2] = 330
-                global.at[2] = 23
-                global.df[2] = 2
-                global.mag[2] = 4
-                
-                // ralsei
-                global.maxhp[3] = 242
-                global.hp[3] = 242
-                global.at[3] = 16
-                global.df[3] = 2
-                global.mag[3] = 16
-                
-                // noelle
-                global.maxhp[4] = 166
-                global.hp[4] = 166
-                global.at[4] = 8
-                global.df[4] = 1
-                global.mag[4] = 16
-                show_message("Idealized Stats")
-            }
-            else if (choice == "[spell]")
-            {
-                var newspell = get_string("Enter new spell ", "")
-                if (newspell != "")
-                    global.spell[choice_data][real(string_char_at(choice_name, 1) + string_char_at(choice_name, 2))] = real(newspell)
-            }
-            else if (choice == "[setmember]")
-            {
-                var newmem = get_string("Set party member " + string(choice_data), "")
-                if (newmem != "")
+                else if (choice == "[defense]")
                 {
-                    var rnewmem = real(newmem)
-                    if (rnewmem < 0 || rnewmem > 4)
+                    var newdf = get_string("Enter their new Defense value", "")
+                    if (newdf != "")
+                        global.df[choice_data] = real(newdf)
+                }
+                else if (choice == "[magic]")
+                {
+                    var newmag = get_string("Enter their new Magic value", "")
+                    if (newmag != "")
+                        global.mag[choice_data] = real(newmag)
+                }
+                else if (choice == "[idealall]") // idealize stats (make them the maximum they'd be after defeating each enemy with violence)
+                {
+                    // kris
+                    global.maxhp[1] = 272
+                    global.hp[1] = 272
+                    global.at[1] = 18
+                    global.df[1] = 2
+                    global.mag[1] = 0
+                    
+                    // susie
+                    global.maxhp[2] = 330
+                    global.hp[2] = 330
+                    global.at[2] = 23
+                    global.df[2] = 2
+                    global.mag[2] = 4
+                    
+                    // ralsei
+                    global.maxhp[3] = 242
+                    global.hp[3] = 242
+                    global.at[3] = 16
+                    global.df[3] = 2
+                    global.mag[3] = 16
+                    
+                    // noelle
+                    global.maxhp[4] = 166
+                    global.hp[4] = 166
+                    global.at[4] = 8
+                    global.df[4] = 1
+                    global.mag[4] = 16
+                    show_message("Idealized Stats")
+                }
+                else if (choice == "[spell]")
+                {
+                    var newspell = get_string("Enter new spell ", "")
+                    if (newspell != "")
+                        global.spell[choice_data][real(string_char_at(choice_name, 1) + string_char_at(choice_name, 2))] = real(newspell)
+                }
+                else if (choice == "[setmember]")
+                {
+                    var newmem = get_string("Set party member " + string(choice_data), "")
+                    if (newmem != "")
                     {
-                        show_message("Invalid ID")
-                        exit
-                    }
-                    global.char[choice_data] = rnewmem
-                    show_message("Party member " + string(choice_data) + " set, requires room restart to take effect.\nSome rooms set the party automatically in debug mode, so if it doesn't work that's probably why.")
-                }
-            }
-            else if (choice == "[ashley]") // the most important option
-            {
-                url_open("https://twitter.com/barofsoap418")
-            }
-            else if (choice == "[globalset]")
-            {
-                var newval = get_string("Enter new " + choice_data + " value (currently: " + string(variable_global_get(choice_data)) + ")", "");
-                if (newval != "")
-                    variable_global_set(choice_data, real(newval));
-            }
-            else if (choice == "[globalset_multi]")
-            {
-                var newval = get_string("Enter new " + choice_data + " value (currently: " + string(variable_global_get(choice_data[0])) + ")", "");
-                if (newval != "")
-                {
-                    for (var i = 0; i < array_length(choice_data); i++)
-                    {
-                        variable_global_set(choice_data[i], real(newval));
-                    }
-                }
-            }
-            else if (choice == "[stopmusic]")
-            {
-                snd_free_all();
-            }
-            else if (choice == "[platswap]")
-            {
-                if (instance_exists(obj_platswap))
-                {
-                    with (obj_platswap)
-                        event_user(0);
-                }
-                else
-                {
-                    scr_debug_print("This room doesn't support platformer mode");
-                    snd_play(snd_cantselect);
-                }
-            }
-            else if (choice == "[menukey]")
-            {
-                // Ignore controller since only keyboard mapping is currently supported
-                if (!gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[4]))
-                    global.chemg_rebinding = true;
-            }
-            else if choice == "[credits]"
-            {
-                show_message("8-4 Ltd: Original Menu from Chapter 1.\nTenna Save Editor: Flag list.\nbarofsoap418: Restored the menu in all chapters and updated most things for them/added most new features.\nVRadExe: Chapter 5 Room list, figured out how to add onto menu entries using scr_84_draw_menu, made room warp types function properly+added one for starting in platforming mode, updated font list.\nZender Troop: Documented most global.plot changes in Chapter 5, which were used as reference for the Plot Warp menu.\nFafuhnir: literally nothing but i wanna shout him out hi leon :wave:")
-            }
-            else if (choice == "[warp]")
-            {
-                var roomtogo = ROOM_INITIALIZE
-                scr_losechar()
-                
-                // set if event should be in the dark world or not (just done here instead of in every defined warp for convenience)
-                if choice_data == 0 || (choice_data > 6 && choice_data < 11) || (choice_data > 77 && choice_data < 89)
-                    global.darkzone = 0
-                else
-                    global.darkzone = 1
-                
-                // set if the player can enter platforming mode
-                if (choice_data > 19 && choice_data < 82) || (choice_data >= 89 && choice_data <= 90)
-                    global.flag[24] = 1
-                else
-                    global.flag[24] = 0
-                
-                // set left and right sides of the castle as completed
-                if choice_data > 50 && choice_data < 82
-                {
-                    global.flag[1454] = 100
-                    global.flag[1455] = 100
-                }
-                
-                // set weird route active flags
-                if choice_data >= 82 && choice_data <= 90
-                {
-                    global.flag[916] = 0
-                    global.flag[915] = 20
-                    if choice_data > 87 // aborted route events
-                    {
-                        global.flag[916] = 1
-                        global.flag[1743] = 1
-                    }
-                }
-                
-                snd_free_all()
-                
-                switch choice_data
-                {
-                    case 0: // chapter start
-                        global.flag[1324] = 0
-                        global.plot = 0
-                        roomtogo = room_krisroom
-                        break
-                    
-                    case 1: // entering castle town
-                        global.flag[1324] = 0
-                        global.plot = 10
-                        roomtogo = room_dw_castle_area_1
-                        break
-                        
-                    case 2: // castle town (pre-susie)
-                        scr_setparty(0, 1, 0)
-                        global.plot = 50
-                        roomtogo = room_dw_castle_town
-                        break
-                        
-                    case 3: // castle town (post-susie)
-                        scr_setparty(1, 1, 0)
-                        global.plot = 60
-                        roomtogo = room_dw_castle_town
-                        break
-                        
-                    case 4: // mike room scene 1
-                        scr_setparty(0, 0, 0)
-                        global.plot = 60
-                        global.flag[1771] = 1
-                        roomtogo = room_dw_castle_tv_mike
-                        break
-                        
-                    case 5: // mike room scene 2 (with tenna)
-                        scr_setparty(0, 0, 0)
-                        global.plot = 60
-                        global.flag[1771] = 2
-                        global.flag[779] = 0
-                        roomtogo = room_dw_castle_tv_mike
-                        break
-                        
-                    case 6: // mike room scene 2 (no tenna)
-                        scr_setparty(0, 0, 0)
-                        global.plot = 60
-                        global.flag[1771] = 2
-                        global.flag[779] = 2
-                        roomtogo = room_dw_castle_tv_mike
-                        break
-                    
-                    case 7: // meeting up with noelle
-                        scr_setparty(1, 0, 0)
-                        global.flag[1324] = 1
-                        global.plot = 100
-                        roomtogo = room_town_school
-                        break
-                    
-                    case 8: // festival
-                        scr_setparty(1, 0, 1)
-                        global.flag[1324] = 1
-                        global.plot = 105
-                        roomtogo = room_town_south
-                        break
-                    
-                    case 9: // beach scene
-                        scr_setparty(1, 0, 1)
-                        global.flag[1324] = 2
-                        global.plot = 150
-                        roomtogo = room_beach
-                        break
-                                                
-                    case 10: // dark world is created
-                        scr_setparty(1, 0, 0)
-                        global.flag[1324] = 2
-                        global.plot = 190
-                        roomtogo = room_town_north
-                        break
-                        
-                    case 11: // dark world entrance
-                        scr_setparty(1, 0, 0)
-                        global.plot = 190
-                        roomtogo = room_dw_garden_intro
-                        break
-                        
-                    case 12: // garden of hopes and dreams
-                        scr_setparty(1, 1, 0)
-                        global.flag[1410] = 1
-                        global.plot = 230
-                        roomtogo = room_dw_garden_floradinnencounter
-                        break
-                        
-                    case 13: // flowery joins the party
-                        scr_setparty(1, 1, 0)
-                        //global.tempflag[90] = 0.12 // setting this makes it start the scene automatically but there's also a debug key to do that so i'll just leave it disabled 
-                        global.plot = 230
-                        roomtogo = room_dw_garden_enemyrush
-                        break
-                        
-                    case 14: // diner
-                        scr_setparty(1, 1, 0)
-                        global.plot = 254
-                        roomtogo = room_dw_garden_diner
-                        break
-                        
-                    case 15: // pressure plate puzzles
-                        scr_setparty(1, 1, 0)
-                        global.plot = 255
-                        roomtogo = room_dw_garden_hardpressureplates
-                        break
-                        
-                    case 16: // flowery solves the puzzle
-                        scr_setparty(0, 1, 0)
-                        global.plot = 265
-                        global.entrance = 3
-                        global.interact = 3
-                        roomtogo = room_dw_garden_hardpressureplates
-                        break
-                        
-                    case 17: // flowery tells the party to leave
-                        scr_setparty(1, 1, 0)
-                        global.plot = 270
-                        roomtogo = room_dw_garden_aquadash
-                        break
-                        
-                    case 18: // aqua battle
-                        scr_setparty(1, 1, 0)
-                        global.plot = 280
-                        roomtogo = room_dw_garden_aqua
-                        break
-                        
-                    case 19: // get petal feather
-                        scr_setparty(1, 1, 0)
-                        global.plot = 292
-                        roomtogo = room_dw_garden_aquashrine
-                        break
-                        
-                    case 20: // encountering asgore
-                        scr_setparty(1, 1, 0)
-                        global.plot = 295
-                        roomtogo = room_dw_garden_cliffexit
-                        break
-                        
-                    case 21: // cliff entrance
-                        scr_setparty(1, 1, 0)
-                        global.plot = 300
-                        roomtogo = room_dw_cliff_gardentransition_new
-                        break
-                        
-                    case 22: // aqua and seth cutscene
-                        scr_setparty(1, 1, 0)
-                        global.plot = 306
-                        roomtogo = room_dw_cliff_cutdown_tutorial
-                        break
-                        
-                    case 23: // seth and aqua miniboss
-                        scr_setparty(1, 1, 0)
-                        global.plot = 320
-                        global.start_in_platmode = 1
-                        global.entrance = 1
-                        global.interact = 3
-                        roomtogo = room_dw_cliff_seth_miniboss
-                        break
-                    
-                    case 24: // shop
-                        scr_setparty(1, 1, 0)
-                        global.plot = 321
-                        roomtogo = room_dw_cliff_shop
-                        break
-                        
-                    case 25: // vertical wind room
-                        scr_setparty(1, 1, 0)
-                        global.plot = 340
-                        global.start_in_platmode = 1
-                        roomtogo = room_dw_cliff_verticalwind
-                        break
-                        
-                    case 26: // seth and aqua battle
-                        scr_setparty(1, 1, 0)
-                        global.plot = 350
-                        roomtogo = room_dw_cliff_sethaqua_battle
-                        break
-                        
-                    case 27: // asgore throws kris and susie out
-                        scr_setparty(1, 1, 0)
-                        global.plot = 360
-                        roomtogo = room_dw_fcastle_entrance
-                        break
-                        
-                    case 28: // jail
-                        scr_setparty(1, 0, 0)
-                        global.plot = 390
-                        roomtogo = room_dw_fcastle_partyjail
-                        break
-                        
-                    case 29: // foyer (neither side finished)
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 0
-                        global.flag[1455] = 0
-                        global.plot = 399
-                        roomtogo = room_dw_fcastle_foyer
-                        break
-                        
-                    case 30: // cafe
-                        scr_setparty(1, 1, 0)
-                        if global.plot < 405
-                            global.plot = 405
-                        roomtogo = room_dw_fcastle_cafe
-                        break
-                        
-                    case 31: // right path asgore cutscene
-                        scr_setparty(1, 1, 0)
-                        global.flag[1455] = 5
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_right_wing_floweryscene
-                        break
-                        
-                    case 32: // meeting orange
-                        scr_setparty(1, 1, 0)
-                        global.flag[1455] = 10
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_orange_puppet_introduction
-                        break
-                        
-                    case 33: // green encounter
-                        scr_setparty(1, 1, 0)
-                        global.flag[1455] = 15
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_second_diner
-                        break
-                        
-                    case 34: // cafe (after green encounter)
-                        scr_setparty(1, 1, 0)
-                        global.flag[1455] = 30
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_cafe
-                        break
-                        
-                    case 35: // seth and orange battle
-                        scr_setparty(1, 1, 0)
-                        global.flag[1455] = 40//45
-                        //global.flag[1316] = 1 // makes a shortcut but idk if i should keep it or if people would want it to be "vanilla"
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_obscured_bullets
-                        break
-                        
-                    case 36: // green and orange battle
-                        scr_setparty(1, 1, 0)
-                        global.flag[1455] = 50
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_green_orange_battle
-                        break
-                        
-                    case 37: // susie leaves and you can think about ralsei
-                        scr_setparty(1, 1, 0)
-                        global.flag[1455] = 70
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_right_endingscene
-                        break
-                        
-                    case 38: // foyer (right side finished)
-                        scr_setparty(1, 1, 0)
-                        global.flag[1455] = 100
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_foyer
-                        break
-                        
-                    case 39: // left path asgore cutscene
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 0
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_left_wing_floweryscene
-                        break
-                        
-                    case 40: // yellow miniboss
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 5
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_yellow_miniboss
-                        break
-                        
-                    case 41: // yellow enters the yellow door
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 10
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_left_twodoors
-                        break
-                    
-                    case 42: // yellow goes to kill himself
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 25
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_sandtrap
-                        break
-                    
-                    case 43: // yellow laser gun miniboss
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 30
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_dangerous_platforming
-                        break
-                        
-                    case 44: // meeting blue
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 35
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_blueroom
-                        break
-                        
-                    case 45: // blue finds the bloody hole
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 45
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_sandtrap
-                        break
-                        
-                    case 46: // blue and yellow battle
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 52
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_yellowjail
-                        break
-                        
-                    case 47: // blue and yellow battle (with all evidence)
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 52
-                        
-                        if !scr_keyitemcheck(20) // scissors
-                            scr_keyitemget(20)
-                        if !scr_keyitemcheck(21) // yellowshred
-                            scr_keyitemget(21)
-                        if !scr_keyitemcheck(22) // bootoil
-                            scr_keyitemget(22)
-                        if !scr_keyitemcheck(23) // redsplatter
-                            scr_keyitemget(23)
-                        if !scr_keyitemcheck(26) // perpbook
-                            scr_keyitemget(26)
-                        if !scr_keyitemcheck(27) // bluestring
-                            scr_keyitemget(27)
-                        if !scr_keyitemcheck(28) // trainplan
-                            scr_keyitemget(28)
-                        if !scr_keyitemcheck(2) // egg
-                            scr_keyitemget(2)
-                        
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_yellowjail
-                        break
-                        
-                    case 48: // post-battle talk with susie or ralsei
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 70
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_onsen
-                        break
-                        
-                    case 49: // foyer (left side finished)
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 100
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_foyer
-                        break
-                        
-                    case 50: // foyer (both sides finished)
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 100
-                        global.flag[1455] = 100
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_foyer
-                        break
-                        
-                    case 51: // asgore climb
-                        scr_setparty(1, 1, 0)
-                        global.entrance = 5
-                        global.interact = 7
-                        global.plot = 430
-                        roomtogo = room_dw_fcastle_asgore
-                        break
-                        
-                    case 52: // the flowers resolve to stop you
-                        scr_setparty(1, 1, 0)
-                        global.plot = 435
-                        roomtogo = room_dw_fcastle_top_intro
-                        break
-                        
-                    case 53: // top of castle starting room
-                        scr_setparty(1, 1, 0)
-                        global.plot = 440
-                        roomtogo = room_dw_fcastle_top_entrance
-                        break
-                        
-                    case 54: // seth encounter
-                        scr_setparty(1, 1, 0)
-                        global.plot = 440
-                        roomtogo = room_dw_fcastle_seth_encounter
-                        break
-                        
-                    case 55: // yellow and blue encounter
-                        scr_setparty(1, 1, 0)
-                        global.plot = 450
-                        roomtogo = room_dw_fcastle_yellowblue
-                        break
-                        
-                    case 56: // flowery talk 1
-                        scr_setparty(1, 1, 0)
-                        global.plot = 455
-                        roomtogo = room_dw_fcastle_top_staircase_1
-                        break
-                        
-                    case 57: // aqua encounter
-                        scr_setparty(1, 1, 0)
-                        global.plot = 460
-                        roomtogo = room_dw_fcastle_ultradash
-                        break
-                        
-                    case 58: // flowery and ralsei talk
-                        scr_setparty(1, 1, 0)
-                        global.plot = 465
-                        roomtogo = room_dw_fcastle_top_staircase_2
-                        break
-                        
-                    case 59: // green checkpoint
-                        scr_setparty(1, 1, 0)
-                        global.plot = 470
-                        roomtogo = room_dw_fcastle_green_checkpoint
-                        break
-                        
-                    case 60: // green checkpoint (no cutscene)
-                        scr_setparty(1, 1, 0)
-                        global.plot = 473
-                        roomtogo = room_dw_fcastle_green_checkpoint
-                        break
-                        
-                    case 61: // descent to pink's room
-                        scr_setparty(1, 1, 0)
-                        global.start_in_platmode = 1
-                        if global.plot < 473
-                            global.plot = 473
-                        roomtogo = room_dw_fcastle_top_descent
-                        break
-                        
-                    case 62: // outside pink's room (with mystery key)
-                        scr_setparty(1, 1, 0)
-                        global.flag[1846] = 0
-                        if !scr_keyitemcheck(32)
-                            scr_keyitemget(32)
-                        if global.plot < 473
-                            global.plot = 473
-                        roomtogo = room_dw_fcastle_top_pinkdoor
-                        break
-                        
-                    case 63: // pink's room
-                        scr_setparty(1, 1, 0)
-                        global.flag[1846] = 1
-                        if global.plot < 473
-                            global.plot = 473
-                        roomtogo = room_dw_fcastle_pinkroom
-                        break
-                        
-                    case 64: // pink battle
-                        scr_setparty(1, 1, 0)
-                        global.flag[1846] = 1.50
-                        if global.plot < 473
-                            global.plot = 473
-                        roomtogo = room_dw_pink_encounter
-                        break
-                    
-                    // idk where 65 went but i already formatted everything around it not being here lmao oops
-                        
-                    case 66: // pink's room (post-battle)
-                        scr_setparty(1, 1, 0)
-                        if global.flag[1846] < 2
-                            global.flag[1846] = 2
-                        if global.plot < 473
-                            global.plot = 473
-                        roomtogo = room_dw_fcastle_pinkroom
-                        break
-                        
-                    case 67: // final flower encounter gauntlet
-                        scr_setparty(1, 1, 0)
-                        global.start_in_platmode = 1
-                        global.plot = 473
-                        roomtogo = room_dw_fcastle_orange_gauntlet
-                        break
-                        
-                    case 68: // final save point
-                        scr_setparty(1, 1, 0)
-                        if global.plot < 475
-                            global.plot = 475
-                        roomtogo = room_dw_fcastle_final_save
-                        break
-                        
-                    case 69: // flowery pre-battle talk
-                        scr_setparty(1, 1, 0)
-                        global.flag[1877] = 0
-                        global.plot = 475
-                        roomtogo = room_dw_fcastle_flowery
-                        break
-                        
-                    case 70: // flowery battle
-                        scr_setparty(1, 1, 0)
-                        global.flag[1877] = 2
-                        global.plot = 475
-                        roomtogo = room_dw_fcastle_flowery
-                        break
-                        
-                    case 71: // flowery battle finale
-                        scr_setparty(0, 0, 0)
-                        global.plot = 475
-                        roomtogo = room_dw_fcastle_flowerydash
-                        break
-                        
-                    case 72: // post-flowery battle scene
-                        scr_setparty(0, 0, 0)
-                        global.plot = 499
-                        roomtogo = room_dw_post_flowery_battle
-                        break
-                        
-                    case 73: // flowers revert to normal flowers
-                        scr_setparty(1, 1, 0)
-                        global.plot = 500
-                        roomtogo = room_dw_post_flowery_battle
-                        break
-                        
-                    case 74: // fountain
-                        scr_setparty(1, 1, 0)
-                        global.plot = 510
-                        roomtogo = room_dw_fcastle_top_fountain
-                        break
-                        
-                    case 75: // flowery vs the knight
-                        scr_setparty(1, 1, 0)
-                        global.plot = 510
-                        roomtogo = room_dw_post_fountain_close
-                        break
-                        
-                    case 76: // flowery dies
-                        scr_setparty(1, 1, 0)
-                        global.plot = 510
-                        roomtogo = room_dw_flowery_tree
-                        break
-                        
-                    case 77: // second fountain sealing
-                        scr_setparty(1, 0, 0)
-                        global.plot = 510
-                        roomtogo = room_cc_fountain
-                        break
-                        
-                    case 78: // back in the light world
-                        scr_setparty(1, 0, 0)
-                        global.plot = 550
-                        roomtogo = room_flowershop_2f
-                        break
-                        
-                    case 79: // leaving flower king
-                        scr_setparty(0, 0, 0)
-                        global.flag[1324] = 3
-                        global.plot = 560
-                        roomtogo = room_town_north
-                        break
-                        
-                    case 80: // susie entering castle town
-                        scr_setparty(1, 0, 0)
-                        global.flag[1324] = 3
-                        global.plot = 570
-                        roomtogo = room_schooldoor
-                        break
-                        
-                    case 81: // credits
-                        scr_setparty(0, 0, 0)
-                        global.flag[1324] = 3
-                        global.plot = 580
-                        roomtogo = room_ed
-                        break
-                        
-                    case 82: // weird route opening
-                        scr_setparty(0, 0, 0)
-                        global.flag[1324] = 2
-                        global.plot = 0
-                        roomtogo = room_krisroom
-                        break
-                        
-                    case 83: // weird route opening (no cutscene)
-                        scr_setparty(0, 0, 0)
-                        global.flag[1324] = 2
-                        global.plot = 5
-                        roomtogo = room_krisroom
-                        break
-                        
-                    case 84: // meeting susie
-                        scr_setparty(0, 0, 0)
-                        global.flag[1324] = 2
-                        global.plot = 5
-                        roomtogo = room_town_krisyard
-                        break
-                        
-                    case 85: // festival with susie
-                        scr_setparty(1, 0, 0)
-                        global.flag[1324] = 2
-                        
-                        global.currentsong[0] = snd_init("happy_town.ogg") // play here since the normal festival theme plays otherwise
-                        global.currentsong[1] = mus_loop(global.currentsong[0], 0.8)
-                        
-                        global.plot = 105
-                        roomtogo = room_town_krisyard
-                        break
-                        
-                    case 86: // festival with susie (post-ice cream)
-                        scr_setparty(1, 0, 0)
-                        global.flag[1324] = 2
-                        
-                        global.currentsong[0] = snd_init("happy_town.ogg") // play here since the normal festival theme plays otherwise
-                        global.currentsong[1] = mus_loop(global.currentsong[0], 0.8)
-                        
-                        global.plot = 150
-                        roomtogo = room_town_north
-                        break
-                        
-                    case 87: // beach scene
-                        scr_setparty(0, 0, 0)
-                        global.flag[1324] = 2
-                        global.plot = 160
-                        roomtogo = room_beach
-                        break
-                        
-                    case 88: // beach scene (post-aborting route)
-                        scr_setparty(0, 0, 0)
-                        global.flag[1324] = 2
-                        global.plot = 189
-                        roomtogo = room_beach
-                        break
-                        
-                    case 89: // meeting ralsei (aborted route version)
-                        scr_setparty(1, 0, 0)
-                        global.plot = 210
-                        roomtogo = room_dw_garden_ralseicupboard
-                        break
-                        
-                    case 90: // post-blue and yellow battle talk with susie or ralsei (aborted route version)
-                        scr_setparty(1, 1, 0)
-                        global.flag[1454] = 70
-                        global.plot = 405
-                        roomtogo = room_dw_fcastle_onsen
-                        break
-                    
-                    // template
-                    case -1: // 
-                        scr_setparty(1, 1, 0)
-                        global.plot = 0
-                        roomtogo = room
-                        break
-                }
-                room_goto(roomtogo)
-                global.chemg_menu_depth = 0
-            }
-            else if (choice == "[tempflag]")
-            {
-                var flagid = get_string("Set which global.tempflag value?", "");
-                
-                if (flagid != "")
-                {
-                    flagid = real(flagid)
-                    if (flagid <= array_length(global.tempflag))
-                    {
-                        var varname = get_string("Enter new value (currently: " + string(global.tempflag[flagid]) + ")", "")
-                        if (varname != "")
+                        var rnewmem = real(newmem)
+                        if (rnewmem < 0 || rnewmem > 4)
                         {
-                            if (is_numeric(global.tempflag[flagid]))
-                                global.tempflag[flagid] = real(varname)
-                            else
-                                show_message("Tempflags can only be set to numbers!!!!")
+                            show_message("Invalid ID")
+                            exit
                         }
+                        global.char[choice_data] = rnewmem
+                        show_message("Party member " + string(choice_data) + " set, requires room restart to take effect.\nSome rooms set the party automatically in debug mode, so if it doesn't work that's probably why.")
+                    }
+                }
+                else if (choice == "[ashley]") // the most important option
+                {
+                    url_open("https://twitter.com/barofsoap418")
+                }
+                else if (choice == "[globalset]")
+                {
+                    var newval = get_string("Enter new " + choice_data + " value (currently: " + string(variable_global_get(choice_data)) + ")", "");
+                    if (newval != "")
+                        variable_global_set(choice_data, real(newval));
+                }
+                else if (choice == "[globalset_multi]")
+                {
+                    var newval = get_string("Enter new " + choice_data + " value (currently: " + string(variable_global_get(choice_data[0])) + ")", "");
+                    if (newval != "")
+                    {
+                        for (var i = 0; i < array_length(choice_data); i++)
+                        {
+                            variable_global_set(choice_data[i], real(newval));
+                        }
+                    }
+                }
+                else if (choice == "[stopmusic]")
+                {
+                    snd_free_all();
+                }
+                else if (choice == "[platswap]")
+                {
+                    if (instance_exists(obj_platswap))
+                    {
+                        with (obj_platswap)
+                            event_user(0);
                     }
                     else
                     {
-                        show_message("Too high!! Max tempflag count is " + string(array_length(global.tempflag) - 1))
+                        scr_debug_print("This room doesn't support platformer mode");
+                        snd_play(snd_cantselect);
                     }
                 }
-            }
-            else if choice == "[flagchangeGUI]"
-            {
-                if i_ex(obj_debugProfiler)
+                else if (choice == "[menukey]")
                 {
-                    obj_debugProfiler.toggleFlagGUI = true
+                    // Ignore controller since only keyboard mapping is currently supported
+                    if (!gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[4]))
+                        global.chemg_rebinding = true;
                 }
-            }
-            else
-            {
-                show_debug_message("unknown menu cmd:" + choice)
+                else if choice == "[credits]"
+                {
+                    show_message("8-4 Ltd: Original Menu from Chapter 1.\nTenna Save Editor: Flag list.\nbarofsoap418: Restored the menu in all chapters and updated most things for them/added most new features.\nVRadExe: Chapter 5 Room list, figured out how to add onto menu entries using scr_84_draw_menu, made room warp types function properly+added one for starting in platforming mode, updated font list.\nZender Troop: Documented most global.plot changes in Chapter 5, which were used as reference for the Plot Warp menu.\nFafuhnir: literally nothing but i wanna shout him out hi leon :wave:")
+                }
+                else if (choice == "[warp]")
+                {
+                    var roomtogo = ROOM_INITIALIZE
+                    scr_losechar()
+                    
+                    // set if event should be in the dark world or not (just done here instead of in every defined warp for convenience)
+                    if choice_data == 0 || (choice_data > 6 && choice_data < 11) || (choice_data > 77 && choice_data < 89)
+                        global.darkzone = 0
+                    else
+                        global.darkzone = 1
+                    
+                    // set if the player can enter platforming mode
+                    if (choice_data > 19 && choice_data < 82) || (choice_data >= 89 && choice_data <= 90)
+                        global.flag[24] = 1
+                    else
+                        global.flag[24] = 0
+                    
+                    // set left and right sides of the castle as completed
+                    if choice_data > 50 && choice_data < 82
+                    {
+                        global.flag[1454] = 100
+                        global.flag[1455] = 100
+                    }
+                    
+                    // set weird route active flags
+                    if choice_data >= 82 && choice_data <= 90
+                    {
+                        global.flag[916] = 0
+                        global.flag[915] = 20
+                        if choice_data > 87 // aborted route events
+                        {
+                            global.flag[916] = 1
+                            global.flag[1743] = 1
+                        }
+                    }
+                    
+                    snd_free_all()
+                    
+                    switch choice_data
+                    {
+                        case 0: // chapter start
+                            global.flag[1324] = 0
+                            global.plot = 0
+                            roomtogo = room_krisroom
+                            break
+                        
+                        case 1: // entering castle town
+                            global.flag[1324] = 0
+                            global.plot = 10
+                            roomtogo = room_dw_castle_area_1
+                            break
+                            
+                        case 2: // castle town (pre-susie)
+                            scr_setparty(0, 1, 0)
+                            global.plot = 50
+                            roomtogo = room_dw_castle_town
+                            break
+                            
+                        case 3: // castle town (post-susie)
+                            scr_setparty(1, 1, 0)
+                            global.plot = 60
+                            roomtogo = room_dw_castle_town
+                            break
+                            
+                        case 4: // mike room scene 1
+                            scr_setparty(0, 0, 0)
+                            global.plot = 60
+                            global.flag[1771] = 1
+                            roomtogo = room_dw_castle_tv_mike
+                            break
+                            
+                        case 5: // mike room scene 2 (with tenna)
+                            scr_setparty(0, 0, 0)
+                            global.plot = 60
+                            global.flag[1771] = 2
+                            global.flag[779] = 0
+                            roomtogo = room_dw_castle_tv_mike
+                            break
+                            
+                        case 6: // mike room scene 2 (no tenna)
+                            scr_setparty(0, 0, 0)
+                            global.plot = 60
+                            global.flag[1771] = 2
+                            global.flag[779] = 2
+                            roomtogo = room_dw_castle_tv_mike
+                            break
+                        
+                        case 7: // meeting up with noelle
+                            scr_setparty(1, 0, 0)
+                            global.flag[1324] = 1
+                            global.plot = 100
+                            roomtogo = room_town_school
+                            break
+                        
+                        case 8: // festival
+                            scr_setparty(1, 0, 1)
+                            global.flag[1324] = 1
+                            global.plot = 105
+                            roomtogo = room_town_south
+                            break
+                        
+                        case 9: // beach scene
+                            scr_setparty(1, 0, 1)
+                            global.flag[1324] = 2
+                            global.plot = 150
+                            roomtogo = room_beach
+                            break
+                                                    
+                        case 10: // dark world is created
+                            scr_setparty(1, 0, 0)
+                            global.flag[1324] = 2
+                            global.plot = 190
+                            roomtogo = room_town_north
+                            break
+                            
+                        case 11: // dark world entrance
+                            scr_setparty(1, 0, 0)
+                            global.plot = 190
+                            roomtogo = room_dw_garden_intro
+                            break
+                            
+                        case 12: // garden of hopes and dreams
+                            scr_setparty(1, 1, 0)
+                            global.flag[1410] = 1
+                            global.plot = 230
+                            roomtogo = room_dw_garden_floradinnencounter
+                            break
+                            
+                        case 13: // flowery joins the party
+                            scr_setparty(1, 1, 0)
+                            //global.tempflag[90] = 0.12 // setting this makes it start the scene automatically but there's also a debug key to do that so i'll just leave it disabled 
+                            global.plot = 230
+                            roomtogo = room_dw_garden_enemyrush
+                            break
+                            
+                        case 14: // diner
+                            scr_setparty(1, 1, 0)
+                            global.plot = 254
+                            roomtogo = room_dw_garden_diner
+                            break
+                            
+                        case 15: // pressure plate puzzles
+                            scr_setparty(1, 1, 0)
+                            global.plot = 255
+                            roomtogo = room_dw_garden_hardpressureplates
+                            break
+                            
+                        case 16: // flowery solves the puzzle
+                            scr_setparty(0, 1, 0)
+                            global.plot = 265
+                            global.entrance = 3
+                            global.interact = 3
+                            roomtogo = room_dw_garden_hardpressureplates
+                            break
+                            
+                        case 17: // flowery tells the party to leave
+                            scr_setparty(1, 1, 0)
+                            global.plot = 270
+                            roomtogo = room_dw_garden_aquadash
+                            break
+                            
+                        case 18: // aqua battle
+                            scr_setparty(1, 1, 0)
+                            global.plot = 280
+                            roomtogo = room_dw_garden_aqua
+                            break
+                            
+                        case 19: // get petal feather
+                            scr_setparty(1, 1, 0)
+                            global.plot = 292
+                            roomtogo = room_dw_garden_aquashrine
+                            break
+                            
+                        case 20: // encountering asgore
+                            scr_setparty(1, 1, 0)
+                            global.plot = 295
+                            roomtogo = room_dw_garden_cliffexit
+                            break
+                            
+                        case 21: // cliff entrance
+                            scr_setparty(1, 1, 0)
+                            global.plot = 300
+                            roomtogo = room_dw_cliff_gardentransition_new
+                            break
+                            
+                        case 22: // aqua and seth cutscene
+                            scr_setparty(1, 1, 0)
+                            global.plot = 306
+                            roomtogo = room_dw_cliff_cutdown_tutorial
+                            break
+                            
+                        case 23: // seth and aqua miniboss
+                            scr_setparty(1, 1, 0)
+                            global.plot = 320
+                            global.start_in_platmode = 1
+                            global.entrance = 1
+                            global.interact = 3
+                            roomtogo = room_dw_cliff_seth_miniboss
+                            break
+                        
+                        case 24: // shop
+                            scr_setparty(1, 1, 0)
+                            global.plot = 321
+                            roomtogo = room_dw_cliff_shop
+                            break
+                            
+                        case 25: // vertical wind room
+                            scr_setparty(1, 1, 0)
+                            global.plot = 340
+                            global.start_in_platmode = 1
+                            roomtogo = room_dw_cliff_verticalwind
+                            break
+                            
+                        case 26: // seth and aqua battle
+                            scr_setparty(1, 1, 0)
+                            global.plot = 350
+                            roomtogo = room_dw_cliff_sethaqua_battle
+                            break
+                            
+                        case 27: // asgore throws kris and susie out
+                            scr_setparty(1, 1, 0)
+                            global.plot = 360
+                            roomtogo = room_dw_fcastle_entrance
+                            break
+                            
+                        case 28: // jail
+                            scr_setparty(1, 0, 0)
+                            global.plot = 390
+                            roomtogo = room_dw_fcastle_partyjail
+                            break
+                            
+                        case 29: // foyer (neither side finished)
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 0
+                            global.flag[1455] = 0
+                            global.plot = 399
+                            roomtogo = room_dw_fcastle_foyer
+                            break
+                            
+                        case 30: // cafe
+                            scr_setparty(1, 1, 0)
+                            if global.plot < 405
+                                global.plot = 405
+                            roomtogo = room_dw_fcastle_cafe
+                            break
+                            
+                        case 31: // right path asgore cutscene
+                            scr_setparty(1, 1, 0)
+                            global.flag[1455] = 5
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_right_wing_floweryscene
+                            break
+                            
+                        case 32: // meeting orange
+                            scr_setparty(1, 1, 0)
+                            global.flag[1455] = 10
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_orange_puppet_introduction
+                            break
+                            
+                        case 33: // green encounter
+                            scr_setparty(1, 1, 0)
+                            global.flag[1455] = 15
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_second_diner
+                            break
+                            
+                        case 34: // cafe (after green encounter)
+                            scr_setparty(1, 1, 0)
+                            global.flag[1455] = 30
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_cafe
+                            break
+                            
+                        case 35: // seth and orange battle
+                            scr_setparty(1, 1, 0)
+                            global.flag[1455] = 40//45
+                            //global.flag[1316] = 1 // makes a shortcut but idk if i should keep it or if people would want it to be "vanilla"
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_obscured_bullets
+                            break
+                            
+                        case 36: // green and orange battle
+                            scr_setparty(1, 1, 0)
+                            global.flag[1455] = 50
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_green_orange_battle
+                            break
+                            
+                        case 37: // susie leaves and you can think about ralsei
+                            scr_setparty(1, 1, 0)
+                            global.flag[1455] = 70
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_right_endingscene
+                            break
+                            
+                        case 38: // foyer (right side finished)
+                            scr_setparty(1, 1, 0)
+                            global.flag[1455] = 100
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_foyer
+                            break
+                            
+                        case 39: // left path asgore cutscene
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 0
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_left_wing_floweryscene
+                            break
+                            
+                        case 40: // yellow miniboss
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 5
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_yellow_miniboss
+                            break
+                            
+                        case 41: // yellow enters the yellow door
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 10
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_left_twodoors
+                            break
+                        
+                        case 42: // yellow goes to kill himself
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 25
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_sandtrap
+                            break
+                        
+                        case 43: // yellow laser gun miniboss
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 30
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_dangerous_platforming
+                            break
+                            
+                        case 44: // meeting blue
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 35
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_blueroom
+                            break
+                            
+                        case 45: // blue finds the bloody hole
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 45
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_sandtrap
+                            break
+                            
+                        case 46: // blue and yellow battle
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 52
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_yellowjail
+                            break
+                            
+                        case 47: // blue and yellow battle (with all evidence)
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 52
+                            
+                            if !scr_keyitemcheck(20) // scissors
+                                scr_keyitemget(20)
+                            if !scr_keyitemcheck(21) // yellowshred
+                                scr_keyitemget(21)
+                            if !scr_keyitemcheck(22) // bootoil
+                                scr_keyitemget(22)
+                            if !scr_keyitemcheck(23) // redsplatter
+                                scr_keyitemget(23)
+                            if !scr_keyitemcheck(26) // perpbook
+                                scr_keyitemget(26)
+                            if !scr_keyitemcheck(27) // bluestring
+                                scr_keyitemget(27)
+                            if !scr_keyitemcheck(28) // trainplan
+                                scr_keyitemget(28)
+                            if !scr_keyitemcheck(2) // egg
+                                scr_keyitemget(2)
+                            
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_yellowjail
+                            break
+                            
+                        case 48: // post-battle talk with susie or ralsei
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 70
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_onsen
+                            break
+                            
+                        case 49: // foyer (left side finished)
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 100
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_foyer
+                            break
+                            
+                        case 50: // foyer (both sides finished)
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 100
+                            global.flag[1455] = 100
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_foyer
+                            break
+                            
+                        case 51: // asgore climb
+                            scr_setparty(1, 1, 0)
+                            global.entrance = 5
+                            global.interact = 7
+                            global.plot = 430
+                            roomtogo = room_dw_fcastle_asgore
+                            break
+                            
+                        case 52: // the flowers resolve to stop you
+                            scr_setparty(1, 1, 0)
+                            global.plot = 435
+                            roomtogo = room_dw_fcastle_top_intro
+                            break
+                            
+                        case 53: // top of castle starting room
+                            scr_setparty(1, 1, 0)
+                            global.plot = 440
+                            roomtogo = room_dw_fcastle_top_entrance
+                            break
+                            
+                        case 54: // seth encounter
+                            scr_setparty(1, 1, 0)
+                            global.plot = 440
+                            roomtogo = room_dw_fcastle_seth_encounter
+                            break
+                            
+                        case 55: // yellow and blue encounter
+                            scr_setparty(1, 1, 0)
+                            global.plot = 450
+                            roomtogo = room_dw_fcastle_yellowblue
+                            break
+                            
+                        case 56: // flowery talk 1
+                            scr_setparty(1, 1, 0)
+                            global.plot = 455
+                            roomtogo = room_dw_fcastle_top_staircase_1
+                            break
+                            
+                        case 57: // aqua encounter
+                            scr_setparty(1, 1, 0)
+                            global.plot = 460
+                            roomtogo = room_dw_fcastle_ultradash
+                            break
+                            
+                        case 58: // flowery and ralsei talk
+                            scr_setparty(1, 1, 0)
+                            global.plot = 465
+                            roomtogo = room_dw_fcastle_top_staircase_2
+                            break
+                            
+                        case 59: // green checkpoint
+                            scr_setparty(1, 1, 0)
+                            global.plot = 470
+                            roomtogo = room_dw_fcastle_green_checkpoint
+                            break
+                            
+                        case 60: // green checkpoint (no cutscene)
+                            scr_setparty(1, 1, 0)
+                            global.plot = 473
+                            roomtogo = room_dw_fcastle_green_checkpoint
+                            break
+                            
+                        case 61: // descent to pink's room
+                            scr_setparty(1, 1, 0)
+                            global.start_in_platmode = 1
+                            if global.plot < 473
+                                global.plot = 473
+                            roomtogo = room_dw_fcastle_top_descent
+                            break
+                            
+                        case 62: // outside pink's room (with mystery key)
+                            scr_setparty(1, 1, 0)
+                            global.flag[1846] = 0
+                            if !scr_keyitemcheck(32)
+                                scr_keyitemget(32)
+                            if global.plot < 473
+                                global.plot = 473
+                            roomtogo = room_dw_fcastle_top_pinkdoor
+                            break
+                            
+                        case 63: // pink's room
+                            scr_setparty(1, 1, 0)
+                            global.flag[1846] = 1
+                            if global.plot < 473
+                                global.plot = 473
+                            roomtogo = room_dw_fcastle_pinkroom
+                            break
+                            
+                        case 64: // pink battle
+                            scr_setparty(1, 1, 0)
+                            global.flag[1846] = 1.50
+                            if global.plot < 473
+                                global.plot = 473
+                            roomtogo = room_dw_pink_encounter
+                            break
+                        
+                        // idk where 65 went but i already formatted everything around it not being here lmao oops
+                            
+                        case 66: // pink's room (post-battle)
+                            scr_setparty(1, 1, 0)
+                            if global.flag[1846] < 2
+                                global.flag[1846] = 2
+                            if global.plot < 473
+                                global.plot = 473
+                            roomtogo = room_dw_fcastle_pinkroom
+                            break
+                            
+                        case 67: // final flower encounter gauntlet
+                            scr_setparty(1, 1, 0)
+                            global.start_in_platmode = 1
+                            global.plot = 473
+                            roomtogo = room_dw_fcastle_orange_gauntlet
+                            break
+                            
+                        case 68: // final save point
+                            scr_setparty(1, 1, 0)
+                            if global.plot < 475
+                                global.plot = 475
+                            roomtogo = room_dw_fcastle_final_save
+                            break
+                            
+                        case 69: // flowery pre-battle talk
+                            scr_setparty(1, 1, 0)
+                            global.flag[1877] = 0
+                            global.plot = 475
+                            roomtogo = room_dw_fcastle_flowery
+                            break
+                            
+                        case 70: // flowery battle
+                            scr_setparty(1, 1, 0)
+                            global.flag[1877] = 2
+                            global.plot = 475
+                            roomtogo = room_dw_fcastle_flowery
+                            break
+                            
+                        case 71: // flowery battle finale
+                            scr_setparty(0, 0, 0)
+                            global.plot = 475
+                            roomtogo = room_dw_fcastle_flowerydash
+                            break
+                            
+                        case 72: // post-flowery battle scene
+                            scr_setparty(0, 0, 0)
+                            global.plot = 499
+                            roomtogo = room_dw_post_flowery_battle
+                            break
+                            
+                        case 73: // flowers revert to normal flowers
+                            scr_setparty(1, 1, 0)
+                            global.plot = 500
+                            roomtogo = room_dw_post_flowery_battle
+                            break
+                            
+                        case 74: // fountain
+                            scr_setparty(1, 1, 0)
+                            global.plot = 510
+                            roomtogo = room_dw_fcastle_top_fountain
+                            break
+                            
+                        case 75: // flowery vs the knight
+                            scr_setparty(1, 1, 0)
+                            global.plot = 510
+                            roomtogo = room_dw_post_fountain_close
+                            break
+                            
+                        case 76: // flowery dies
+                            scr_setparty(1, 1, 0)
+                            global.plot = 510
+                            roomtogo = room_dw_flowery_tree
+                            break
+                            
+                        case 77: // second fountain sealing
+                            scr_setparty(1, 0, 0)
+                            global.plot = 510
+                            roomtogo = room_cc_fountain
+                            break
+                            
+                        case 78: // back in the light world
+                            scr_setparty(1, 0, 0)
+                            global.plot = 550
+                            roomtogo = room_flowershop_2f
+                            break
+                            
+                        case 79: // leaving flower king
+                            scr_setparty(0, 0, 0)
+                            global.flag[1324] = 3
+                            global.plot = 560
+                            roomtogo = room_town_north
+                            break
+                            
+                        case 80: // susie entering castle town
+                            scr_setparty(1, 0, 0)
+                            global.flag[1324] = 3
+                            global.plot = 570
+                            roomtogo = room_schooldoor
+                            break
+                            
+                        case 81: // credits
+                            scr_setparty(0, 0, 0)
+                            global.flag[1324] = 3
+                            global.plot = 580
+                            roomtogo = room_ed
+                            break
+                            
+                        case 82: // weird route opening
+                            scr_setparty(0, 0, 0)
+                            global.flag[1324] = 2
+                            global.plot = 0
+                            roomtogo = room_krisroom
+                            break
+                            
+                        case 83: // weird route opening (no cutscene)
+                            scr_setparty(0, 0, 0)
+                            global.flag[1324] = 2
+                            global.plot = 5
+                            roomtogo = room_krisroom
+                            break
+                            
+                        case 84: // meeting susie
+                            scr_setparty(0, 0, 0)
+                            global.flag[1324] = 2
+                            global.plot = 5
+                            roomtogo = room_town_krisyard
+                            break
+                            
+                        case 85: // festival with susie
+                            scr_setparty(1, 0, 0)
+                            global.flag[1324] = 2
+                            
+                            global.currentsong[0] = snd_init("happy_town.ogg") // play here since the normal festival theme plays otherwise
+                            global.currentsong[1] = mus_loop(global.currentsong[0], 0.8)
+                            
+                            global.plot = 105
+                            roomtogo = room_town_krisyard
+                            break
+                            
+                        case 86: // festival with susie (post-ice cream)
+                            scr_setparty(1, 0, 0)
+                            global.flag[1324] = 2
+                            
+                            global.currentsong[0] = snd_init("happy_town.ogg") // play here since the normal festival theme plays otherwise
+                            global.currentsong[1] = mus_loop(global.currentsong[0], 0.8)
+                            
+                            global.plot = 150
+                            roomtogo = room_town_north
+                            break
+                            
+                        case 87: // beach scene
+                            scr_setparty(0, 0, 0)
+                            global.flag[1324] = 2
+                            global.plot = 160
+                            roomtogo = room_beach
+                            break
+                            
+                        case 88: // beach scene (post-aborting route)
+                            scr_setparty(0, 0, 0)
+                            global.flag[1324] = 2
+                            global.plot = 189
+                            roomtogo = room_beach
+                            break
+                            
+                        case 89: // meeting ralsei (aborted route version)
+                            scr_setparty(1, 0, 0)
+                            global.plot = 210
+                            roomtogo = room_dw_garden_ralseicupboard
+                            break
+                            
+                        case 90: // post-blue and yellow battle talk with susie or ralsei (aborted route version)
+                            scr_setparty(1, 1, 0)
+                            global.flag[1454] = 70
+                            global.plot = 405
+                            roomtogo = room_dw_fcastle_onsen
+                            break
+                        
+                        // template
+                        case -1: // 
+                            scr_setparty(1, 1, 0)
+                            global.plot = 0
+                            roomtogo = room
+                            break
+                    }
+                    room_goto(roomtogo)
+                    global.chemg_menu_depth = 0
+                }
+                else if (choice == "[tempflag]")
+                {
+                    var flagid = get_string("Set which global.tempflag value?", "");
+                    
+                    if (flagid != "")
+                    {
+                        flagid = real(flagid)
+                        if (flagid <= array_length(global.tempflag))
+                        {
+                            var varname = get_string("Enter new value (currently: " + string(global.tempflag[flagid]) + ")", "")
+                            if (varname != "")
+                            {
+                                if (is_numeric(global.tempflag[flagid]))
+                                    global.tempflag[flagid] = real(varname)
+                                else
+                                    show_message("Tempflags can only be set to numbers!!!!")
+                            }
+                        }
+                        else
+                        {
+                            show_message("Too high!! Max tempflag count is " + string(array_length(global.tempflag) - 1))
+                        }
+                    }
+                }
+                else if choice == "[flagchangeGUI]"
+                {
+                    if i_ex(obj_debugProfiler)
+                    {
+                        obj_debugProfiler.toggleFlagGUI = true
+                    }
+                }
+                else
+                {
+                    show_debug_message("unknown menu cmd:" + choice)
+                }
             }
         }
         else if (keyboard_check_pressed(global.input_k[5]) || keyboard_check_pressed(vk_escape) || keyboard_check_pressed(vk_shift) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[5]))

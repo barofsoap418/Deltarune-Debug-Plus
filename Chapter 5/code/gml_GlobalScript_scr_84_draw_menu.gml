@@ -11,7 +11,7 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 	for (var i = 0; i < length; i += 3)
 	{
 		var ndx = i / 3
-		var type = ds_list_find_value(array, i)
+		var handler = ds_list_find_value(array, i)
 		var item = ds_list_find_value(array, i + 1)
 		var name = ds_list_find_value(array, i + 2)
 		var selected = false
@@ -30,75 +30,85 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 			}
 		}
 		
-		// extra code that adds onto option names in the menu
-		// in truth the code in this script was updated after chapter 2 presumably to make this work without chain of
-		// else ifs, but i don't feel like figuring it out so this script has been reverted to the ch2 version lol
-		if (type == "[group]")
-            name = "[ " + name + "... ]"
-        else if (type == "[flagset]") // display ID of a flag beside the name and display its current value beside that
-            name += " (" + string(item) + ") : " + string(global.flag[item])
-        else if (type == "[globalset]") // display global variable's current value
-            name += ": " + string(variable_global_get(item))
-        else if (type == "[globalset_multi]") // same but for multiple global variables
-            name += ": " + string(variable_global_get(item[0]))
-        else if type == "[toggle_global_saveto_ini]" // debug menu settings, display "ON" or "OFF" instead of a number
-            name += ": " + (variable_global_get(item) ? "ON" : "OFF")
-        else if type == "[flagchangeGUI]" // same but for flag change hud
-            name += ": " + (variable_global_get("chemg_display_flag_changes") ? "ON" : "OFF")
-        else if (type == "[platswap]") // gray out the platswap string if it's unavailable
-        {
-            if (!instance_exists(obj_platswap))
+		if (is_struct(handler))
+		{
+            // Chapter 3+ method
+            var draw_handler = variable_struct_get(handler, "draw_text");
+        
+            if (draw_handler)
+                name = draw_handler(item, name, selected);
+		}
+		else
+		{
+		    // Chapter 1/2 method
+            var type = handler;
+    		if (type == "[group]")
+                name = "[ " + name + "... ]"
+            else if (type == "[flagset]") // display ID of a flag beside the name and display its current value beside that
+                name += " (" + string(item) + ") : " + string(global.flag[item])
+            else if (type == "[globalset]") // display global variable's current value
+                name += ": " + string(variable_global_get(item))
+            else if (type == "[globalset_multi]") // same but for multiple global variables
+                name += ": " + string(variable_global_get(item[0]))
+            else if type == "[toggle_global_saveto_ini]" // debug menu settings, display "ON" or "OFF" instead of a number
+                name += ": " + (variable_global_get(item) ? "ON" : "OFF")
+            else if type == "[flagchangeGUI]" // same but for flag change hud
+                name += ": " + (variable_global_get("chemg_display_flag_changes") ? "ON" : "OFF")
+            else if (type == "[platswap]") // gray out the platswap string if it's unavailable
             {
-                draw_set_color(c_gray);
-                name += ": UNAVAILABLE"
+                if (!instance_exists(obj_platswap))
+                {
+                    draw_set_color(c_gray);
+                    name += ": UNAVAILABLE"
+                }
+                else
+                {
+                    name += ": " + (obj_platswap.mode ? "ON" : "OFF")
+                }
             }
-            else
+            else if type == "[ashley]" // make the super important option rainbow lmaoo
             {
-                name += ": " + (obj_platswap.mode ? "ON" : "OFF")
+                colsiner++
+                draw_set_color(make_color_hsv((colsiner * 8) % 255, 60 + (sin(colsiner / 10) * 15), 255))
             }
-        }
-        else if type == "[ashley]" // make the super important option rainbow lmaoo
-        {
-            colsiner++
-            draw_set_color(make_color_hsv((colsiner * 8) % 255, 60 + (sin(colsiner / 10) * 15), 255))
-        }
-        else if (type == "[menukey]") // display menu key
-        {
-            if (global.chemg_rebinding)
-                name += ": <Press Key>"
-            else
-                name += ": " + global.asc_def[global.chemg_menu_key]
-        }
-        else if type == "[item]" || type == "[lightitem]" || type == "[keyitem]" || type == "[weaponitem]" || type == "[armoritem]"
-        {
-            name += concat(" (", item,")")
-        }
-        else if type == "[room]" || type == "[roomdark]" || type == "[roomplat]" || type == "[roomgeneric]"
-        {
-            name += concat(" (", real(item),")")
-            //scr_get_room_by_id(item) getting to sleepy honk shoo mimimimimimimimi will do this another time ( if it's not already done)
-        }
-        else if type == "[spell]"
-        {
-            var _val = global.spell[item][real(string_char_at(name, 1) + string_char_at(name, 2))] // probably could have been done in a way that didn't DEPEND on the id being at the start of the string but i wanted the id to be at the start of the string anyway so like whatever lol
-            scr_spellinfo(_val)
-            
-            if string_pos("Empty", name) > 0 && spellname != " "
-                name = string_replace(name, "Empty", spellname)
+            else if (type == "[menukey]") // display menu key
+            {
+                if (global.chemg_rebinding)
+                    name += ": <Press Key>"
+                else
+                    name += ": " + global.asc_def[global.chemg_menu_key]
+            }
+            else if type == "[item]" || type == "[lightitem]" || type == "[keyitem]" || type == "[weaponitem]" || type == "[armoritem]"
+            {
+                name += concat(" (", item,")")
+            }
+            else if type == "[room]" || type == "[roomdark]" || type == "[roomplat]" || type == "[roomgeneric]"
+            {
+                name += concat(" (", real(item),")")
+                //scr_get_room_by_id(item) getting to sleepy honk shoo mimimimimimimimi will do this another time ( if it's not already done)
+            }
+            else if type == "[spell]"
+            {
+                var _val = global.spell[item][real(string_char_at(name, 1) + string_char_at(name, 2))] // probably could have been done in a way that didn't DEPEND on the id being at the start of the string but i wanted the id to be at the start of the string anyway so like whatever lol
+                scr_spellinfo(_val)
                 
-            name += concat(" (", _val,")")
-            
+                if string_pos("Empty", name) > 0 && spellname != " "
+                    name = string_replace(name, "Empty", spellname)
+                    
+                name += concat(" (", _val,")")
+                
+            }
+            else if type == "[hp]"
+                name += concat(" (", global.hp[item],")")
+            else if type == "[hpmax]"
+                name += concat(" (", global.maxhp[item],")")
+            else if type == "[attack]"
+                name += concat(" (", global.at[item],")")
+            else if type == "[defense]"
+                name += concat(" (", global.df[item],")")
+            else if type == "[magic]"
+                name += concat(" (", global.mag[item],")")
         }
-        else if type == "[hp]"
-            name += concat(" (", global.hp[item],")")
-        else if type == "[hpmax]"
-            name += concat(" (", global.maxhp[item],")")
-        else if type == "[attack]"
-            name += concat(" (", global.at[item],")")
-        else if type == "[defense]"
-            name += concat(" (", global.df[item],")")
-        else if type == "[magic]"
-            name += concat(" (", global.mag[item],")")
             
 		scr_84_draw_text_outline(xx, yy, prefix + name)
 		yy += vspacing
