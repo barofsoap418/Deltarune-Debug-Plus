@@ -49,7 +49,7 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 		}
 		else
 		{
-		    // Chapter 1/2 method
+		    // Chapter 1/2 method, most stuff in the mod uses this since this was built off the chapter 1 switch version
             var type = handler;
     		if (type == "[group]")
                 name = "[ " + name + "... ]"
@@ -61,32 +61,6 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
                 name += ": " + string(variable_global_get(item[0]))
             else if type == "[toggle_global_saveto_ini]" // debug menu settings, display "ON" or "OFF" instead of a number
                 name += ": " + (variable_global_get(item) ? "ON" : "OFF")
-            else if type == "[flagchangeGUI]" // same but for flag change hud
-                name += ": " + (variable_global_get("chemg_display_flag_changes") ? "ON" : "OFF")
-            else if (type == "[platswap]") // gray out the platswap string if it's unavailable
-            {
-                if (!instance_exists(obj_platswap))
-                {
-                    draw_set_color(c_gray);
-                    name += ": UNAVAILABLE"
-                }
-                else
-                {
-                    name += ": " + (obj_platswap.mode ? "ON" : "OFF")
-                }
-            }
-            else if type == "[ashley]" // make the super important option rainbow lmaoo
-            {
-                colsiner++
-                draw_set_color(make_color_hsv((colsiner * 8) % 255, 60 + (sin(colsiner / 10) * 15), 255))
-            }
-            else if (type == "[menukey]") // display menu key
-            {
-                if (global.chemg_rebinding)
-                    name += ": <Press Key>"
-                else
-                    name += ": " + global.asc_def[global.chemg_menu_key]
-            }
             else if type == "[item]" || type == "[lightitem]" || type == "[keyitem]" || type == "[weaponitem]" || type == "[armoritem]"
             {
                 name += concat(" (", item,")")

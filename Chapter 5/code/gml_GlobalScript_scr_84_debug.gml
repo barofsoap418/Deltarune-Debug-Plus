@@ -771,7 +771,35 @@ function scr_84_debug(arg0)
         scr_84_push(parent)
         parent = group
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_god_mode", "God Mode")
-        scr_84_add_menu_item(parent, "[platswap]", "", "Platformer Mode")
+        
+        scr_84_add_menu_item(parent, { 
+            action: function()
+            {
+                if (instance_exists(obj_platswap))
+                {
+                    with (obj_platswap)
+                        event_user(0);
+                }
+                else
+                {
+                    scr_debug_print("This room doesn't support platformer mode");
+                    snd_play(snd_cantselect);
+                }
+            }, 
+            draw_text: function(item, name)
+            {
+                if (!instance_exists(obj_platswap))
+                {
+                    draw_set_color(c_gray);
+                    return name + ": UNAVAILABLE"
+                }
+                else
+                {
+                    return name + ": " + (obj_platswap.mode ? "ON" : "OFF")
+                }
+            }
+        }, "", "Platformer Mode")
+        
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_room", "Show Room Name")
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Additional Visibility Toggles")
@@ -784,28 +812,148 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "debug_fps_display", "Show FPS")
         parent = scr_84_pop()
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_debug_messages", "Show Debug Messages")
-        scr_84_add_menu_item(parent, "[flagchangeGUI]", "", "Show Flag Changes")
+        
+        scr_84_add_menu_item(parent, {
+            action: function() 
+            {
+                if i_ex(obj_debugProfiler)
+                {
+                    obj_debugProfiler.toggleFlagGUI = true
+                }
+            },
+            draw_text: function(item, name)
+            {
+                return name + ": " + (global.chemg_display_flag_changes ? "ON" : "OFF")
+            }
+        }, "", "Show Flag Changes")
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_flag_detection", "Always Detect Flag Changes")
-        scr_84_add_menu_item(parent, "[menukey]", "", "Menu Keybind");
+        
+        scr_84_add_menu_item(parent, {
+            action: function() 
+            {
+                // Ignore controller since only keyboard mapping is currently supported
+                if (!gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[4]))
+                    global.chemg_rebinding = true;
+            },
+            draw_text: function(item, name)
+            {
+                if (global.chemg_rebinding)
+                    return name + ": <Press Key>"
+                else
+                    return name + ": " + global.asc_def[global.chemg_menu_key]
+            }
+        }, "", "Menu Keybind");
+        
         scr_84_add_menu_item(parent, "[restart]", "", "Restart Room")
         scr_84_add_menu_item(parent, "[loadj]", "", "Reload Japanese")
         scr_84_add_menu_item(parent, "[lang]", "ja", "Use Japanese")
         scr_84_add_menu_item(parent, "[lang]", "en", "Use English")
         scr_84_add_menu_item(parent, "[phone]", "", "Give Sans's Number")
         scr_84_add_menu_item(parent, "[fonttest]", "", "Font Test")
-        scr_84_add_menu_item(parent, "[stopmusic]", "", "Stop All Music");
-        scr_84_add_menu_item(parent, "[credits]", "", "Credits")
-        scr_84_add_menu_item(parent, "[ashley]", "", "!!!SUPER IMPORTANT!!!")
-        parent = scr_84_pop()
         
+        // Just call snd_free_all directly
+        scr_84_add_menu_item(parent, {action: snd_free_all}, "", "Stop All Music");
+        scr_84_add_menu_item(parent, {action: function() 
+        {
+            show_message("8-4 Ltd: Original Menu from Chapter 1.\nTenna Save Editor: Flag list.\nbarofsoap418: Restored the menu in all chapters and updated most things for them/added most new features.\nVRadExe: Chapter 5 Room list, figured out Chapter 3+ handler system and how to add text to menu entries, made room warp types function properly+added one for starting in platforming mode, updated font list.\nZender Troop: Documented most global.plot changes in Chapter 5, which were used as reference for the Plot Warp menu.\nFafuhnir: literally nothing but i wanna shout him out hi leon :wave:")
+        }}, "", "Credits")
+        
+        scr_84_add_menu_item(parent, {
+            action: function() // the most important option
+            {
+                url_open("https://twitter.com/barofsoap418")
+            },
+            draw_text: method(self, function(item, name)
+            {
+                colsiner++
+                draw_set_color(make_color_hsv((colsiner * 8) % 255, 60 + (sin(colsiner / 10) * 15), 255))
+                return name
+            })
+        }, "", "!!!SUPER IMPORTANT!!!")
+        
+        parent = scr_84_pop()
         
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Flags")
         scr_84_push(parent)
         parent = group
         
-        scr_84_add_menu_item(parent, "[flagsetspec]", 0, "Set Specific Flag")
-        scr_84_add_menu_item(parent, "[tempflag]", 0, "Set Temporary Flag")
+        scr_84_add_menu_item(parent, {action: function() 
+        {
+            var flagstr = get_string("Enter the flag name or numeric ID", "")
+            if (flagstr != "")
+            {
+                var flagid = 0
+                try
+                {
+                    flagid = real(flagstr)
+                }
+                catch(exc)
+                {
+                    // non-numeric, check flagnames instead
+                    var _continue = false
+                    for (var i = 0; i < array_length(global.flagname); i++)
+                    {
+                        if (global.flagname[i] != undefined && 
+                            string_lower(global.flagname[i]) == string_lower(flagstr))
+                        {
+                            flagid = i
+                            _continue = true
+                            break
+                        }
+                    }
+                    if (!_continue)
+                    {
+                        show_message("No flag with this name was found")
+                        exit
+                    }
+                }
+                
+                // Array length is 9999, but only 2500 flags get saved in chapter 2 onward, so we might as well just show that
+                if (flagid >= 2500)
+                {
+                    show_message("Too high!! Max flag count is 2500")
+                    exit
+                }
+                
+                var str = "Enter new value for flag " + string(flagid) + " " + scr_flag_name_get(flagid) + " (currently: " + string(global.flag[flagid]) + ")"
+                    
+                var varname = get_string(str, "")
+                if (varname != "")
+                {
+                    try
+                        global.flag[flagid] = real(varname)
+                    catch(exc)
+                        show_message("Flags can only be set to numbers!!!!")
+                }
+            }
+        }}, 0, "Set Specific Flag")
+        
+        scr_84_add_menu_item(parent, {action: function()
+        {
+            var flagid = get_string("Set which global.tempflag value?", "");
+            
+            if (flagid != "")
+            {
+                flagid = real(flagid)
+                if (flagid <= array_length(global.tempflag))
+                {
+                    var varname = get_string("Enter new value (currently: " + string(global.tempflag[flagid]) + ")", "")
+                    if (varname != "")
+                    {
+                        if (is_numeric(global.tempflag[flagid]))
+                            global.tempflag[flagid] = real(varname)
+                        else
+                            show_message("Tempflags can only be set to numbers!!!!")
+                    }
+                }
+                else
+                {
+                    show_message("Too high!! Max tempflag count is " + string(array_length(global.tempflag) - 1))
+                }
+            }
+        }}, 0, "Set Temporary Flag")
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Enemy Recruit Flags")
         scr_84_push(parent)
@@ -964,8 +1112,38 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Global Variables")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[set_global_any_real]", 0, "Set Any Global Variable (Number)")
-        scr_84_add_menu_item(parent, "[set_global_any_string]", 0, "Set Any Global Variable (String)")
+        
+        var _set_global_any_handler = { action: function(type)
+        {
+            var _globalvar = get_string("Enter the variable to set (don't include \"global.\")", "")
+            
+            if _globalvar == ""
+                exit
+                
+            if !variable_global_exists(_globalvar)
+            {
+                if !show_question("A variable with this name doesn't exist.\nInitialize a variable with this name?")
+                    exit
+            }
+            
+            var _str = "Enter the variable's new value as a " + type
+            var _globalvarvalue = get_string(_str, "")
+            
+            if type == "number"
+            {
+                try
+                    variable_global_set(_globalvar, real(_globalvarvalue))
+                catch(exc)
+                    show_message("That's not a number silly")
+            }
+            else if type == "string"
+            {
+                variable_global_set(_globalvar, _globalvarvalue)
+            }
+        }}
+        scr_84_add_menu_item(parent, _set_global_any_handler, "number", "Set Any Global Variable (Number)")
+        scr_84_add_menu_item(parent, _set_global_any_handler, "string", "Set Any Global Variable (String)")
+        
         scr_84_add_menu_item(parent, "[globalset]", "plot", "Set Plot Value")
         // Menu overrides global.interact, so set the value to switch back to instead
         scr_84_add_menu_item(parent, "[globalset]", "chemg_interact", "Set Interact Value")
@@ -1338,7 +1516,7 @@ function scr_84_debug(arg0)
             }
             else
             {
-                // Chapter 1/2 method, what most stuff is using since this was built off the chapter 1 switch version
+                // Chapter 1/2 method, most stuff in the mod uses this since this was built off the chapter 1 switch version
                 if (choice == "[group]")
                 {
                     global.chemg_menu_indices[global.chemg_menu_depth] = 0
@@ -1442,42 +1620,6 @@ function scr_84_debug(arg0)
                     ossafe_ini_close()
                     
                 }
-                else if choice == "[set_global_any_real]" || choice == "[set_global_any_string]"
-                {
-                    var _globalvar = get_string("Enter the variable to set (don't include \"global.\")", "")
-                    
-                    if _globalvar != ""
-                    {
-                        var _continue = 1
-                        if !variable_global_exists(_globalvar)
-                        {
-                            _continue = 0
-                            if show_question("A variable with this name doesn't exist.\nInitialize a variable with this name?")
-                                _continue = 1
-                        }
-                        
-                        if _continue == 1
-                        {
-                            var _str = "Enter the variable's new value"
-                            if choice == "[set_global_any_real]"
-                                _str += " as a number."
-                            else if choice == "[set_global_any_string]"
-                                _str += " as a string."
-                            
-                            var _globalvarvalue = get_string(_str, "")
-                            
-                            if choice == "[set_global_any_real]"
-                            {
-                                try
-                                    variable_global_set(_globalvar, real(_globalvarvalue))
-                                catch(exc)
-                                    show_message("That's not a number silly")
-                            }
-                            else if choice == "[set_global_any_string]"
-                                variable_global_set(_globalvar, _globalvarvalue)
-                        }
-                    }
-                }
                 else if (choice == "[fonttest]")
                 {
                     global.chemg_font_test = !global.chemg_font_test
@@ -1510,59 +1652,6 @@ function scr_84_debug(arg0)
                             global.flag[choice_data] = real(varname)
                         catch(exc)
                             show_message("Flags can only be set to numbers!!!!")
-                    }
-                }
-                else if (choice == "[flagsetspec]")
-                {
-                    var flagstr = get_string("Enter the flag name or numeric ID", "")
-                    if (flagstr != "")
-                    {
-                        var _continue = false
-                        var flagid = 0
-                        try
-                        {
-                            flagid = real(flagstr)
-                            _continue = true
-                        }
-                        catch(exc)
-                        {
-                            // non-numeric, check flagnames instead...this won't actually work until flagnames are implemented
-                            for (var i = 0; i < array_length(global.flagname); i++)
-                            {
-                                if (global.flagname[i] != undefined && 
-                                    string_lower(global.flagname[i]) == string_lower(flagstr))
-                                {
-                                    flagid = i
-                                    _continue = true
-                                    break
-                                }
-                            }
-                        }
-                        
-                        if (_continue)
-                        {
-                            if (flagid <= array_length(global.flag))
-                            {
-                                var str = "Enter new value for flag " + string(flagid) + " " + scr_flag_name_get(flagid) + " (currently: " + string(global.flag[flagid]) + ")"
-                                    
-                                var varname = get_string(str, "")
-                                if (varname != "")
-                                {
-                                    try
-                                        global.flag[flagid] = real(varname)
-                                    catch(exc)
-                                        show_message("Flags can only be set to numbers!!!!")
-                                }
-                            }
-                            else
-                            {
-                                show_message("Too high!! Max flag count is " + string(array_length(global.flag) - 1))
-                            }
-                        }
-                        else
-                        {
-                            show_message("Flag not found")
-                        }
                     }
                 }
                 else if (choice == "[flagtog]")
@@ -1687,10 +1776,6 @@ function scr_84_debug(arg0)
                         show_message("Party member " + string(choice_data) + " set, requires room restart to take effect.\nSome rooms set the party automatically in debug mode, so if it doesn't work that's probably why.")
                     }
                 }
-                else if (choice == "[ashley]") // the most important option
-                {
-                    url_open("https://twitter.com/barofsoap418")
-                }
                 else if (choice == "[globalset]")
                 {
                     var newval = get_string("Enter new " + choice_data + " value (currently: " + string(variable_global_get(choice_data)) + ")", "");
@@ -1707,33 +1792,6 @@ function scr_84_debug(arg0)
                             variable_global_set(choice_data[i], real(newval));
                         }
                     }
-                }
-                else if (choice == "[stopmusic]")
-                {
-                    snd_free_all();
-                }
-                else if (choice == "[platswap]")
-                {
-                    if (instance_exists(obj_platswap))
-                    {
-                        with (obj_platswap)
-                            event_user(0);
-                    }
-                    else
-                    {
-                        scr_debug_print("This room doesn't support platformer mode");
-                        snd_play(snd_cantselect);
-                    }
-                }
-                else if (choice == "[menukey]")
-                {
-                    // Ignore controller since only keyboard mapping is currently supported
-                    if (!gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, global.input_g[4]))
-                        global.chemg_rebinding = true;
-                }
-                else if choice == "[credits]"
-                {
-                    show_message("8-4 Ltd: Original Menu from Chapter 1.\nTenna Save Editor: Flag list.\nbarofsoap418: Restored the menu in all chapters and updated most things for them/added most new features.\nVRadExe: Chapter 5 Room list, figured out how to add onto menu entries using scr_84_draw_menu, made room warp types function properly+added one for starting in platforming mode, updated font list.\nZender Troop: Documented most global.plot changes in Chapter 5, which were used as reference for the Plot Warp menu.\nFafuhnir: literally nothing but i wanna shout him out hi leon :wave:")
                 }
                 else if (choice == "[warp]")
                 {
@@ -2424,37 +2482,6 @@ function scr_84_debug(arg0)
                     }
                     room_goto(roomtogo)
                     global.chemg_menu_depth = 0
-                }
-                else if (choice == "[tempflag]")
-                {
-                    var flagid = get_string("Set which global.tempflag value?", "");
-                    
-                    if (flagid != "")
-                    {
-                        flagid = real(flagid)
-                        if (flagid <= array_length(global.tempflag))
-                        {
-                            var varname = get_string("Enter new value (currently: " + string(global.tempflag[flagid]) + ")", "")
-                            if (varname != "")
-                            {
-                                if (is_numeric(global.tempflag[flagid]))
-                                    global.tempflag[flagid] = real(varname)
-                                else
-                                    show_message("Tempflags can only be set to numbers!!!!")
-                            }
-                        }
-                        else
-                        {
-                            show_message("Too high!! Max tempflag count is " + string(array_length(global.tempflag) - 1))
-                        }
-                    }
-                }
-                else if choice == "[flagchangeGUI]"
-                {
-                    if i_ex(obj_debugProfiler)
-                    {
-                        obj_debugProfiler.toggleFlagGUI = true
-                    }
                 }
                 else
                 {
