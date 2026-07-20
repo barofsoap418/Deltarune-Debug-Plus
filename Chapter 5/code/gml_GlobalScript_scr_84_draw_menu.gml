@@ -71,7 +71,7 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
                 // I don't think it matters too much for a debug menu though...there's only like 20 rooms max onscreen anyway...
                 var save_id = scr_get_id_by_room_index(item);
                 if (save_id > 0)
-                    name += string(" ({0}/{1})", item, save_id)
+                    name += string(" ({0} / {1})", item, save_id)
                 else
                     name += string(" ({0})", item)
             }

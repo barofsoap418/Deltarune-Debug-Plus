@@ -403,6 +403,11 @@ function scr_encountersetup(arg0)
             global.monstertype[1] = 1
             global.monstertype[2] = 1
             global.battlemsg[0] = " "
+            for (var i = 0; i < 3; i += 1)
+            {
+                global.monstermakex[i] = xx + 500 + (20 * i)
+                global.monstermakey[i] = yy + 40 + (90 * i)
+            }
             break
 	}
 }

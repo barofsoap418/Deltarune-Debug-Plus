@@ -1,5 +1,5 @@
 lastkey = 0
-spawntype = 154
+spawntype = 0
 global.encounterno = 777
 scr_encountersetup(777)
 global.interact = 1
