@@ -1,0 +1,13 @@
+{
+  "$type": "Sound",
+  "DataName": null,
+  "Filename": "snd_queen_hoot_0.wav",
+  "Type": ".wav",
+  "Volume": 1,
+  "Pitch": 1,
+  "Streamed": false,
+  "DecompressOnLoad": false,
+  "GroupID": 0,
+  "Effects": 0,
+  "AudioLength": 0
+}

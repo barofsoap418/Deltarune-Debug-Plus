@@ -118,6 +118,10 @@ if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pre
 		snd_play_pitch(snd_swing, 1.5)
 	if (global.chemg_god_mode == 0)
 		snd_play_pitch(snd_swing, 0.5)
+    
+    ossafe_ini_open("DebugPlus.ini")
+    ini_write_real("AshleysDebug", "chemg_god_mode", global.chemg_god_mode)
+    ossafe_ini_close()
 }
 if (global.chemg_god_mode == 1)
 {
@@ -150,7 +154,9 @@ if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pre
 if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pressed(ord("I")))
 {
 	snd_play_pitch(snd_egg, 1.2)
-	interactshower = 1 - interactshower
+	
+	writedisplay = 1 - writedisplay
+    //interactshower = 1 - interactshower // repurposing this command for the writedisplay thing
 }
 
 

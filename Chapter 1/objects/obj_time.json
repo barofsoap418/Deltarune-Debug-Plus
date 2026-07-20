@@ -1,0 +1,75 @@
+{
+  "$type": "GameObject",
+  "DataName": null,
+  "Sprite": "spr_darkconfigbt",
+  "Visible": true,
+  "Solid": false,
+  "Depth": 0,
+  "Persistent": true,
+  "ParentObject": null,
+  "MaskSprite": null,
+  "UsesPhysics": false,
+  "IsSensor": false,
+  "CollisionShape": "Circle",
+  "Density": 0.5,
+  "Restitution": 0.1,
+  "Group": 0,
+  "LinearDamping": 0.1,
+  "AngularDamping": 0.1,
+  "Friction": 0.2,
+  "Awake": true,
+  "Kinematic": false,
+  "PhysicsVertices": [],
+  "Events": [
+    {
+      "Category": "Create",
+      "Subtype": "",
+      "CodeEntry": "gml_Object_obj_time_Create_0"
+    },
+    {
+      "Category": "Alarm",
+      "Subtype": "0",
+      "CodeEntry": "gml_Object_obj_time_Alarm_0"
+    },
+    {
+      "Category": "Step",
+      "Subtype": "BeginStep",
+      "CodeEntry": "gml_Object_obj_time_Step_1"
+    },
+    {
+      "Category": "Step",
+      "Subtype": "Step",
+      "CodeEntry": "gml_Object_obj_time_Step_0"
+    },
+    {
+      "Category": "Other",
+      "Subtype": "AsyncSaveAndLoad",
+      "CodeEntry": "gml_Object_obj_time_Other_72"
+    },
+    {
+      "Category": "Draw",
+      "Subtype": "DrawGUI",
+      "CodeEntry": "gml_Object_obj_time_Draw_64"
+    },
+    {
+      "Category": "Draw",
+      "Subtype": "Draw",
+      "CodeEntry": "gml_Object_obj_time_Draw_0"
+    },
+    {
+      "Category": "Draw",
+      "Subtype": "PreDraw",
+      "CodeEntry": "gml_Object_obj_time_Draw_76"
+    },
+    {
+      "Category": "Draw",
+      "Subtype": "PostDraw",
+      "CodeEntry": "gml_Object_obj_time_Draw_77"
+    },
+    {
+      "Category": "Draw",
+      "Subtype": "DrawGUIEnd",
+      "CodeEntry": "gml_Object_obj_time_Draw_75"
+    }
+  ]
+}
