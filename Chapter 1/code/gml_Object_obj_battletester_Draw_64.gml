@@ -27,6 +27,8 @@ if (global.fighting == 0)
                 show_message("Must be a number!!!")
         }
     }
+    if keyboard_check_pressed(ord("0"))
+        global.charauto[2] = !global.charauto[2]
 }
 global.encounterno = clamp(global.encounterno, encountermin, encountermax)
 if (instance_exists(obj_chaseenemy))
@@ -83,8 +85,15 @@ if (!instance_exists(obj_debug_xy))
                     draw_text(0, 70 + (i * 10) + (j * 70), string_hash_to_newline(object_get_name(global.monsterinstancetype[i])))
             }
         }
-        draw_text(300, 0, string_hash_to_newline("Adjust EncounterNo:#1- 2+#3----- 4+++++#5 jump to encounter"))
+        draw_text(300, 0, string_hash_to_newline("Adjust EncounterNo:#1- 2+#3----- 4+++++#5 jump to encounter#0 toggle auto-susie"))
         scr_encountersetup(global.encounterno)
+        
+        if global.charauto[2]
+        {
+            draw_set_color(c_red)
+            draw_text(470, 50, "susie is automatic mode")
+            draw_set_color(c_ltgray)
+        }
     }
     else
     {
