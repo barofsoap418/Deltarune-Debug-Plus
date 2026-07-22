@@ -1210,6 +1210,7 @@ function global_flagname_init()
     // Chapter 5 (WIP)
     // =================
     global.flagname[24] = "can_platform"
+    global.flagname[25] = "platforming_jump_attack_swapped"
     
     // Recruits
     global.flagname[670] = "recruited_floradinn"

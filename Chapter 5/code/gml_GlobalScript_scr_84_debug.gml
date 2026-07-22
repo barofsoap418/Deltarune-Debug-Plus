@@ -1052,6 +1052,8 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[flagset]", 15, "SFX Volume (UNUSED)")
         scr_84_add_menu_item(parent, "[flagset]", 16, "Music Volume (UNUSED)")
         scr_84_add_menu_item(parent, "[flagset]", 17, "Master Volume")
+        scr_84_add_menu_item(parent, "[flagset]", 1391, "Voice Clips")
+        scr_84_add_menu_item(parent, "[flagset]", 25, "Platforming Jump and Attack Swap")
         parent = scr_84_pop()
         
         
