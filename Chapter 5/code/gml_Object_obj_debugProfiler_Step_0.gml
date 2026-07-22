@@ -52,7 +52,7 @@ if global.chemg_display_flag_changes == 1 || global.chemg_flag_detection == 1
     var i = array_length_1d(global.flag) - 1
     while (i > -1)
     {
-        if (lastval[i] != global.flag[i]) && i != 0 && i != 33 // exclude flag 0 and flag 33
+        if (lastval[i] != global.flag[i]) && i != 0 && i != 33 && i != 21 // exclude flag 0, 33, 21 (they change a tong in quick succession and cover a bunch of the screen)
         {
             var _msg = "global.flag[" + string(i) + "] (" + scr_flag_name_get(i) + ") has been changed from " + string(lastval[i]) + " to " + string(global.flag[i])
             
@@ -78,6 +78,7 @@ if /*keyboard_check(vk_control) && */keyboard_check(vk_shift) && keyboard_check_
     displaySetFlagsArray = !displaySetFlagsArray
     snd_play_x(snd_txttor, 1, 0.5 + displaySetFlagsArray / 2)
 }
+
 
 if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pressed(vk_backspace))
 {

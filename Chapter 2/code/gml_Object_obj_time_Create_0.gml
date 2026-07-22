@@ -5,6 +5,7 @@ gamepad_check_timer = 0
 gamepad_id = 0
 axis_value = 0.4
 fullscreen_toggle = 0
+isfullscreen = 0
 quicksaved = 0
 window_center_toggle = 0
 
@@ -18,7 +19,8 @@ if (global.is_console)
 {
 	if (!instance_exists(obj_gamecontroller))
 		instance_create(0, 0, obj_gamecontroller)
-	instance_create(0, 0, obj_border_controller)
+	if (!i_ex(obj_border_controller))
+		instance_create(0, 0, obj_border_controller)
 }
 paused = false
 pausing = false
@@ -37,24 +39,28 @@ if (instance_number(obj_time) > 1)
 }
 else
 {
-	display_height = display_get_height()
-	display_width = display_get_width()
+	var setfull = false
+	if (!global.is_console)
+	{
+		ini_open("true_config.ini")
+		setfull = ini_read_real("SCREEN", "FULLSCREEN", 0)
+		ini_close()
+		if (setfull)
+			window_set_fullscreen(true)
+	}
+	var display_height = display_get_height()
+	var display_width = display_get_width()
 	window_size_multiplier = 1
-	for (_ww = 2; _ww < 6; _ww += 1)
+	for (var _ww = 2; _ww < 12; _ww += 1)
 	{
 		if (display_width > (640 * _ww) && display_height > (480 * _ww))
 			window_size_multiplier = _ww
 	}
-	if (window_size_multiplier > 1)
+	if (window_size_multiplier > 1 && !setfull && !global.launcher)
 	{
 		window_set_size(640 * window_size_multiplier, 480 * window_size_multiplier)
 		alarm[2] = 1
 	}
-	ini_open("true_config.ini")
-	var fullscreen_option = ini_read_real("SCREEN", "FULLSCREEN", 0)
-	if (fullscreen_option == 1 && !window_get_fullscreen())
-		alarm[1] = 1
-	ini_close()
 	if (scr_is_switch_os())
 	{
 		switch_controller_support_set_defaults()

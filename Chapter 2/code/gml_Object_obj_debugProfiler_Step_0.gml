@@ -52,7 +52,7 @@ if global.chemg_display_flag_changes == 1 || global.chemg_flag_detection == 1
     var i = array_length_1d(global.flag) - 1
     while (i > -1)
     {
-        if (lastval[i] != global.flag[i]) && i != 0 && i != 33 && i != 21 // exclude flag 0, 33, 21 (they change a tong in quick succession and cover a bunch of the screen)
+        if (lastval[i] != global.flag[i]) && i != 0 && i != 33 && i != 21 && i != 426 // exclude flag 0, 33, 21, 426 (they change a tong in quick succession and cover a bunch of the screen)
         {
             var _msg = "global.flag[" + string(i) + "] (" + scr_flag_name_get(i) + ") has been changed from " + string(lastval[i]) + " to " + string(global.flag[i])
             
@@ -125,7 +125,7 @@ if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pre
 }
 if (global.chemg_god_mode == 1)
 {
-    for (var i = 0; i < 4; i++)
+    for (var i = 0; i < 6; i++)
     {
         if (global.hp[i] < global.maxhp[i])
             global.hp[i]++

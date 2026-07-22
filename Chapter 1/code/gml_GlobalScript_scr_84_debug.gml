@@ -32,8 +32,6 @@ function scr_84_debug(arg0)
         parent = group
         scr_84_add_menu_item(parent, "[setgold]", 0, "Set D$")
         scr_84_add_menu_item(parent, "[setgoldlight]", 0, "Set $")
-        scr_84_add_menu_item(parent, "[flagset]", 1411, "Set F$")
-        scr_84_add_menu_item(parent, "[flagset]", 1312, "Set P$")
         scr_84_add_menu_item(parent, "[gold]", 50, "+50 D$")
         scr_84_add_menu_item(parent, "[gold]", -50, "-50 D$")
         scr_84_add_menu_item(parent, "[gold]", 100, "+100 D$")
@@ -52,7 +50,6 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Items")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[idealitem]", 0, "Idealize Items/Gear")
         
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Give Dark Item")
@@ -137,6 +134,9 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[armoritem]", 6, "MouseToken")
         scr_84_add_menu_item(parent, "[armoritem]", 7, "JEVILSTAIL")
         parent = scr_84_pop()
+        
+        scr_84_add_menu_item(parent, "[idealitem]", 0, "Idealize Items/Gear")
+        
         parent = scr_84_pop()
         
         
@@ -718,6 +718,7 @@ function scr_84_debug(arg0)
         // Menu overrides global.interact, so set the value to switch back to instead
         scr_84_add_menu_item(parent, "[globalset]", "chemg_interact", "Set Interact Value")
         scr_84_add_menu_item(parent, "[globalset]", "darkzone", "Set Darkzone Value")
+        scr_84_add_menu_item(parent, "[globalset]", "debug", "Disable Debug Mode (RE-ENABLES UPON RESTARTING)")
         parent = scr_84_pop()
         
         
@@ -725,8 +726,6 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Stats")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[idealall]", "", "Idealize Stats")
-        
         
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Kris Stats")
@@ -788,6 +787,8 @@ function scr_84_debug(arg0)
             scr_84_add_menu_item(parent, "[spell]", 3, concat(i, " : ", "Empty"))
         parent = scr_84_pop()
         parent = scr_84_pop()
+        
+        scr_84_add_menu_item(parent, "[idealall]", "", "Idealize Stats") // useless in chapter 1, keeping for funny text
         
         scr_84_add_menu_item(parent, "[setmember]", 0, "Set Party Member 1 (BROKEN)")
         scr_84_add_menu_item(parent, "[setmember]", 1, "Set Party Member 2")
@@ -1222,27 +1223,7 @@ function scr_84_debug(arg0)
                 }
                 else if (choice == "[idealall]") // idealize stats (make them the maximum they'd be after defeating each enemy with violence)
                 {
-                    // kris
-                    global.maxhp[1] = 272
-                    global.hp[1] = 272
-                    global.at[1] = 18
-                    global.df[1] = 2
-                    global.mag[1] = 0
-                    
-                    // susie
-                    global.maxhp[2] = 330
-                    global.hp[2] = 330
-                    global.at[2] = 23
-                    global.df[2] = 2
-                    global.mag[2] = 4
-                    
-                    // ralsei
-                    global.maxhp[3] = 242
-                    global.hp[3] = 242
-                    global.at[3] = 16
-                    global.df[3] = 2
-                    global.mag[3] = 16
-                    show_message("Idealized Stats")
+                    show_message("Idealized Stats...\n... or would've if stats could increase in this chapter.")
                 }
                 else if (choice == "[spell]")
                 {
@@ -1262,14 +1243,20 @@ function scr_84_debug(arg0)
                             exit
                         }
                         global.char[choice_data] = rnewmem
-                        show_message("Party member " + string(choice_data) + " set, requires room restart to take effect.\nSome rooms set the party automatically in debug mode, so if it doesn't work that's probably why.")
+                        show_message("Party member " + string(choice_data + 1) + " set, requires room restart to take effect.\nSome rooms set the party automatically in debug mode, so if it doesn't work that's probably why.")
                     }
                 }
                 else if (choice == "[globalset]")
                 {
                     var newval = get_string("Enter new " + choice_data + " value (currently: " + string(variable_global_get(choice_data)) + ")", "");
                     if (newval != "")
+                    {
                         variable_global_set(choice_data, real(newval));
+                        
+                        // set menu depth to false if debug mode is disabled, prevents the menu from appearing if you return to title screen
+                        if choice_data == "debug" && newval != 1
+                            global.chemg_menu_depth = 0
+                    }
                 }
                 else if (choice == "[globalset_multi]")
                 {
