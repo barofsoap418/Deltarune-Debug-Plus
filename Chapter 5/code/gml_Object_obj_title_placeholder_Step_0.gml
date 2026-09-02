@@ -1,7 +1,13 @@
 if (up_p())
+{
 	choice_index = ((choice_index - 1) < 0) ? (array_length_1d(choice) - 1) : (choice_index - 1)
+	snd_play_x(snd_menumove, 1, 1.2)
+}
 if (down_p())
+{
 	choice_index = ((choice_index + 1) > (array_length_1d(choice) - 1)) ? 0 : (choice_index + 1)
+	snd_play_x(snd_menumove, 1, 1)
+}
 if (button1_p())
 {
 	if (choice_index == 0)
@@ -37,6 +43,7 @@ if (button1_p())
 		room_goto(PLACE_MENU)
 	}
 }
+
 if (keyboard_check_pressed(ord("L")))
 {
 	var doload = true

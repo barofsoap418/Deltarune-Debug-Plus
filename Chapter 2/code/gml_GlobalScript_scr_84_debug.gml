@@ -943,9 +943,10 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[flagset]", 1907, "CH5 Shadow Crystal")
         parent = scr_84_pop()
         
-        scr_84_add_menu_item(parent, "[flagset]", 915, "Weird Route Progress Flag")
-        scr_84_add_menu_item(parent, "[flagset]", 916, "Weird Route Aborted Flag")
-        scr_84_add_menu_item(parent, "[flagset]", 1743, "Weird Route Aborted in Chapter 5 Flag")
+        scr_84_add_menu_item(parent, "[flagset]", 915, "Weird Route Progress")
+        scr_84_add_menu_item(parent, "[flagset]", 916, "Weird Route Aborted")
+        scr_84_add_menu_item(parent, "[flagset]", 1656, "Weird Route Aborted in Chapter 4")
+        scr_84_add_menu_item(parent, "[flagset]", 1743, "Weird Route Aborted in Chapter 5")
         
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Unsorted Full List")

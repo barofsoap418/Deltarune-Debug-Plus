@@ -1,0 +1,33 @@
+if (writedisplay == 1)
+{
+    debug_printline("instance_count=" + string(instance_count), 1)
+    if (instance_count > 150)
+        debug_printline("THAT'S A LOT OF INSTANCES", 2)
+}
+lastval[0] = 0
+if (interactshower == 1)
+{
+    draw_set_color(c_yellow)
+    draw_set_font(fnt_mainbig)
+    draw_text_outline(20, 20, "global.interact=" + string(global.interact), 0)
+    draw_set_color(c_white)
+}
+
+if displaySetFlagsArray
+{
+    draw_set_font(fnt_main)
+    draw_set_halign(fa_right)
+    draw_set_color(c_green)
+    for (var i = 0; i < maxFlags; i ++)
+    {
+        draw_text_outline(640 - 4, 18 + (i * 17), flagSetArray[i], c_black)
+    }
+    draw_set_halign(fa_left)
+    
+    if !global.chemg_flag_detection && !global.chemg_display_flag_changes
+    {
+        draw_set_color(c_red)
+        draw_text_outline(4, 178, "flag detection is disabled! please enable it or\nenable flag change messages to have this function.", c_black)
+    }
+    draw_set_color(c_white)
+}

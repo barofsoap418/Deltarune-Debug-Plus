@@ -44,6 +44,16 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[gold]", -500, "-500 D$")
         scr_84_add_menu_item(parent, "[lightgold]", 25, "+25 $")
         scr_84_add_menu_item(parent, "[lightgold]", -25, "-25 $")
+        scr_84_add_menu_item(parent, "[flowerydollars]", 50, "+50 F$")
+        scr_84_add_menu_item(parent, "[flowerydollars]", -50, "-50 F$")
+        scr_84_add_menu_item(parent, "[flowerydollars]", 100, "+50 F$")
+        scr_84_add_menu_item(parent, "[flowerydollars]", -100, "-50 F$")
+        scr_84_add_menu_item(parent, "[flowerydollars]", 200, "+50 F$")
+        scr_84_add_menu_item(parent, "[flowerydollars]", -200, "-50 F$")
+        scr_84_add_menu_item(parent, "[flowerydollars]", 500, "+50 F$")
+        scr_84_add_menu_item(parent, "[flowerydollars]", -500, "-50 F$")
+        scr_84_add_menu_item(parent, "[pinkcoins]", 1, "+1 P$")
+        scr_84_add_menu_item(parent, "[pinkcoins]", -1, "-1 P$")
         parent = scr_84_pop()
         
         
@@ -408,7 +418,7 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Rooms")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[gotoroom]", 0, "Go to Specific Room")
+        scr_84_add_menu_item(parent, "[gotoroom]", room_gms_debug_failsafe, "Go to Specific Room")
         scr_84_add_menu_item(parent, "[room]", ROOM_INITIALIZE, "ROOM_INITIALIZE")
         scr_84_add_menu_item(parent, "[room]", PLACE_CONTACT, "PLACE_CONTACT")
         group = ds_list_create()
@@ -1099,9 +1109,10 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[flagset]", 1907, "CH5 Shadow Crystal")
         parent = scr_84_pop()
         
-        scr_84_add_menu_item(parent, "[flagset]", 915, "Weird Route Progress Flag")
-        scr_84_add_menu_item(parent, "[flagset]", 916, "Weird Route Aborted Flag")
-        scr_84_add_menu_item(parent, "[flagset]", 1743, "Weird Route Aborted in Chapter 5 Flag")
+        scr_84_add_menu_item(parent, "[flagset]", 915, "Weird Route Progress")
+        scr_84_add_menu_item(parent, "[flagset]", 916, "Weird Route Aborted")
+        scr_84_add_menu_item(parent, "[flagset]", 1656, "Weird Route Aborted in Chapter 4")
+        scr_84_add_menu_item(parent, "[flagset]", 1743, "Weird Route Aborted in Chapter 5")
         
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Unsorted Full List")
@@ -1622,6 +1633,14 @@ function scr_84_debug(arg0)
                 else if (choice == "[points]")
                 {
                     global.flag[1044] = max(0, global.flag[1044] + choice_data)
+                }
+                else if (choice == "[flowerydollars]")
+                {
+                    global.flag[1411] = max(0, global.flag[1411] + choice_data)
+                }
+                else if (choice == "[pinkcoins]")
+                {
+                    global.flag[1312] = max(0, global.flag[1312] + choice_data)
                 }
                 else if choice == "[toggle_global_saveto_ini]"
                 {
@@ -2446,7 +2465,7 @@ function scr_84_debug(arg0)
                             global.flag[1324] = 2
                             
                             global.currentsong[0] = snd_init("happy_town.ogg") // play here since the normal festival theme plays otherwise
-                            global.currentsong[1] = mus_loop(global.currentsong[0], 0.8)
+                            global.currentsong[1] = mus_loop_ext(global.currentsong[0], 0.8, 1)
                             
                             global.plot = 105
                             roomtogo = room_town_krisyard
@@ -2457,7 +2476,7 @@ function scr_84_debug(arg0)
                             global.flag[1324] = 2
                             
                             global.currentsong[0] = snd_init("happy_town.ogg") // play here since the normal festival theme plays otherwise
-                            global.currentsong[1] = mus_loop(global.currentsong[0], 0.8)
+                            global.currentsong[1] = mus_loop_ext(global.currentsong[0], 0.8, 1)
                             
                             global.plot = 150
                             roomtogo = room_town_north

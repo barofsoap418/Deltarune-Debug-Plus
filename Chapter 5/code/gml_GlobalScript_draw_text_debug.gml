@@ -9,6 +9,8 @@ function draw_text_debug(arg0, arg1, arg2, arg3 = 0, arg4 = c_white)
         draw_set_color(_bckcol)
     }
 }
-function showtxt(arg0, arg1, arg2)
+function showtxt(arg0, arg1, arg2) // unused
 {
+    if scr_debug()
+        draw_text_debug(arg0, arg1, arg2)
 }
