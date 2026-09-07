@@ -99,7 +99,7 @@ if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pre
     file_text_open_read("activeObjectList_" + dump_date + ".txt")
 }
 
-
+// show current cutscene command number
 if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pressed(ord("T")))
 {
     snd_play_pitch(snd_bump, 0.8)

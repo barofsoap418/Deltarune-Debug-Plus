@@ -1,0 +1,481 @@
+=== GENERAL ===
+F1: Open Debug Menu
+S: Open Save Menu
+L: Load Current Save
+R: Restart Room
+BACKSPACE + R: Restart Game
+`: Toggle Fast Forward
+CTRL + `: Toggle Slow Mode
+INSERT: Go to Internal Next Room
+DELETE: Go to Internal Previous Room
+
+SHIFT + F: Show recent flag changes
+SHIFT + CTRL + N: Toggle Noclip
+SHIFT + CTRL + 0: Set global.interact to 0
+SHIFT + CTRL + C: Toggle drawing inputs
+SHIFT + CTRL + D: Toggle flag change debug messages
+SHIFT + CTRL + G: Toggle God Mode
+SHIFT + CTRL + A: Toggle visiblity of solids
+SHIFT + CTRL + W: Toggle window size between base size (640x480) and most common size (1280x960)
+SHIFT + CTRL + UP: Toggle performance bar
+SHIFT + CTRL + BACKSPACE: Dump list of all instances to save folder
+
+Middle Mouse Button: Open/Close Cursor Debug
+2 + HOME: Go to Kris's Room
+8 + HOME: Go to Battle Test Room
+9 + HOME: Go to Bullet Test Room
+
+D while a text box is open: Make box visible and show current message number
+
+=== BATTLE ===
+V: Skip Enemy Turn
+F2: Max Heal Party
+F3: Heal 1/Revive Party
+<number> + F3: Raise Party Member <number>
+F5: End Battle (battles with cutscenes afterwards will typically assume you ended the battle with violence if this is used)
+F6: Set Enemy HP to 1
+F7: Make Enemies Sparable
+Space + F7: Make Enemies Tired
+F8: Set Party HP to 1
+<number> + F8: Down Party Member <number>
+F9: Set TP to 0
+F10: Set TP to Max
+M: Pause/play battle music
+A in a SPELL menu or before selecting an enemy in an ACT menu: show S/R/N-Actions (Usable without debug in Ch2, locked behind debug in Ch3+)
+D during battle in room_battletest: Create bullet position tracker
+
+
+=== DEBUG TITLE SCREEN ===
+L: Load Current Save File
+L + <number>: Load save in slot <number>
+
+=== CHAPTER 1 ===
+BACKSPACE during CONTACT sequence: Skip to Kris's room
+3 + D: Go to Dark World Entrance (room_dark1)
+4 + D: Go to Great Board Entrance (room_checkers5)
+5 + D: Go to Tutorial Room (room_castle_tutorial)
+6 + D: Go to Field of Hopes and Dreams Entrance (room_field1)
+7 + D: Go to Clover Battle Area (room_forest_area3)
+8 + D: Go to Block Forest Exit/Susie Battle Area (room_forest_fightsusie)
+9 + D: Go to Prison Cell (room_cc_prison_cells, sets global.plot to 154 to make Susie come let you out)
+6 + J: Go to Nonfunctional Battle Test (room_battletest)
+7 + J: Go to Nonfunctional Battle Test (room_battletest)
+8 + J: Go to Pre-Jevil Battle Room (room_cc_prison_prejoker, sets global.plot to 165, gives Door Key, gives 13 SpookySwords for some reason)
+9 + J: Go to King Battle Room (room_cc_kingbattle)
+2 + W: Go to Kris's Yard (room_town_krisyard)
+3 + W: Go to North School Room (room_schooldoor)
+4 + W: Go to Unused Classroom (room_school_unusedroom)
+5 + W: Go to Outside School (room_town_school, sets global.plot to 251)
+6 + W: Go to North Hometown (room_town_north, sets global.plot to 251)
+
+
+
+
+=== CHAPTER 2 ===
+1 + HOME: Go to Dark World Entrance (room_dw_cyber_intro_1)
+3 + HOME: Go to Castle Town Entrance (room_dw_castle_area_1, sets global.plot to 7)
+7 + HOME: Go to Roaring Legend Room (room_legend_neo)
+
+SPACE in Cyber Field dropping bullets rooms: Set bullets' inSync variable to false
+W: Toggle Cyber City cars between walking and driving
+M in Cyber City mouse box room: Set amount of mice in the box to 18
+1-9 in Spamton's shop: set Spamton's face to the number pressed
+SPACE in Queen's mansion car room: Teleport to car chase part
+SPACE in post-Queen battle scene: Make Berdly toggle between grabbing his plug and pulling on it
+BACKSPACE during the roaring legend scene: Restart room
+SPACE during fountain sequence: Restart room
+
+RIGHTSHIFT + F: Get Thorn Ring (only works if obj_weirdroute_manipulator is present in the current room)
+
+==== BATTLES ====
+--- SWEET CAPN CAKES ---
+M: Saves the battle music position and pauses it, but this does nothing since it targets the normal battle music variable, which this fight doesn't use
+LEFT during end sequence: Go to next scene
+RIGHT during end sequence: Go to previous scene
+
+--- BERDLY (ROLLER COASTER) ---
+B: Toggle diagonal battle box on tornado attack (Unused behaviour in this battle, used for second one)
+Y: Take away 100 HP
+
+--- BERDLY (CYBER CITY) ---
+B: Toggle diagonal battle box on tornado attack
+O: Take away 100 HP
+
+--- SPAMTON ---
+B: Toggle bodymode between 1 and 0 (1 makes it grow)
+N while bodymode is 1: make body shrink back to normal
+0 while he's talking before an attack: randomize attack
+1-3 while he's talking before an attack: set attack to number pressed 
+
+--- TASQUE MANAGER ---
+B: Toggle Tasque Manager using order attack
+Q: Lower order attack difficulty
+W: Raise order attack difficulty
+
+--- SPAMTON NEO ---
+0-9: Set attackno to number pressed
+MOUSE SCROLL UP: Increase Attack Difficulty
+MOUSE SCROLL DOWN: Decrease Attack Difficulty
+M: Toggle Music
+Y: Take away 100 HP
+D: Draw green line over arm cannon
+O: Make him fall to the ground
+A while he's in his transforming state: Shake head and advance head sprite
+D while he's in his transforming state: Show eyes, if eyes are shown then hide them and set his head to its transformed state.
+
+U during face attack: Break eyes
+I during face attack: Break nose
+O during face attack: Break mouth
+
+--- QUEEN --
+0-9: Set attackno to number pressed
+MOUSE SCROLL UP: Increase Attack Difficulty
+MOUSE SCROLL DOWN: Decrease Attack Difficulty
+O while acid shield is up: Destroy shield
+O while acid shield is down: Take away 100 HP and set Berdly's mercy meter to 100
+
+--- GIGA QUEEN ---
+F5: Set Giga Queen's HP to 10
+
+--- OBJ_BASEENEMY ---
+F12: deal enemy's attack damage * 5 to random party member
+
+
+
+
+=== CHAPTER 3 ===
+SPACE while Tenna's intro video is playing: Pause video
+P during the post-board ranking sequence: Restart sequence
+M or R or L while leaving the Forgotten Man's room: Delete room transition object
+1: Set Fun-O-Meter to 0%
+2: Set Fun-O-Meter to 50%
+3: Set Fun-O-Meter to 100%
+K: Make Fun-O-Meter use an early design
+F5 in Lancer dig puzzle room: Solve dig puzzle and spawn box
+W + 0 in Lancer dig puzzle room: Warp to pre-Bibliox box puzzle room
+W + 0 in pre-Bibliox box puzzle room: Warp to Lancer dig puzzle room
+
+I when a puzzle closet room is starting: set sword route progress to 1
+P in puzzle closet rooms: Toggle the shuffled screens.
+
+P in rooms with Type 1 crowds: Set crowds to type 0
+
+1-2: Change alpha of scrolling blue star background in tenna intro and bonus zone
+8: Set star background speed to 15 fps
+9: Set star background speed to 20 fps
+0: Set star background speed to 30 fps
+
+numpad9 while B-Rank room gacha hud is open: Set POINTs TO SPEND to 1225
+
+--- QUIZZES ---
+4-8 OR numpad1-numpad5 while a quiz is starting: override quiz question set
+2: Change Susie's answer selecting behaviour
+3: Change Ralsei's answer selecting behaviour
+F5: End quiz
+
+==== BATTLES ====
+--- Tenna ---
+1 or Left Shoulder Button: Toggle Minigame Insanity
+V: End minigame
+
+--- The Knight ---
+0-9: Set attackno to number pressed
+BACKSPACE: Take away 3000 HP
+
+--- Pippins ---
+SHIFT while its attack is starting: Increase amount of 1
+CTRL while its attack is starting: Increase amount of 2
+ALT while its attack is starting: Increase amount of 4
+
+--- Shuttah ---
+1-8: Set current photo to number pressed
+
+==== MINIGAMES ====
+--- COOKING SHOW ---
+F5: End Minigame
+F6: Lose Minigame
+F7: End Minigame with 999 Score
+C while losing minigame in room_CHEFS test room: Restart room
+
+--- ROCK VIDEO ---
+1-6 when the room starts: Load different songs
+0 when the room starts: Skip Raise Up Your Bat's intro
+X while room starts: Load Track Select
+1-4 during Raise Up Your Bat: Set the difficulty of Kris's Solo
+U: Cycle through tutorial states
+F5: End minigame
+1-6 + F5: End minigame with a rank corresponding to what number is held
+F6: Lose minigame
+ADD: Increase song volume by 10%
+SUBTRACT: Decrease song volume 10%
+LEFT SHIFT + ADD: Increase song volume by 50%
+LEFT SHIFT + SUBTRACT: Decrease song volume by 50%
+
+--- SUSIEZILLA ---
+BACKSPACE: God Mode
+T: Set Tenna statue HP to max
+
+--- COWBOY SHOOTOUT ---
+1-3: Switch to wave 1-3 (Unused Behaviour)
+H: Set unused kris_hp variable to 5 (no effect on game)
+
+==== BOARDS ====
+BACKSPACE: Toggle CRT Effect
+1: Control Board Kris
+2: Control Board Susie
+3: Control Board Ralsei
+5: Toggle Invincibility
+H: Set HP to 1
+C + M: Regain control and enable leaving current room
+F: Draw Ralsei Block over Ralsei
+SHIFT + V while controlling Kris: Give/Take Camera
+H while obj_board_controller.pathfind_debug is true: Draw Board Collision Grid
+F11 while in battle: Lose battle
+
+CTRL + SPACE: Start recording movement for currently controlled character
+CTRL + SPACE while recording movement: End recording, replay movements
+CTRL + SPACE while movement is replaying: Save recorded movements to susieplayback.ini in save folder
+
+==== NORMAL BOARDS ====
+I: Toggle Invincibility
+ADD: Get 100 Points
+SUBTRACT: Lose 100 Points
+M: Mute Music
+Q: Add a Q to your inventory
+F5: Delete onscreen enemies or Quizzlers
+
+--- BOARD 1 ---
+F: Set Ralsei's HP to 1
+K: Add a key to your inventory
+W + K: Get all keys, mooncloud stone, and lancer
+W + V: Warp to bottom left quiz
+SHIFT + W OR CONTROL + O: Drain pond, dry up board
+SHIFT + UP: Toggle Susie's grab ability (also works in room_board_tests)
+F5 in first block puzzle room: Finish Puzzle
+F5 in second block puzzle room: Start Ralsei block part
+
+--- BOARD 2 ---
+K: Add Lancer to your inventory
+N: Get Lanino/Elnina
+SHIFT + N: Switch between Lanino and Elnina being in your inventory
+W + 1: Get all photos
+W + T: Remove/Bring back Tenna
+W + P: Warp to Shuttah battle
+W + B: Spawn boat at the starting area
+W + E: Warp to the Pippins battle while Susie's controlling Kris
+W + V: Warp to Ribbon/Pizza Deoderant shop
+W + F: Warp to the Pippins battle while Susie's controlling Kris (but right above the enemy this time)
+F5 in bridge puzzle room where you gain control of Susie: Solve puzzle
+
+--- BOARD 3 ---
+K: Add Lancer to your inventory
+W + R: Warp to the end of the board
+W + V: Warp to the quiz on the shore
+
+--- BOARD 3b ---
+W + V: Warp to empty room (deleted section of the board)
+
+==== SWORD ROUTE BOARDS ====
+P: Toggle God Mode (separate from main god mode)
+I: Teleport sword pickup to Kris
+O while Kris has a sword: Increase LV
+Q while Kris has a sword: Draw current XP value and XP amount for next level
+W + C: Show pop up with current hex value for the screen glow's color
+
+--- BOARD 1 ---
+W + V: Teleport to tree looping section (only works if already in the tree room, room_board_1_sword_trees)
+
+--- BOARD 2 ---
+W + B: Create boat object under Kris
+W + V: Warp to Ice Door
+
+--- BOARD 2 DUNGEON ---
+H while the room is starting: Set board start animation to the post-death one
+W + V: Warp to red headband door
+
+--- BOARD 3 ---
+H while the room is starting: Set board start animation to the post-death one
+
+--- BOARD 3 DUNGEON ---
+W + V: Warp to black monster room
+
+
+
+
+=== CHAPTER 4 ===
+V while climbing: Toggle visibility of Kris and several other climbing objects
+B: Toggle visibility of dark overlay in many rooms
+V: Toggle room glow in multiple rooms (often doesn't work properly due to other factors like prophecy panels also controlling the glowing)
+numpad5 while Titan star dissolving animation exists: Play/restart animation
+
+==== BATTLES ====
+--- JACKENSTEIN ---
+TAB: Make all treasure move to the soul
+TAB during attack after using unleash: Change flee type of the jackolantern
+SPACE during attack after using unleash: Show soul glow and jackolantern hitboxes
+
+--- TITAN ---
+numpad4: Create smoke coming from left side of Titan
+numpad6: Create smoke coming from right side of Titan
+BACKSPACE: Take away 1000 HP
+LEFTSHIFT + BACKSPACE: Set HP to 10001 to trigger ending sequence
+BACKSPACE while healing during ending sequence: Transition back to normal state
+
+--- MIKES ---
+CTRL + SHIFT + 1: Skip to final attack
+
+==== RHYTHM GAME ====
+1-6 when the rhythm game room starts: Tries to load different songs like in Chapter 3 but can't due to some new code
+numpadSUBTRACT when the rhythm game room starts: Loads into track select menu (menu doesn't load correct songs)
+1-4 during Raise Up Your Bat: Set the difficulty of Kris's Solo
+U: Cycle through tutorial states
+P: Pause song
+I: Toggle Autoplay
+O: Toggle Debug Mode
+F5: End minigame
+F6: Lose minigame
+ADD: Increase song volume by 10%
+SUBTRACT: Decrease song volume 10%
+LEFT SHIFT + ADD: Increase song volume by 50%
+LEFT SHIFT + SUBTRACT: Decrease song volume by 50%
+P during ranking sequence: Restart sequence
+
+==== HOMETOWN ====
+2 while Burgerpants running away object exists: Set con to 2
+
+==== NOELLE'S HOUSE ====
+--- DESS'S ROOM ---
+Q during closet sequence: Activate Santa 1
+W during closet sequence: Activate Santa 2
+
+==== DARK SANCTUARY ====
+P while the Lancer Prophecy room is starting: Warp to the Lancer Prophecy
+P while the first room where the Titan spawn chases you is starting: Warp to point where Susie finds the light and meets Gerson
+W + V in the room where Gerson breaks a prophecy panel: Set to right before he breaks the prophecy panel
+P in room where Gerson tries to show the party which way to go: Warp to top left of the room (breaks sequence unless used after susie and ralsei go right)
+W + V in Gerson's Study: Warp to Second Sanctuary version
+W + E while pre-piano puzzle piece room is starting: Set if you saw Ralsei's room in Castle Town or not
+P while post-knight climb room starts: set tempflag 90 to 1 (this does nothing, might have been intended to set to 2 since that does do something)
+W + 1 in Holywatercooler room: Warp to top of the climbing sequence
+
+--- PRE-JOCKINGTON GROWS THE BEARD DARK ROOM ---
+P while room is starting: Prevent Gerson silhouette in top right of the room that runs out after being spotted from disappearing (normally unused due it being programmed to disappear when global.plot is >= 127, and the previous room sets global.plot to 127)
+W: Warp to the left of the Gerson silhouette
+E: Warp to below the Gerson silhouette
+
+--- HERO PROPHECY PANEL BROKEN ROOM ---
+1 while room is starting: Toggle if the prophecy was listened to or not
+P while room is starting: Warp to the meeting Gerson scene
+
+--- ANCESTOR WORSHIP ROOM ---
+1 while room is starting: Load the room in its pre-Second Sanctuary state
+2 while room is starting: Attempts to load Second Sanctuary version of room, cause surface-related crash
+3 while room is starting: Load the room in its post-Second Sanctuary state, with the enemy in the Second Sanctuary room being spared
+4 while room is starting: Load the room in its post-Second Sanctuary state, with the enemy in the Second Sanctuary room being beaten with violence
+
+--- PRE-JACKENSTEIN PIANO PUZZLE ---
+1 while room is starting: Set puzzle state to unsolved
+P while room is starting: Make the jackolantern from Jackenstein's fight to appear in his room
+
+--- LEFT PIANO PUZZLE PIECE ROOM ---
+P while room is starting: Make chest closed
+W + V: Warp to puzzle piece spot
+
+--- EAST CLIMB CHALLENGE TO MIZZLE ---
+1 while room is starting: Set room to pre-completed state
+2 while room is starting: Set room to completed state
+3 while room is starting: Load to the sequence where the Cuptains try to stop you from reaching the Mizzle
+W + 2: Warp to sequence where the Cuptains try to stop you from reaching the Mizzle
+W + 2: Warp to the party where the Mizzle is woken up
+
+--- LARGE ORGAN ROOM ---
+1 while room is starting: Set room state to first time entering
+2 while room is starting: Set room state to returning after closing eyes with Ralsei (places you in a wall)
+3 while room is starting: Set room state to returning after getting the SheetMusic (places you in a wall)
+4 while room is starting: Set room state to returning after using the SheetMusic (places you in a wall)
+B: Toggle organ state between solved (meaning you can play it yourself) and unsolved (triggers the plink sound and stops you after a few keys)
+N or BACKSPACE: Empty log of notes that have been played (used to trigger responses to certain notes being played)
+O: Copy log of notes that have been played to clipboard, represented by letters
+UP + H: Opens a window that you can input a string into (like the one you get by pressing O), which then copies the string and a version of it with symbols for the piano direction each character in the string represents to your clipboard
+numpad8: Increase Cuptain stack length
+numpad5: Decreaase Cuptain stack length
+numpadADD: Increase length between Cuptains
+numpadSUBTRACT: Decrease length between Cuptains
+numpadMULTIPLY: Toggle party being on the stack
+numpad0: Play arriving animation
+
+--- ROOM BEHIND THE WATERFALL ---
+B: Play the Titan Spawn spawning effect in the top right of the screen
+W + 1: Warp to getting the Golden Piano puzzle piece
+W + 2: Warp to right before the party where Gerson turns on the lights
+
+==== SECOND SANCTUARY ====
+P in THE PRINCE prophecy room: Set plot to before seeing the prophecy
+
+--- ROOM OUTSIDE THE FOUNTAIN ---
+1 while room is starting: Set room to first time entering state
+2 while room is starting: Set room to pre-fountain sealing state
+
+--- RIPPLE ROOM ---
+V: Transition to post-transformation version of the room
+W: Same thing but faster
+
+--- RIPPLE ROOM POST-TRANSFORMATION ---
+P while room is starting: Set tempflag 90 to 1 (this does nothing)
+
+--- THE CAGE AND THE GIRL PROPHECIES ROOM ---
+P while room is starting: Set plot to 238
+1 while room is starting: Set plot to 238 and warp to THE CAGE prophecy
+2 while room is starting: Set plot to 238.2 and warp to THE GIRL prophecy
+E while room is starting: Reset the encounter flag for the top enemy
+
+--- MONEY FOUNTAIN ---
+1-6 while room is starting: Set amount of money given in Dark Sanctuary fountain to amount for the corresponding prize
+7 while room is starting: Set amount of money the Forgotten Man gave to 1
+8 while room is starting; Set amount of money the Forgotten Man gave to 0
+W + 0: Warp to Dark Sanctuary money fountain room
+
+--- WINDOW ROOM ---
+P while room is starting before entering the Forgotten Man's room: Set next time the secret room is entered to be the Forgotten Man's room
+P while room is starting after entering the Forgotten Man's room: Allow the Forgotten Man's room to be entered again
+
+--- GERSON'S STUDY ---
+1 while room is starting: Set room state to first time entering
+2 while room is starting: Set room state to before seeing susie's dialogue while walking past the doors and warp to before that point
+3 while room is starting: Toggle warp to Sound of Justice room for after losing to it
+T: Set D$ to 4
+1: Set D$ to 100
+2: Set D$ to 99
+W + 0: Warp to Dark Sanctuary version
+
+--- GERSON CHASE ROOM ---
+P while room is starting: Warp to the part where you can hear sounds
+O while room is starting: Warp to the part where Susie falls
+
+--- SOUND OF JUSTICE BATTLE ROOM ---
+V while room is starting: Prevent intro skip after dying
+B while room is starting: Skip to Kris saving Susie
+N while room is starting: Skip to Ralsei destroying the statue
+
+--- FIRE EXTINGUISHER ROOM ---
+P while room is staarting: Set room state to before walking up the stairs
+W + V: Warp to the top of the stairs
+
+==== THIRD SANCTUARY ====
+P while the dark room with enemy encounters or the FRIEND room is starting: Reset FRIEND room state
+W + 1 in the dark room with enemy encounters: Warp to friend room entrance
+
+--- FLOWER MAN PROPHECY ---
+1 while room is starting: Set Organikk convo state to the one where you got the Egg in the Second Sanctuary
+2 while room is starting: Set Organikk convo state to the one where you didn't get the Egg in the Second Sanctuary
+
+--- JACKENSTEIN CLIMB ---
+numpad8: Increase Cuptain stack length
+numpad5: Decreaase Cuptain stack length
+numpadADD: Increase length between Cuptains
+numpadSUBTRACT: Decrease length between Cuptains
+numpad0: Play throwing animation
+
+--- GLOWING SOUL SEQUENCE ---
+P: Make Susie swap places with Kris
+W: Make Ralsei swap places with Susie

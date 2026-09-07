@@ -9,6 +9,7 @@ function scr_84_debug(arg0)
         
         ossafe_ini_open("DebugPlus.ini")
         global.chemg_god_mode = ini_read_real("AshleysDebug", "chemg_god_mode", 0)
+        global.chemg_show_val = ini_read_real("AshleysDebug", "chemg_show_val", 1)
         global.chemg_show_room = ini_read_real("AshleysDebug", "chemg_show_room", 1)
         global.chemg_show_plot = ini_read_real("AshleysDebug", "chemg_show_plot", 1)
         global.chemg_show_encounterno = ini_read_real("AshleysDebug", "chemg_show_encounterno", 0)
@@ -19,6 +20,7 @@ function scr_84_debug(arg0)
         global.chemg_flag_detection = ini_read_real("AshleysDebug", "chemg_flag_detection", 1)
         global.chemg_menu_key = ini_read_real("AshleysDebug", "chemg_menu_key", vk_f1)
         global.chemg_debug_messages = ini_read_real("AshleysDebug", "chemg_debug_messages", 1)
+        global.chemg_show_interact_box = ini_read_real("AshleysDebug", "chemg_show_interact_box", 1)
         ossafe_ini_close()
         
         global.chemg_rebinding = false
@@ -30,8 +32,38 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Money")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[setgold]", 0, "Set D$")
-        scr_84_add_menu_item(parent, "[setgoldlight]", 0, "Set $")
+        scr_84_add_menu_item(parent, {
+            action: function()
+            {
+                var varname = get_string("Enter Amount", "")
+                if varname != ""
+                {
+                    try
+                        global.gold = ceil(varname)
+                    catch(exc)
+                    {
+                        global.gold = 0
+                        show_message("you tried to put letters in the number box and\nit blew up your wallet so you have no money\nnow good job kid hope you're happy")
+                    }
+                }
+            }
+        }, 0, "Set D$")
+        scr_84_add_menu_item(parent, {
+            action: function()
+            {
+                var varname = get_string("Enter Amount", "")
+                if varname != ""
+                {
+                    try
+                        global.lgold = ceil(varname)
+                    catch(exc)
+                    {
+                        global.lgold = 0
+                        show_message("you tried to put letters in the number box and\nit blew up your wallet so you have no money\nnow good job kid hope you're happy")
+                    }
+                }
+            }
+        }, 0, "Set $")
         scr_84_add_menu_item(parent, "[gold]", 50, "+50 D$")
         scr_84_add_menu_item(parent, "[gold]", -50, "-50 D$")
         scr_84_add_menu_item(parent, "[gold]", 100, "+100 D$")
@@ -55,57 +87,44 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Give Dark Item")
         scr_84_push(parent)
         parent = group
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 1")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[item]", 2, "ReviveMint")
-        scr_84_add_menu_item(parent, "[item]", 3, "Glowshard")
-        scr_84_add_menu_item(parent, "[item]", 4, "Manual")
-        scr_84_add_menu_item(parent, "[item]", 5, "BrokenCake")
-        scr_84_add_menu_item(parent, "[item]", 6, "Top Cake")
-        scr_84_add_menu_item(parent, "[item]", 7, "SpinCake")
-        scr_84_add_menu_item(parent, "[item]", 8, "Darkburger")
-        scr_84_add_menu_item(parent, "[item]", 9, "LancerCookie")
-        scr_84_add_menu_item(parent, "[item]", 10, "GigaSalad")
-        scr_84_add_menu_item(parent, "[item]", 11, "Clubswich")
-        scr_84_add_menu_item(parent, "[item]", 12, "HeartsDonut")
-        scr_84_add_menu_item(parent, "[item]", 13, "ChocDiamond")
-        scr_84_add_menu_item(parent, "[item]", 14, "FavSandwich")
-        scr_84_add_menu_item(parent, "[item]", 15, "RouxlsRoux")
+        
+        // if you wanna add a custom item or smth use scr_84_add_menu_item(parent, "[item]", <id>, <itemname>)
+        // you can also use scr_iteminfo(<id>) and then put "itemnameb" in place of the item's name to pull it straight from its item data
+        // you can do both of the above with weapons and armors and stuff too by just using their scripts and variable names instead
+        
+        // all items between start and end are added automatically
+        for (var i = global.chapter >= 4 ? 2 : 1; i <= 15; i ++)
+        {
+            scr_iteminfo(i) // get info for current item id
+            scr_84_add_menu_item(parent, "[item]", i, itemnameb) // add it
+        }
         parent = scr_84_pop()
         
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 2")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[item]", 16, "CD Bagel")
-        scr_84_add_menu_item(parent, "[item]", 17, "Mannequin")
-        scr_84_add_menu_item(parent, "[item]", 18, "Kris Tea")
-        scr_84_add_menu_item(parent, "[item]", 19, "Noelle Tea")
-        scr_84_add_menu_item(parent, "[item]", 20, "Ralsei Tea")
-        scr_84_add_menu_item(parent, "[item]", 21, "Susie Tea")
-        scr_84_add_menu_item(parent, "[item]", 22, "DD-Burger")
-        scr_84_add_menu_item(parent, "[item]", 23, "LightCandy")
-        scr_84_add_menu_item(parent, "[item]", 24, "ButJuice")
-        scr_84_add_menu_item(parent, "[item]", 25, "SpaghettiCode")
-        scr_84_add_menu_item(parent, "[item]", 26, "JavaCookie")
-        scr_84_add_menu_item(parent, "[item]", 27, "TensionBit")
-        scr_84_add_menu_item(parent, "[item]", 28, "TensionGem")
-        scr_84_add_menu_item(parent, "[item]", 29, "TensionMax")
-        scr_84_add_menu_item(parent, "[item]", 30, "ReviveDust")
-        scr_84_add_menu_item(parent, "[item]", 31, "ReviveBrite")
-        scr_84_add_menu_item(parent, "[item]", 32, "S.POISON")
-        scr_84_add_menu_item(parent, "[item]", 33, "DogDollar")
+        
+        for (var i = 16; i <= 33; i ++)
+        {
+            scr_iteminfo(i)
+            scr_84_add_menu_item(parent, "[item]", i, itemnameb)
+        }
         parent = scr_84_pop()
         parent = scr_84_pop()
         
         
-        
+        // leaving this manual cus light world items do some weird shit for their names in scr_litemname
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Give Light Item")
         scr_84_push(parent)
         parent = group
+        // chapter 1
         scr_84_add_menu_item(parent, "[lightitem]", 1, "Hot Chocolate")
         scr_84_add_menu_item(parent, "[lightitem]", 2, "Pencil")
         scr_84_add_menu_item(parent, "[lightitem]", 3, "Bandage")
@@ -114,9 +133,11 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[lightitem]", 6, "Halloween Pencil")
         scr_84_add_menu_item(parent, "[lightitem]", 7, "Lucky Pencil")
         scr_84_add_menu_item(parent, "[lightitem]", 8, "Egg")
+        
+        // chapter 2
         scr_84_add_menu_item(parent, "[lightitem]", 9, "Cards")
         scr_84_add_menu_item(parent, "[lightitem]", 10, "Box of Heart Candy")
-        scr_84_add_menu_item(parent, "[lightitem]", 11, "Glass")
+        scr_84_add_menu_item(parent, "[lightitem]", 11, "Glass") // this is also in chapter 1
         scr_84_add_menu_item(parent, "[lightitem]", 12, "Eraser")
         scr_84_add_menu_item(parent, "[lightitem]", 13, "Mech. Pencil")
         scr_84_add_menu_item(parent, "[lightitem]", 14, "Wristwatch")
@@ -127,31 +148,34 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Give Key Item")
         scr_84_push(parent)
         parent = group
+        
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 1")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[keyitem]", 1, "Cell Phone")
-        scr_84_add_menu_item(parent, "[keyitem]", 2, "Egg")
-        scr_84_add_menu_item(parent, "[keyitem]", 3, "BrokenCake")
-        scr_84_add_menu_item(parent, "[keyitem]", 4, "Broken Key A")
-        scr_84_add_menu_item(parent, "[keyitem]", 5, "Door Key")
-        scr_84_add_menu_item(parent, "[keyitem]", 6, "Broken Key B")
-        scr_84_add_menu_item(parent, "[keyitem]", 7, "Broken Key C")
+        
+        for (var i = 1; i <= 7; i ++)
+        {
+            scr_keyiteminfo(i)
+            scr_84_add_menu_item(parent, "[keyitem]", i, tempkeyitemname)
+        }
+        if global.chapter == 1 // shadow crystal. should technically be in the chapter 1 key items always but it's easier to put it in chapter 2's from then onward lol
+        {
+            scr_keyiteminfo(13)
+            scr_84_add_menu_item(parent, "[keyitem]", 13, tempkeyitemname)
+        }
         parent = scr_84_pop()
         
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 2")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[keyitem]", 8, "Lancer")
-        scr_84_add_menu_item(parent, "[keyitem]", 9, "Rouxls Kaard")
-        scr_84_add_menu_item(parent, "[keyitem]", 10, "EmptyDisk")
-        scr_84_add_menu_item(parent, "[keyitem]", 11, "LoadedDisk")
-        scr_84_add_menu_item(parent, "[keyitem]", 12, "KeyGen")
-        scr_84_add_menu_item(parent, "[keyitem]", 13, "ShadowCrystal")
-        scr_84_add_menu_item(parent, "[keyitem]", 14, "StarWalker")
-        scr_84_add_menu_item(parent, "[keyitem]", 15, "PureCrystal")
+        
+        for (var i = 8; i <= 15; i ++)
+        {
+            scr_keyiteminfo(i)
+            scr_84_add_menu_item(parent, "[keyitem]", i, tempkeyitemname)
+        }
         parent = scr_84_pop()
         parent = scr_84_pop()
         
@@ -166,38 +190,26 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 1")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[weaponitem]", 1, "Wood Blade")
-        scr_84_add_menu_item(parent, "[weaponitem]", 2, "Mane Ax")
-        scr_84_add_menu_item(parent, "[weaponitem]", 3, "Red Scarf")
-        scr_84_add_menu_item(parent, "[weaponitem]", 4, "EverybodyWeapon")
-        scr_84_add_menu_item(parent, "[weaponitem]", 5, "Spookysword")
-        scr_84_add_menu_item(parent, "[weaponitem]", 6, "Brave Ax")
-        scr_84_add_menu_item(parent, "[weaponitem]", 7, "DEVILSKNIFE")
-        scr_84_add_menu_item(parent, "[weaponitem]", 8, "Trefoil")
-        scr_84_add_menu_item(parent, "[weaponitem]", 9, "Ragger")
-        scr_84_add_menu_item(parent, "[weaponitem]", 10, "DaintyScarf")
+        
+        for (var i = 1; i <= 10; i ++)
+        {
+            scr_weaponinfo(i)
+            scr_84_add_menu_item(parent, "[weaponitem]", i, weaponnametemp)
+        }
         parent = scr_84_pop()
         
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 2")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[weaponitem]", 11, "TwistedSwd")
-        scr_84_add_menu_item(parent, "[weaponitem]", 12, "SnowRing")
-        scr_84_add_menu_item(parent, "[weaponitem]", 13, "ThornRing")
-        scr_84_add_menu_item(parent, "[weaponitem]", 14, "BounceBlade")
-        scr_84_add_menu_item(parent, "[weaponitem]", 15, "CheerScarf")
-        scr_84_add_menu_item(parent, "[weaponitem]", 16, "MechaSaber")
-        scr_84_add_menu_item(parent, "[weaponitem]", 17, "AutoAxe")
-        scr_84_add_menu_item(parent, "[weaponitem]", 18, "FiberScarf")
-        scr_84_add_menu_item(parent, "[weaponitem]", 19, "Ragger2")
-        scr_84_add_menu_item(parent, "[weaponitem]", 20, "BrokenSwd")
-        scr_84_add_menu_item(parent, "[weaponitem]", 21, "PuppetScarf")
-        scr_84_add_menu_item(parent, "[weaponitem]", 22, "FreezeRing")
+        
+        for (var i = 11; i <= 22; i ++)
+        {
+            scr_weaponinfo(i)
+            scr_84_add_menu_item(parent, "[weaponitem]", i, weaponnametemp)
+        }
         parent = scr_84_pop()
         parent = scr_84_pop()
-        
-        
         
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Give Armor")
@@ -207,39 +219,81 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 1")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[armoritem]", 1, "Amber Card")
-        scr_84_add_menu_item(parent, "[armoritem]", 2, "Dice Brace")
-        scr_84_add_menu_item(parent, "[armoritem]", 3, "Pink Ribbon")
-        scr_84_add_menu_item(parent, "[armoritem]", 4, "White Ribbon")
-        scr_84_add_menu_item(parent, "[armoritem]", 5, "IronShackle")
-        scr_84_add_menu_item(parent, "[armoritem]", 6, "MouseToken")
-        scr_84_add_menu_item(parent, "[armoritem]", 7, "JEVILSTAIL")
+        
+        for (var i = 1; i <= 7; i ++)
+        {
+            scr_armorinfo(i)
+            scr_84_add_menu_item(parent, "[armoritem]", i, armornametemp)
+        }
         parent = scr_84_pop()
         
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 2")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[armoritem]", 8, "Silver Card")
-        scr_84_add_menu_item(parent, "[armoritem]", 9, "TwinRibbon")
-        scr_84_add_menu_item(parent, "[armoritem]", 10, "GlowWrist")
-        scr_84_add_menu_item(parent, "[armoritem]", 11, "ChainMail")
-        scr_84_add_menu_item(parent, "[armoritem]", 12, "B.ShotBowtie")
-        scr_84_add_menu_item(parent, "[armoritem]", 13, "SpikeBand")
-        scr_84_add_menu_item(parent, "[armoritem]", 14, "SilverWatch")
-        scr_84_add_menu_item(parent, "[armoritem]", 15, "TensionBow")
-        scr_84_add_menu_item(parent, "[armoritem]", 16, "Mannequin")
-        scr_84_add_menu_item(parent, "[armoritem]", 17, "DarkGoldBand")
-        scr_84_add_menu_item(parent, "[armoritem]", 18, "SkyMantle")
-        scr_84_add_menu_item(parent, "[armoritem]", 19, "SpikeShackle")
-        scr_84_add_menu_item(parent, "[armoritem]", 20, "FrayedBowtie")
-        scr_84_add_menu_item(parent, "[armoritem]", 21, "Dealmaker")
-        scr_84_add_menu_item(parent, "[armoritem]", 22, "RoyalPin")
+        
+        for (var i = 8; i <= 22; i ++)
+        {
+            scr_armorinfo(i)
+            scr_84_add_menu_item(parent, "[armoritem]", i, armornametemp)
+        }
         parent = scr_84_pop()
         parent = scr_84_pop()
         
-        scr_84_add_menu_item(parent, "[idealitem]", 0, "Idealize Items/Gear")
-        scr_84_add_menu_item(parent, "[idealitemsideb]", 0, "Idealize Items/Gear (Side B)")
+        scr_84_add_menu_item(parent, {
+            action: function()
+            {
+                for (i = 0; i < 13; i++)
+                    global.item[i] = 0
+                repeat(2)
+                    scr_itemget(16)
+                repeat(6)
+                    scr_itemget(24)
+                scr_itemget(7)
+                repeat(3)
+                    scr_itemget(2)
+                scr_weaponget(16)
+                scr_weaponget(14)
+                scr_weaponget(17)
+                scr_weaponget(7)
+                scr_weaponget(18)
+                scr_weaponget(19)
+                scr_weaponget(21)
+                repeat(6)
+                    scr_armorget(22)
+                scr_armorget(2)
+                scr_armorget(3)
+                scr_armorget(5)
+                scr_armorget(7)
+                scr_armorget(21)
+                show_message("Idealized Items/Gear")
+            }
+        }, 0, "Idealize Items/Gear")
+        
+        scr_84_add_menu_item(parent, {
+            action: function()
+            {
+                for (i = 0; i < 13; i++)
+                    global.item[i] = 0
+                repeat(2)
+                    scr_itemget(8)
+                repeat(9)
+                    scr_itemget(16)
+                scr_itemget(23)
+                scr_weaponget(16)
+                scr_weaponget(7)
+                scr_weaponget(17)
+                scr_weaponget(18)
+                scr_weaponget(19)
+                scr_weaponget(22)
+                scr_weaponget(13)
+                repeat(6)
+                    scr_armorget(8)
+                scr_armorget(3)
+                scr_armorget(5)
+                show_message("Idealized Items/Gear for Weird Route")
+            }
+        }, 0, "Idealize Items/Gear (Side B)")
         
         parent = scr_84_pop()
         
@@ -249,7 +303,26 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Rooms")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[gotoroom]", 0, "Go to Specific Room")
+        scr_84_add_menu_item(parent, {
+            action: function()
+            {
+                var newroom = get_string("Enter Room Name or ID (ex. room_castle_tutorial)", "")
+                if (newroom != "")
+                {
+                    try
+                    {
+                        room_goto(real(newroom))
+                    }
+                    catch(exc)
+                    {
+                        if (room_exists(asset_get_index(newroom)))
+                            room_goto(asset_get_index(newroom))
+                        else if newroom != ""
+                            show_message("Doesn't exist vro.")
+                    }
+                }
+            }
+        }, 0, "Go to Specific Room")
         scr_84_add_menu_item(parent, "[room]", ROOM_INITIALIZE, "ROOM_INITIALIZE")
         scr_84_add_menu_item(parent, "[room]", PLACE_CONTACT, "PLACE_CONTACT")
         group = ds_list_create()
@@ -566,6 +639,7 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_cyber_battle_maze_3, "room_dw_cyber_battle_maze_3")
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_cyber_teacup_2, "room_dw_cyber_teacup_2")
         scr_84_add_menu_item(parent, "[roomdark]", room_teacup_demobullets, "room_teacup_demobullets")
+        scr_84_add_menu_item(parent, "[roomdark]", room_dw_cyber_shaunsmusicalbullettunnel, "room_dw_cyber_shaunsmusicalbullettunnel")
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_cyber_maze_rhythm, "room_dw_cyber_maze_rhythm")
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_cyber_escalator_slide, "room_dw_cyber_escalator_slide")
         scr_84_add_menu_item(parent, "[roomdark]", room_dw_cyber_nuberts_treasure, "room_dw_cyber_nuberts_treasure")
@@ -652,6 +726,7 @@ function scr_84_debug(arg0)
         scr_84_push(parent)
         parent = group
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_god_mode", "God Mode")
+        
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_room", "Show Room Name")
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Additional Visibility Toggles")
@@ -663,8 +738,6 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_entrance", "Show Entrance")
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "debug_fps_display", "Show FPS")
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_debug_messages", "Show Debug Messages")
-        parent = scr_84_pop()
-        
         scr_84_add_menu_item(parent, {
             action: function() 
             {
@@ -678,6 +751,9 @@ function scr_84_debug(arg0)
                 return name + ": " + (global.chemg_display_flag_changes ? "ON" : "OFF")
             }
         }, "", "Show Flag Changes")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_interact_box", "Show Interaction Box")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_val", "Show Misc Values")
+        parent = scr_84_pop()
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_flag_detection", "Always Detect Flag Changes")
         
         scr_84_add_menu_item(parent, {
@@ -696,18 +772,44 @@ function scr_84_debug(arg0)
             }
         }, "", "Menu Keybind");
         
-        scr_84_add_menu_item(parent, "[restart]", "", "Restart Room")
-        scr_84_add_menu_item(parent, "[loadj]", "", "Reload Japanese")
+        scr_84_add_menu_item(parent, {
+            action: function()
+            {
+                show_debug_message("restart room")
+                room_restart()
+                global.chemg_menu_depth = 0
+            }
+        }, "", "Restart Room")
+        scr_84_add_menu_item(parent, {
+            action: function()
+            {
+                var type = scr_84_lang_load()
+                show_debug_message("loaded " + type + " lang file")
+                show_message("loaded " + type + " lang file")
+                global.chemg_menu_depth = 0
+            }
+        }, "", "Reload Japanese")
         scr_84_add_menu_item(parent, "[lang]", "ja", "Use Japanese")
         scr_84_add_menu_item(parent, "[lang]", "en", "Use English")
-        scr_84_add_menu_item(parent, "[phone]", "", "Give Sans's Number")
-        scr_84_add_menu_item(parent, "[fonttest]", "", "Font Test")
+        scr_84_add_menu_item(parent, {
+            action: function()
+            {
+                scr_phoneadd(202)
+            }
+        }, "", "Give Sans's Number")
+        scr_84_add_menu_item(parent, {
+            action: function()
+            {
+                global.chemg_font_test = !global.chemg_font_test
+                global.chemg_menu_depth = 0
+            }
+        }, "", "Font Test")
         
         // Just call snd_free_all directly
         scr_84_add_menu_item(parent, {action: snd_free_all}, "", "Stop All Music");
         scr_84_add_menu_item(parent, {action: function() 
         {
-            show_message("8-4 Ltd: Original Menu from Chapter 1.\nTenna Save Editor: Flag list.\nbarofsoap418: Restored the menu in all chapters and updated most things for them/added most new features.\nVRadExe: Chapter 5 Room list, figured out Chapter 3+ handler system and how to add text to menu entries, made room warp types function properly+added one for starting in platforming mode, updated font list.\nZender Troop: Documented most global.plot changes in Chapter 5, which were used as reference for the Plot Warp menu.\nFafuhnir: literally nothing but i wanna shout him out hi leon :wave:")
+            show_message("8-4 Ltd: Original Menu from Chapter 1.\nTenna Save Editor: Flag list.\nbarofsoap418: Restored the menu in all chapters and updated most things for them/added most new features.\nVRadExe: Chapter 5 Room list, figured out Chapter 3+ handler system and how to add extra text onto menu entries, several new features.\nZender Troop: Documented most global.plot changes in Chapters 4 and 5 for the Plot Warp menu.\nFafuhnir: literally nothing but i wanna shout him out hi leon :wave:")
         }}, "", "Credits")
         
         scr_84_add_menu_item(parent, {
@@ -814,76 +916,35 @@ function scr_84_debug(arg0)
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 1")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[flagset]", 605, "Rudinn")
-        scr_84_add_menu_item(parent, "[flagset]", 606, "Hathy")
-        scr_84_add_menu_item(parent, "[flagset]", 611, "Ponman")
-        scr_84_add_menu_item(parent, "[flagset]", 613, "Rabbick")
-        scr_84_add_menu_item(parent, "[flagset]", 614, "Bloxor")
-        scr_84_add_menu_item(parent, "[flagset]", 615, "Jigsawry")
-        scr_84_add_menu_item(parent, "[flagset]", 616, "Clover")
-        scr_84_add_menu_item(parent, "[flagset]", 620, "JEVIL")
-        scr_84_add_menu_item(parent, "[flagset]", 622, "Rudinn Ranger")
-        scr_84_add_menu_item(parent, "[flagset]", 623, "Head Hathy")
+        
+        for (var i = 5; i <= 23; i ++)
+        {
+            scr_recruit_info(i)
+            if !string_starts_with(_name, "Known Quantity ") // don't add recruits with no data
+                scr_84_add_menu_item(parent, "[flagset]", 600 + i, _name)
+        }
+        
+        scr_84_add_menu_item(parent, "[recruitall]", 1, "Recruit All")
+        scr_84_add_menu_item(parent, "[recruitremove]", 1, "Remove All")
+        scr_84_add_menu_item(parent, "[recruitlose]", 1, "LOSE All")
         parent = scr_84_pop()
         
         group = ds_list_create()
         scr_84_add_menu_item(parent, "[group]", group, "Chapter 2")
         scr_84_push(parent)
         parent = group
-        scr_84_add_menu_item(parent, "[flagset]", 630, "Ambyu-Lance")
-        scr_84_add_menu_item(parent, "[flagset]", 631, "Poppup")
-        scr_84_add_menu_item(parent, "[flagset]", 632, "Tasque")
-        scr_84_add_menu_item(parent, "[flagset]", 633, "Werewire")
-        scr_84_add_menu_item(parent, "[flagset]", 634, "Maus")
-        scr_84_add_menu_item(parent, "[flagset]", 635, "Virovirokun")
-        scr_84_add_menu_item(parent, "[flagset]", 636, "Swatchling")
-        scr_84_add_menu_item(parent, "[flagset]", 640, "Werewerewire")
-        scr_84_add_menu_item(parent, "[flagset]", 642, "Tasque Manager")
-        scr_84_add_menu_item(parent, "[flagset]", 644, "Mauswheel")
-        parent = scr_84_pop()
         
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Chapter 3")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[flagset]", 654, "Shadowguy")
-        scr_84_add_menu_item(parent, "[flagset]", 655, "Shuttah")
-        scr_84_add_menu_item(parent, "[flagset]", 656, "Zapper")
-        scr_84_add_menu_item(parent, "[flagset]", 657, "Ribbick")
-        scr_84_add_menu_item(parent, "[flagset]", 658, "Watercooler")
-        scr_84_add_menu_item(parent, "[flagset]", 659, "Pippins")
-        scr_84_add_menu_item(parent, "[flagset]", 660, "Elnina")
-        scr_84_add_menu_item(parent, "[flagset]", 661, "Lanino")
-        parent = scr_84_pop()
+        for (var i = 30; i <= 44; i ++)
+        {
+            scr_recruit_info(i)
+            if !string_starts_with(_name, "Known Quantity ") // don't add recruits with no data
+                scr_84_add_menu_item(parent, "[flagset]", 600 + i, _name)
+        }
         
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Chapter 4")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[flagset]", 662, "Guei")
-        scr_84_add_menu_item(parent, "[flagset]", 663, "Balthizard")
-        scr_84_add_menu_item(parent, "[flagset]", 664, "Bibliox")
-        scr_84_add_menu_item(parent, "[flagset]", 665, "Mizzle")
-        scr_84_add_menu_item(parent, "[flagset]", 666, "Wicabel")
-        scr_84_add_menu_item(parent, "[flagset]", 667, "Winglade")
-        scr_84_add_menu_item(parent, "[flagset]", 668, "Organikk")
-        scr_84_add_menu_item(parent, "[flagset]", 669, "HolywaterCooler")
+        scr_84_add_menu_item(parent, "[recruitall]", 2, "Recruit All")
+        scr_84_add_menu_item(parent, "[recruitremove]", 2, "Remove All")
+        scr_84_add_menu_item(parent, "[recruitlose]", 2, "LOSE All")
         parent = scr_84_pop()
-        
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Chapter 5")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[flagset]", 670, "Floradinn")
-        scr_84_add_menu_item(parent, "[flagset]", 671, "Leafling")
-        scr_84_add_menu_item(parent, "[flagset]", 672, "Shi")
-        scr_84_add_menu_item(parent, "[flagset]", 673, "Shinobeetle")
-        scr_84_add_menu_item(parent, "[flagset]", 674, "KawKaw")
-        scr_84_add_menu_item(parent, "[flagset]", 675, "Sheary")
-        scr_84_add_menu_item(parent, "[flagset]", 676, "Netskie")
-        scr_84_add_menu_item(parent, "[flagset]", 677, "Terakota")
-        parent = scr_84_pop()
-        
         
         parent = scr_84_pop()
         group = ds_list_create()
@@ -981,7 +1042,7 @@ function scr_84_debug(arg0)
                     exit
             }
             
-            var _str = "Enter the variable's new value as a " + type
+            var _str = concat("Enter the variable's new value as a ", type, " (currently: ", variable_global_get(_globalvar), ")")
             var _globalvarvalue = get_string(_str, "")
             
             if type == "number"
@@ -1008,98 +1069,75 @@ function scr_84_debug(arg0)
         
         
         group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Stats")
+        scr_84_add_menu_item(parent, "[group]", group, "Party/Stat Editor")
         scr_84_push(parent)
         parent = group
+        // it's just the same thing each time so i made this into one array
+        for (var i = 1; i < 5; i ++)
+        {
+            group = ds_list_create()
+            scr_84_add_menu_item(parent, "[group]", group, global.charname[i])
+            scr_84_push(parent)
+            parent = group
+            
+            scr_84_add_menu_item(parent, "[hp]", i, "HP")
+            scr_84_add_menu_item(parent, "[hpmax]", i, "Max Hp")
+            scr_84_add_menu_item(parent, "[attack]", i, "Attack")
+            scr_84_add_menu_item(parent, "[defense]", i, "Defense")
+            scr_84_add_menu_item(parent, "[magic]", i, "Magic")
+            
+            scr_84_add_menu_item(parent, "[weapon]", i, "Weapon")
+            scr_84_add_menu_item(parent, "[armor1]", i, "Armor 1")
+            scr_84_add_menu_item(parent, "[armor2]", i, "Armor 2")
+            
+            group = ds_list_create()
+            scr_84_add_menu_item(parent, "[group]", group, "Spells")
+            scr_84_push(parent)
+            parent = group
+            for (var j = 0; j < 12; j ++)
+                scr_84_add_menu_item(parent, "[spell]", i, concat((j < 10 ? 0 : ""), j, " : ", "Empty"))
+            parent = scr_84_pop()
+            parent = scr_84_pop()
+        }
         
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Kris Stats")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[hp]", 1, "Set HP")
-        scr_84_add_menu_item(parent, "[hpmax]", 1, "Set Max Hp")
-        scr_84_add_menu_item(parent, "[attack]", 1, "Set Attack")
-        scr_84_add_menu_item(parent, "[defense]", 1, "Set Defense")
-        scr_84_add_menu_item(parent, "[magic]", 1, "Set Magic")
+        scr_84_add_menu_item(parent, {
+            action: function()
+            {
+                // kris
+                global.maxhp[1] = 160
+                global.hp[1] = 160
+                global.at[1] = 14
+                global.df[1] = 2
+                global.mag[1] = 0
+                
+                // susie
+                global.maxhp[2] = 190
+                global.hp[2] = 190
+                global.at[2] = 18
+                global.df[2] = 2
+                global.mag[2] = 3
+                
+                // ralsei
+                global.maxhp[3] = 140
+                global.hp[3] = 140
+                global.at[3] = 12
+                global.df[3] = 2
+                global.mag[3] = 11
+                
+                // noelle
+                global.maxhp[4] = 166
+                global.hp[4] = 166
+                global.at[4] = 8
+                global.df[4] = 1
+                global.mag[4] = 16
+                show_message("Idealized Stats")
+            }
+        }, "", "Idealize Stats")
         
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Spells")
-        scr_84_push(parent)
-        parent = group
-        for (var i = 0; i < 12; i ++)
-            scr_84_add_menu_item(parent, "[spell]", 1, concat(i, " : ", "Empty"))
-        parent = scr_84_pop()
-        parent = scr_84_pop()
-        
-        
-        
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Susie Stats")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[hp]", 2, "Set HP")
-        scr_84_add_menu_item(parent, "[hpmax]", 2, "Set Max Hp")
-        scr_84_add_menu_item(parent, "[attack]", 2, "Set Attack")
-        scr_84_add_menu_item(parent, "[defense]", 2, "Set Defense")
-        scr_84_add_menu_item(parent, "[magic]", 2, "Set Magic")
-        
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Spells")
-        scr_84_push(parent)
-        parent = group
-        for (var i = 0; i < 12; i ++)
-            scr_84_add_menu_item(parent, "[spell]", 2, concat(i, " : ", "Empty"))
-        parent = scr_84_pop()
-        parent = scr_84_pop()
-        
-        
-        
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Ralsei Stats")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[hp]", 3, "Set HP")
-        scr_84_add_menu_item(parent, "[hpmax]", 3, "Set Max Hp")
-        scr_84_add_menu_item(parent, "[attack]", 3, "Set Attack")
-        scr_84_add_menu_item(parent, "[defense]", 3, "Set Defense")
-        scr_84_add_menu_item(parent, "[magic]", 3, "Set Magic")
-        
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Spells")
-        scr_84_push(parent)
-        parent = group
-        for (var i = 0; i < 12; i ++)
-            scr_84_add_menu_item(parent, "[spell]", 3, concat(i, " : ", "Empty"))
-        parent = scr_84_pop()
-        parent = scr_84_pop()
-        
-        
-        
-        
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Noelle Stats")
-        scr_84_push(parent)
-        parent = group
-        scr_84_add_menu_item(parent, "[hp]", 4, "Set HP")
-        scr_84_add_menu_item(parent, "[hpmax]", 4, "Set Max Hp")
-        scr_84_add_menu_item(parent, "[attack]", 4, "Set Attack")
-        scr_84_add_menu_item(parent, "[defense]", 4, "Set Defense")
-        scr_84_add_menu_item(parent, "[magic]", 4, "Set Magic")
-        
-        group = ds_list_create()
-        scr_84_add_menu_item(parent, "[group]", group, "Spells")
-        scr_84_push(parent)
-        parent = group
-        for (var i = 0; i < 12; i ++)
-            scr_84_add_menu_item(parent, "[spell]", 4, concat(i, " : ", "Empty"))
-        parent = scr_84_pop()
-        parent = scr_84_pop()
-        
-        scr_84_add_menu_item(parent, "[idealall]", "", "Idealize Stats")
-        
-        scr_84_add_menu_item(parent, "[setmember]", 0, "Set Party Member 1 (BROKEN)")
-        scr_84_add_menu_item(parent, "[setmember]", 1, "Set Party Member 2")
-        scr_84_add_menu_item(parent, "[setmember]", 2, "Set Party Member 3")
+        for (var i = 0; i < 3; i ++)
+        {
+            scr_84_add_menu_item(parent, "[setmember]", i, concat("Party Member ", (i + 1)))
+        }
         parent = scr_84_pop()
         
         
@@ -1282,12 +1320,20 @@ function scr_84_debug(arg0)
     draw_set_valign(fa_top)
     
     if ((keyboard_check_pressed(global.chemg_menu_key) || gamepad_button_check_pressed(obj_gamecontroller.gamepad_id, gp_stickr))
-    && !global.chemg_rebinding && global.chemg_menu_depth <= 0)
+    && !global.chemg_rebinding)
     {
-        global.chemg_menu_depth = 1
-        global.chemg_interact = global.interact
-        global.chemg_yoffset = 0
-        global.interact = 0
+        if global.chemg_menu_depth <= 0
+        {
+            global.chemg_menu_depth = 1
+            global.chemg_interact = global.interact
+            global.chemg_yoffset = 0
+            global.interact = 0
+        }
+        else
+        {
+            global.chemg_menu_depth = 0
+            global.interact = global.chemg_interact
+        }
     }
     if (global.chemg_menu_depth > 0)
     {
@@ -1316,7 +1362,7 @@ function scr_84_debug(arg0)
             && !global.chemg_rebinding)
         {
             debug_movetimer += timeinc
-            if (debug_movetimer >= 3.25)
+            if (debug_movetimer >= (3.25 * (game_get_speed(gamespeed_fps) / 30))) // make the amount of time it takes for the autoscrolling to kick in consistent when using the speed up debug key (the scrolling itelf will still be fast tho,,,,)
             {
                 if (keyboard_check(global.input_k[2]) || gamepad_button_check(obj_gamecontroller.gamepad_id, global.input_g[2]))
                     debug_upmove = 1
@@ -1386,13 +1432,6 @@ function scr_84_debug(arg0)
                     global.chemg_menu_indices[global.chemg_menu_depth] = 0
                     global.chemg_menu_depth += 1
                 }
-                else if (choice == "[loadj]")
-                {
-                    var type = scr_84_lang_load()
-                    show_debug_message("loaded " + type + " lang file")
-                    show_message("loaded " + type + " lang file")
-                    global.chemg_menu_depth = 0
-                }
                 else if (choice == "[room]") // Light World rooms
                 {
                     global.darkzone = 0
@@ -1434,12 +1473,6 @@ function scr_84_debug(arg0)
                     scr_84_init_localization()
                     room_restart()
                 }
-                else if (choice == "[restart]")
-                {
-                    show_debug_message("restart room")
-                    room_restart()
-                    global.chemg_menu_depth = 0
-                }
                 else if (choice == "[lightitem]")
                 {
                     scr_litemget(choice_data)
@@ -1459,10 +1492,6 @@ function scr_84_debug(arg0)
                 else if (choice == "[armoritem]")
                 {
                     scr_armorget(choice_data)
-                }
-                else if (choice == "[phone]")
-                {
-                    scr_phoneadd(202)
                 }
                 else if (choice == "[gold]")
                 {
@@ -1484,29 +1513,6 @@ function scr_84_debug(arg0)
                     ossafe_ini_close()
                     
                 }
-                else if (choice == "[fonttest]")
-                {
-                    global.chemg_font_test = !global.chemg_font_test
-                    global.chemg_menu_depth = 0
-                }
-                else if (choice == "[gotoroom]")
-                {
-                    var varname = get_string("Enter Room ID (ex. room_castle_tutorial)", "")
-                    if (room_exists(asset_get_index(varname)))
-                        room_goto(asset_get_index(varname))
-                    else if varname != ""
-                        show_message("Doesn't exist vro.")
-                }
-                else if (choice == "[setgold]")
-                {
-                    var varname = get_string("Enter Amount", "")
-                    global.gold = ceil(varname)
-                }
-                else if (choice == "[setgoldlight]")
-                {
-                    var varname = get_string("Enter Amount", "")
-                    global.lgold = ceil(varname)
-                }
                 else if (choice == "[flagset]")
                 {
                     var varname = get_string("Enter new value for flag " + string(choice_data) + " (currently: " + string(global.flag[choice_data]) + ")", "")
@@ -1518,142 +1524,246 @@ function scr_84_debug(arg0)
                             show_message("Flags can only be set to numbers!!!!")
                     }
                 }
-                else if (choice == "[flagtog]")
-                {
-                    global.flag[choice_data] = !global.flag[choice_data]
-                }
-                else if (choice == "[idealitem]")
-                {
-                    for (i = 0; i < 13; i++)
-                        global.item[i] = 0
-                    for (i = 0; i < 2; i++)
-                        scr_itemget(16)
-                    for (i = 0; i < 6; i++)
-                        scr_itemget(24)
-                    scr_itemget(7)
-                    for (i = 0; i < 3; i++)
-                        scr_itemget(2)
-                    scr_weaponget(16)
-                    scr_weaponget(14)
-                    scr_weaponget(17)
-                    scr_weaponget(7)
-                    scr_weaponget(18)
-                    scr_weaponget(19)
-                    scr_weaponget(21)
-                    for (i = 0; i < 6; i++)
-                        scr_armorget(22)
-                    scr_armorget(2)
-                    scr_armorget(3)
-                    scr_armorget(5)
-                    scr_armorget(7)
-                    scr_armorget(21)
-                    show_message("Idealized Items/Gear")
-                }
-                else if (choice == "[idealitemsideb]")
-                {
-                    for (i = 0; i < 13; i++)
-                        global.item[i] = 0
-                    for (i = 0; i < 2; i++)
-                        scr_itemget(8)
-                    for (i = 0; i < 9; i++)
-                        scr_itemget(16)
-                    scr_itemget(23)
-                    scr_weaponget(16)
-                    scr_weaponget(7)
-                    scr_weaponget(17)
-                    scr_weaponget(18)
-                    scr_weaponget(19)
-                    scr_weaponget(22)
-                    scr_weaponget(13)
-                    for (i = 0; i < 6; i++)
-                        scr_armorget(8)
-                    scr_armorget(3)
-                    scr_armorget(5)
-                    show_message("Idealized Items/Gear for Weird Route")
-                }
                 else if (choice == "[hp]")
                 {
                     var newhp = get_string("Enter their new HP value", "")
                     if (newhp != "")
-                        global.hp[choice_data] = real(newhp)
+                    {
+                        try
+                        {
+                            global.hp[choice_data] = real(newhp)
+                        }
+                        catch(exc)
+                            show_message("It needs numbers or else it will die :(")
+                    }
                 }
                 else if (choice == "[hpmax]")
                 {
                     var newhpmax = get_string("Enter their new max HP value", "")
                     if (newhpmax != "")
                     {
-                        global.maxhp[choice_data] = real(newhpmax)
-                        global.hp[choice_data] = real(newhpmax)
+                        try
+                        {
+                            global.maxhp[choice_data] = real(newhpmax)
+                            global.hp[choice_data] = real(newhpmax)
+                        }
+                        catch(exc)
+                            show_message("It needs numbers or else it will die :(")
                     }
                 }
                 else if (choice == "[attack]")
                 {
                     var newat = get_string("Enter their new Attack value", "")
                     if (newat != "")
-                        global.at[choice_data] = real(newat)
+                    {
+                        try
+                            global.at[choice_data] = real(newat)
+                        catch(exc)
+                            show_message("It needs numbers or else it will die :(")
+                    }
                 }
                 else if (choice == "[defense]")
                 {
                     var newdf = get_string("Enter their new Defense value", "")
                     if (newdf != "")
-                        global.df[choice_data] = real(newdf)
+                    {
+                        try
+                            global.df[choice_data] = real(newdf)
+                        catch(exc)
+                            show_message("It needs numbers or else it will die :(")
+                    }
                 }
                 else if (choice == "[magic]")
                 {
                     var newmag = get_string("Enter their new Magic value", "")
                     if (newmag != "")
-                        global.mag[choice_data] = real(newmag)
+                    {
+                        try
+                            global.mag[choice_data] = real(newmag)
+                        catch(exc)
+                            show_message("It needs numbers or else it will die :(")
+                    }
                 }
-                else if (choice == "[idealall]") // idealize stats (make them the maximum they'd be after defeating each enemy with violence)
+                else if choice == "[weapon]"
                 {
-                    // kris
-                    global.maxhp[1] = 160
-                    global.hp[1] = 160
-                    global.at[1] = 14
-                    global.df[1] = 2
-                    global.mag[1] = 0
-                    
-                    // susie
-                    global.maxhp[2] = 190
-                    global.hp[2] = 190
-                    global.at[2] = 18
-                    global.df[2] = 2
-                    global.mag[2] = 3
-                    
-                    // ralsei
-                    global.maxhp[3] = 140
-                    global.hp[3] = 140
-                    global.at[3] = 12
-                    global.df[3] = 2
-                    global.mag[3] = 11
-                    
-                    // noelle
-                    global.maxhp[4] = 166
-                    global.hp[4] = 166
-                    global.at[4] = 8
-                    global.df[4] = 1
-                    global.mag[4] = 16
-                    show_message("Idealized Stats")
+                    var newweapon = get_string("Enter new weapon name or ID ", "")
+                    if (newweapon != "")
+                    {
+                        try
+                            global.charweapon[choice_data] = real(newweapon)
+                        catch(exc)
+                        {
+                            for (var i = 0; i < 100; i ++) // higher number in case someone using this adds a weapon with an id higher than the vanilla game's highest one
+                            {
+                                scr_weaponinfo(i)
+                                if string_lower(weaponnametemp) == string_lower(newweapon)
+                                {
+                                    global.charweapon[choice_data] = i
+                                    break
+                                }
+                                else if i == 99
+                                {
+                                    show_message("Invalid Name")
+                                }
+                            }
+                        }
+                        scr_weaponinfo_mine()
+                    }
+                }
+                else if string_starts_with(choice, "[armor")
+                {
+                    var newarmor = get_string("Enter new weapon name or ID ", "")
+                    if (newarmor != "")
+                    {
+                        try
+                        {
+                            if choice == "[armor1]"
+                                global.chararmor1[choice_data] = real(newarmor)
+                            else
+                                global.chararmor2[choice_data] = real(newarmor)
+                        }
+                        catch(exc)
+                        {
+                            for (var i = 0; i < 100; i ++) // higher number in case someone using this adds an armor with an id higher than the vanilla game's highest one
+                            {
+                                scr_armorinfo(i)
+                                if string_lower(armornametemp) == string_lower(newarmor)
+                                {
+                                    if choice == "[armor1]"
+                                        global.chararmor1[choice_data] = i
+                                    else
+                                        global.chararmor2[choice_data] = i
+                                    break
+                                }
+                                else if i == 99
+                                {
+                                    show_message("Invalid Name")
+                                }
+                            }
+                        }
+                        scr_armorinfo_mine()
+                    }
                 }
                 else if (choice == "[spell]")
                 {
-                    var newspell = get_string("Enter new spell ", "")
+                    var newspell = get_string("Enter new spell name or ID", "")
                     if (newspell != "")
-                        global.spell[choice_data][real(string_char_at(choice_name, 1) + string_char_at(choice_name, 2))] = real(newspell)
+                    {
+                        try
+                            global.spell[choice_data][real(string_char_at(choice_name, 1) + string_char_at(choice_name, 2))] = real(newspell)
+                        catch(exc)
+                        {
+                            for (var i = 0; i < 100; i ++) // higher number in case someone using this adds a spell with an id higher than the vanilla game's highest one
+                            {
+                                scr_spellinfo(i)
+                                if string_lower(spellname) == string_lower(newspell) || string_lower(spellnameb) == string_lower(newspell)
+                                {
+                                    global.spell[choice_data][real(string_char_at(choice_name, 1) + string_char_at(choice_name, 2))] = i
+                                    break
+                                }
+                                else if i == 99
+                                {
+                                    show_message("Invalid Name")
+                                }
+                            }
+                        }
+                        scr_weaponinfo_mine()
+                    }
                 }
                 else if (choice == "[setmember]")
                 {
-                    var newmem = get_string("Set party member " + string(choice_data), "")
-                    if (newmem != "")
+                    var _maxChar = (global.chapter == 1 ? 3 : 4) 
+                    // get string
+                    var newmem = get_string(concat("Enter new party member ", choice_data + 1, " name or ID"), "")
+                    
+                    if newmem != ""
                     {
-                        var rnewmem = real(newmem)
-                        if (rnewmem < 0 || rnewmem > 4)
+                        try // try to convert the string to a number
                         {
-                            show_message("Invalid ID")
-                            exit
+                            newmem = real(newmem)
+                            if (newmem < 0 || newmem > _maxChar) // fail if number isn't a valid character id
+                            {
+                                show_message("Invalid ID")
+                                exit
+                            }
                         }
-                        global.char[choice_data] = rnewmem
-                        show_message("Party member " + string(choice_data) + " set, requires room restart to take effect.\nSome rooms set the party automatically in debug mode, so if it doesn't work that's probably why.")
+                        catch(exc) // otherwise try to match the string to one of the characters' names
+                        {
+                            // check each character name
+                            for (var j = 0; j <= _maxChar; j ++)
+                            {
+                                if string_lower(global.charname[j]) == string_lower(newmem) // if name is detected
+                                {
+                                    newmem = j
+                                    j = _maxChar
+                                }
+                                else if j == _maxChar // fail if name isn't detected
+                                {
+                                    show_message("Invalid Name")
+                                    exit
+                                }
+                            }
+                        }
+                        
+                        // destroy party member object in targeted slot
+                        if newmem != 1 && choice_data > 0
+                        {
+                            with global.cinstance[choice_data - 1]
+                            {
+                                instance_destroy()
+                            }
+                        }
+                        
+                        // back up current party for after scr_losechar is run
+                        var charmem = array_create(2)
+                        var i = 0
+                        repeat(3)
+                        {
+                            charmem[i] = global.char[i]
+                            i ++
+                        }
+                        global.char[0] = 0 // remove kris manually since scr_losechar doesn't remove them
+                        scr_losechar()
+                        
+                        // add the new party member and readd lost party members
+                        for (var i = 0; i < 3; i ++)
+                        {
+                            if choice_data == i // if i is the targeted slot
+                            {
+                                scr_getchar(newmem) // get the new member
+                                // replace the deleted party member object with the one for the new character (code for alignment taken from scr_setparty)
+                                if newmem > 1 && choice_data > 0 && i_ex(obj_mainchara) // check if kris exists cus if they don't obj_caterpillarchara shouldn't be made
+                                {
+                                    with (scr_makecaterpillar(obj_mainchara.x, obj_mainchara.y, newmem, choice_data - 1))
+                                    {
+                                        if newmem == 2 // susie
+                                        {
+                                            halign = (global.darkzone == 0) ? 3 : 6
+                                            valign = (global.darkzone == 0) ? 6 : 16
+                                            x -= halign
+                                            y -= valign
+                                        }
+                                        else if newmem == 3 // ralsei
+                                        {
+                                            halign = 2
+                                            valign = 12
+                                            x -= halign
+                                            y -= valign
+                                        }
+                                        else if newmem == 4 // noelle
+                                        {
+                                            halign = (global.darkzone == 0) ? 2 : 4
+                                            valign = (global.darkzone == 0) ? 9 : 18
+                                            x -= halign
+                                            y -= valign
+                                        }
+                                    }
+                                }
+                            }
+                            else // readd lost party members that aren't in the slot of the new one
+                                scr_getchar(charmem[i])
+                        }
+                        
                     }
                 }
                 else if (choice == "[globalset]")
@@ -1858,6 +1968,8 @@ function scr_84_debug(arg0)
                         case 19: // cyber city entrance
                             scr_setparty(0, 0, 0)
                             global.plot = 66
+                            global.interact = 3
+                            global.entrance = 1
                             roomtogo = room_dw_city_entrance
                             break
                             
@@ -1963,12 +2075,16 @@ function scr_84_debug(arg0)
                         case 35: // light puzzle 3
                             scr_setparty(0, 0, 0)
                             global.plot = 110
+                            global.currentsong[0] = snd_init("mansion_entrance.ogg")
+                            global.currentsong[1] = mus_loop_ext(global.currentsong[0], 1, 1)
                             roomtogo = room_dw_mansion_darkbulb_3
                             break
                             
                         case 36: // lancer petrifying
                             scr_setparty(0, 0, 0)
                             global.plot = 115
+                            global.currentsong[0] = snd_init("mansion_entrance.ogg")
+                            global.currentsong[1] = mus_loop_ext(global.currentsong[0], 1, 1)
                             roomtogo = room_dw_mansion_dining_a
                             break
                             
@@ -2047,6 +2163,8 @@ function scr_84_debug(arg0)
                         case 47: // mauswheel battle
                             scr_setparty(1, 1, 0)
                             global.plot = 120
+                            global.currentsong[0] = snd_init("mansion.ogg")
+                            global.currentsong[1] = mus_loop_ext(global.currentsong[0], 1, 1)
                             roomtogo = room_dw_mansion_kitchen
                             break
                         
@@ -2064,7 +2182,7 @@ function scr_84_debug(arg0)
                         
                         case 50: // rouxls battle
                             scr_setparty(0, 1, 0)
-                            global.plot = 140
+                            global.plot = 141
                             roomtogo = room_dw_mansion_acid_tunnel_loop_rouxls
                             break
                         
@@ -2093,6 +2211,8 @@ function scr_84_debug(arg0)
                             global.plot = 160
                             global.entrance = 1
                             global.interact = 3
+                            global.currentsong[0] = snd_init("wind_highplace.ogg")
+                            global.currentsong[1] = mus_loop_ext(global.currentsong[0], 1, 1)
                             roomtogo = room_dw_mansion_east_4f_d
                             break
                         
@@ -2157,6 +2277,8 @@ function scr_84_debug(arg0)
                             global.darkzone = 0
                             scr_setparty(1, 0, 0)
                             global.plot = 205
+                            global.currentsong[0] = snd_init("town.ogg")
+                            global.currentsong[1] = mus_loop_ext(global.currentsong[0], 1, 0.97)
                             roomtogo = room_hospital_rudy
                             break
                         
@@ -2802,6 +2924,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             // remove enemy recruits
                             global.flag[635] = -1 // virovirokun
@@ -2907,6 +3030,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             // remove enemy recruits
                             global.flag[635] = -1 // virovirokun
@@ -3013,6 +3137,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             global.flag[550] = 2 // berdly
                             // remove enemy recruits
@@ -3122,6 +3247,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             global.flag[550] = 2 // berdly
                             // remove enemy recruits
@@ -3235,6 +3361,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             global.flag[550] = 2 // berdly
                             // remove enemy recruits
@@ -3346,6 +3473,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             global.flag[550] = 2 // berdly
                             // remove enemy recruits
@@ -3461,6 +3589,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             global.flag[550] = 2 // berdly
                             // remove enemy recruits
@@ -3575,6 +3704,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             global.flag[550] = 2 // berdly
                             // remove enemy recruits
@@ -3687,6 +3817,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             global.flag[550] = 2 // berdly
                             // remove enemy recruits
@@ -3799,6 +3930,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             global.flag[550] = 2 // berdly
                             // remove enemy recruits
@@ -3911,6 +4043,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             global.flag[550] = 2 // berdly
                             global.flag[571] = 2 // spamton neo
@@ -4027,6 +4160,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             global.flag[550] = 2 // berdly
                             global.flag[571] = 2 // spamton neo
@@ -4145,6 +4279,7 @@ function scr_84_debug(arg0)
                             global.flag[555] = 6 // three maus
                             global.flag[556] = 6 // three maus
                             global.flag[538] = 6 // poppup and maus
+                            global.flag[566] = 6 // three maus
                             global.flag[567] = 6 // two poppups
                             global.flag[550] = 2 // berdly
                             global.flag[571] = 2 // spamton neo
@@ -4253,6 +4388,44 @@ function scr_84_debug(arg0)
                     room_goto(roomtogo)
                     global.chemg_menu_depth = 0
                 }
+                else if string_starts_with(choice, "[recruit")
+                {
+                    // array of recruitable enemies
+                    var _recruitArray = [
+                        [5, 6, 11, 13, 14, 15, 20, 22, 23], // chapter 1
+                        [30, 31, 32, 33, 34, 35, 36, 40, 42, 44], // chapter 2
+                        [54, 55, 56, 57, 58, 59, 60, 61], // chapter 3
+                        [62, 63, 64, 65, 66, 67, 68, 69], // chapter 4
+                        [70, 71, 72, 73, 74, 75, 76, 77], // chapter 5
+                        //[], // chapter 6
+                        //[], // chapter 7
+                    ]
+                    
+                    // set if recruting, removing, or losing recruits
+                    var _setType = (choice == "[recruitall]" ? 1 : (choice == "[recruitremove]" ? 0 : -1))
+                    
+                    
+                    if choice_data != 8
+                    {
+                        // alter status of all recruits from chosen chapter
+                        for (var i = 0; i < array_length(_recruitArray[choice_data - 1]); i ++)
+                        {
+                            global.flag[600 + _recruitArray[choice_data - 1][i]] = _setType
+                        }
+                    }
+                    else
+                    {
+                        // alter status of recruits from every chapter (except chapter 1 since you can never normally lose any of the chapter 1 recruits besides rabbick in chapter 3 i guess.)
+                        for (var i = 1; i < global.chapter; i ++)
+                        {
+                            for (var j = 0; j < array_length(_recruitArray[i]); j ++)
+                            {
+                                global.flag[600 + _recruitArray[i][j]] = _setType
+                            }
+                        }
+                    }
+                    
+                }
                 else
                 {
                     show_debug_message("unknown menu cmd:" + choice)
@@ -4281,7 +4454,16 @@ function scr_84_debug(arg0)
         draw_set_valign(fa_top)
         var yy = global.chemg_yoffset
         var vspacing = 15
-        scr_84_draw_text_outline(10, yy, "====[ 8-4 Debug Menu ]====[ D$: " + string(global.gold) + " $: " + string(global.lgold) + " F$: " + string(global.flag[1411]) + " P$: " + string(global.flag[1312]) + " ]")
+        
+        
+        var header = concat("====[ 8-4 Debug Menu ]====[ D$: ", global.gold, " $: ", global.lgold)
+        if global.chapter == 3
+            header += concat(" PTs: ", global.flag[1044])
+        else if global.chapter == 5
+            header += concat(" F$: ", global.flag[1411], " P$: ", global.flag[1312])
+        header += " ]"
+        
+        scr_84_draw_text_outline(10, yy, header)
         yy += vspacing
         global.chemg_max_depth = -1
         global.chemg_cursor_y = 0
@@ -4321,7 +4503,7 @@ function scr_84_debug(arg0)
             _counter++
         }
         
-        // removed in favor of the chaper 1 fps counter, which is already in this chapter's code anyway
+        // removed in favor of the chaper 1 fps counter
         /*if (global.chemg_show_fps == 1)
         {
             scr_84_draw_text_outline(chemg_x, chemg_y + 16 + (8 * _counter), "FPS: " + string(fps))

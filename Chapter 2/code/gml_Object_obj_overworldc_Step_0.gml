@@ -223,10 +223,10 @@ if (movenoise == 1)
 if (scr_debug())
 {
     /*if (keyboard_check_pressed(ord("S")))
-        instance_create(0, 0, obj_savemenu)*/
+        instance_create(0, 0, obj_savemenu)
     if (keyboard_check_pressed(ord("F")))
         room_speed = 58
-    /*if (keyboard_check_pressed(ord("L")))
+    if (keyboard_check_pressed(ord("L")))
         scr_load()
     if (keyboard_check_pressed(ord("R")) && keyboard_check(vk_backspace))
         game_restart_true()

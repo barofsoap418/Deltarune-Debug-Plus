@@ -797,6 +797,7 @@ if (battlemode == 1)
 			event_user(5)
 	}
 }
+// moved to obj_time
 /*if (scr_debug())
 {
 	if (sunkus_kb_check_pressed(vk_insert))

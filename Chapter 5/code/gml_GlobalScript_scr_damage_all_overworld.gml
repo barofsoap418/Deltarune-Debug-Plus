@@ -71,7 +71,7 @@ function scr_damage_all_overworld()
 					var nowriter = false
 					if (i_ex(obj_plat_player))
 					{
-						trg = 910
+						trg = obj_plat_player
 						if (ti > 0)
 						{
 							with (obj_plat_follower)
@@ -81,7 +81,7 @@ function scr_damage_all_overworld()
 								if (name == "ralsei" && other.ti == 2)
 									trg = self
 							}
-							if (trg == 910)
+							if (trg == obj_plat_player)
 							{
 								if (hpdiff == maxhpdiff)
 								{
@@ -94,7 +94,7 @@ function scr_damage_all_overworld()
 					}
 					else if (i_ex(obj_climb_kris))
 					{
-						trg = 1164
+						trg = obj_climb_kris
 						if (ti > 0)
 						{
 							with (obj_climb_susie)
@@ -104,7 +104,7 @@ function scr_damage_all_overworld()
 								if (name == "ralsei" && other.ti == 2)
 									trg = self
 							}
-							if (trg == 1164)
+							if (trg == obj_climb_kris)
 							{
 								if (hpdiff == maxhpdiff)
 								{

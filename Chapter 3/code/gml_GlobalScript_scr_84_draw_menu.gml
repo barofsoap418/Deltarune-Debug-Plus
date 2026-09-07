@@ -75,6 +75,21 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
                 else
                     name += string(" ({0})", item)
             }
+            else if type == "[weapon]"
+            {
+                scr_weaponinfo(global.charweapon[item])
+                name += concat(" (", global.charweapon[item], ", ", weaponnametemp, ")")
+            }
+            else if type == "[armor1]"
+            {
+                scr_armorinfo(global.chararmor1[item])
+                name += concat(" (", global.chararmor1[item], ", ", armornametemp, ")")
+            }
+            else if type == "[armor2]"
+            {
+                scr_armorinfo(global.chararmor2[item])
+                name += concat(" (", global.chararmor2[item], ", ", armornametemp, ")")
+            }
             else if type == "[spell]"
             {
                 var _val = global.spell[item][real(string_char_at(name, 1) + string_char_at(name, 2))] // probably could have been done in a way that didn't DEPEND on the id being at the start of the string but i wanted the id to be at the start of the string anyway so like whatever lol
@@ -96,6 +111,13 @@ function scr_84_draw_menu(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
                 name += concat(" (", global.df[item],")")
             else if type == "[magic]"
                 name += concat(" (", global.mag[item],")")
+            else if type == "[setmember]"
+            {
+                var _charname = global.charname[global.char[item]]
+                if _charname == global.charname[0]
+                    _charname = "Empty"
+                name += concat(" (", global.char[item], ", ", _charname, ")")
+            }
         }
             
         scr_84_draw_text_outline(xx, yy, prefix + name)

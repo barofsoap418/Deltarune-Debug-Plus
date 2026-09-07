@@ -38,20 +38,17 @@ if (global.fighting == 0)
     if (keyboard_check_pressed(ord("6")))
     {
         scr_losechar()
-        scr_getchar(2)
-        scr_getchar(3)
+		scr_setparty(1, 1, 0)
     }
     if (keyboard_check_pressed(ord("7")))
-        scr_losechar()
+        scr_setparty(0, 0, 0)
     if (keyboard_check_pressed(ord("8")))
     {
-        scr_losechar()
-        scr_getchar(3)
+        scr_setparty(0, 1, 0)
     }
     if (keyboard_check_pressed(ord("9")))
     {
-        scr_losechar()
-        scr_getchar(2)
+        scr_setparty(1, 0, 0)
     }
     draw_set_color(c_lime)
     scr_84_set_draw_font("main")

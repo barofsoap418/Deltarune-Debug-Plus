@@ -9,6 +9,7 @@ function scr_getitemspace(arg0)
 			if (global.item[i] == 0)
 				invroom++
 		}
+		scr_debug_print("Room available in pocket: " + string(invroom))
 		return invroom;
 	}
 }

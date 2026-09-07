@@ -1,5 +1,6 @@
-_selected_string = "No object!#MouseL:Choose&Drag#MouseR:Drag From Anchor"
-if (instance_exists(selected_object))
+_selected_string = "No object!#MouseL:Choose&Drag#MouseR:"
+_selected_string += old_right_click ? "Drag From Anchor" : "Options"
+if (i_ex(selected_object))
 {
     so = selected_object
     sox = selected_object.x
@@ -25,9 +26,7 @@ scr_84_draw_text_outline(0, 0, string_hash_to_newline(_selected_string))
 draw_set_font(fnt_main)
 draw_text(330, 0, string_hash_to_newline("PgDown: Show All Info"))
 draw_text(330, 20, string_hash_to_newline("CameraX: " + string(__view_get(e__VW.XView, 0)) + " CameraY: " + string(__view_get(e__VW.YView, 0))))
-if (show_invisible == 1)
-    draw_text(330, 40, string_hash_to_newline("Show Invisible"))
-draw_text(330, 60, string_hash_to_newline("instance_count: " + string(instance_count)))
+draw_text(330, 40, string_hash_to_newline("instance_count: " + string(instance_count)))
 draw_text(480, 0, string_hash_to_newline("PgUp: XY Camera-Relative"))
 if (xy_camera_relative >= 1)
 {
@@ -37,6 +36,12 @@ if (xy_camera_relative >= 1)
     if (xy_camera_relative == 2)
         draw_text(480, 20, string_hash_to_newline("XY is StartXY relative!"))
 }
+
+draw_set_color(c_aqua)
+if (show_invisible == 1)
+    draw_text(480, 40, string_hash_to_newline("Show Invisible"))
+if (old_right_click)
+    draw_text(480, 60, string_hash_to_newline("Cutscene Mode"))
 
 enum e__VW
 {

@@ -133,12 +133,12 @@ function scr_damage(arg0 = true)
 			var targetheight = 0
 			if (i_ex(obj_plat_player))
 			{
-				targetobj = 910
+				targetobj = obj_plat_player
 				targetheight = -24
 			}
 			else if (i_ex(obj_climb_kris))
 			{
-				targetobj = 1164
+				targetobj = obj_climb_kris
 				with (obj_climb_susie)
 				{
 					if (other.target == 1 && name == "susie")
@@ -156,7 +156,7 @@ function scr_damage(arg0 = true)
 				dmgwriter = instance_create(targetobj.x, targetobj.y + targetheight, obj_dmgwriter)
 				dmgwriter.damage = hpdiff
 				dmgwriter.type = doomtype
-				if (targetobj == 1164 || targetobj.object_index == obj_climb_susie)
+				if (targetobj == obj_climb_kris || targetobj.object_index == obj_climb_susie)
 				{
 					dmgwriter.type = -1
 					dmgwriter.damage = tdamage

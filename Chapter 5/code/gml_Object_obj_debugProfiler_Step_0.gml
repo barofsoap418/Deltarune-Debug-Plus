@@ -19,7 +19,6 @@ if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pre
 	scr_debug_print("showdebug = " + string(showdebug))
 }
 
-
 if (keyboard_check(vk_shift) && keyboard_check(vk_control) && keyboard_check_pressed(ord("D"))) || toggleFlagGUI
 {
     toggleFlagGUI = false

@@ -13,6 +13,7 @@ debug_downmove = 0
 debug_movetimer = 0
 debug_movecooldown = 0
 colsiner = 0
+//debug_bgalpha = 0
 
 isfullscreen = 0
 if (global.is_console)

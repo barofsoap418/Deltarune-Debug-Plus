@@ -1,4 +1,5 @@
-_selected_string = "No object!#MouseL:Choose&Drag#MouseR:Drag From Anchor"
+_selected_string = "No object!#MouseL:Choose&Drag#MouseR:"
+_selected_string += old_right_click ? "Drag From Anchor" : "Options"
 if (i_ex(selected_object))
 {
     so = selected_object
@@ -23,20 +24,24 @@ draw_rectangle(0, 40, 120, 0, false)
 draw_set_color(c_white)
 scr_84_draw_text_outline(0, 0, string_hash_to_newline(_selected_string))
 draw_set_font(fnt_main)
-draw_text(330, 0, string_hash_to_newline(stringsetloc("PgDown: Show All Info", "obj_debug_xy_slash_Draw_74_gml_26_0")))
-draw_text(330, 20, string_hash_to_newline(stringsetsubloc("CameraX: ~1 CameraY: ~2", string(__view_get(e__VW.XView, 0)), string(__view_get(e__VW.YView, 0)), "obj_debug_xy_slash_Draw_74_gml_27_0")))
-if (show_invisible == 1)
-    draw_text(330, 40, string_hash_to_newline(stringsetloc("Show Invisible", "obj_debug_xy_slash_Draw_74_gml_28_0")))
-draw_text(330, 60, string_hash_to_newline(stringsetsubloc("instance_count: ~1", string(instance_count), "obj_debug_xy_slash_Draw_74_gml_29_0_b")))
-draw_text(480, 0, string_hash_to_newline(stringsetloc("PgUp: XY Camera-Relative", "obj_debug_xy_slash_Draw_74_gml_29_0")))
+draw_text(330, 0, string_hash_to_newline("PgDown: Show All Info"))
+draw_text(330, 20, string_hash_to_newline("CameraX: " + string(__view_get(e__VW.XView, 0)) + " CameraY: " + string(__view_get(e__VW.YView, 0))))
+draw_text(330, 40, string_hash_to_newline("instance_count: " + string(instance_count)))
+draw_text(480, 0, string_hash_to_newline("PgUp: XY Camera-Relative"))
 if (xy_camera_relative >= 1)
 {
     draw_set_color(c_yellow)
     if (xy_camera_relative == 1)
-        draw_text(480, 20, string_hash_to_newline(stringsetloc("XY is camera-relative!", "obj_debug_xy_slash_Draw_74_gml_33_0")))
+        draw_text(480, 20, string_hash_to_newline("XY is camera-relative!"))
     if (xy_camera_relative == 2)
-        draw_text(480, 20, string_hash_to_newline(stringsetloc("XY is StartXY relative!", "obj_debug_xy_slash_Draw_74_gml_34_0")))
+        draw_text(480, 20, string_hash_to_newline("XY is StartXY relative!"))
 }
+
+draw_set_color(c_aqua)
+if (show_invisible == 1)
+    draw_text(480, 40, string_hash_to_newline("Show Invisible"))
+if (old_right_click)
+    draw_text(480, 60, string_hash_to_newline("Cutscene Mode"))
 
 enum e__VW
 {

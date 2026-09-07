@@ -5,7 +5,7 @@
   "Visible": true,
   "Solid": false,
   "Depth": 0,
-  "Persistent": false,
+  "Persistent": true,
   "ParentObject": null,
   "MaskSprite": null,
   "UsesPhysics": false,

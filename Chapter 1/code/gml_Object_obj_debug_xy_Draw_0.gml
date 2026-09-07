@@ -3,40 +3,72 @@ y = round(mouse_y)
 siner++
 mousebuffer--
 main_focus = 1
-if (instance_exists(obj_debug_windows))
+if (i_ex(obj_debug_windows))
     main_focus = 0
 if (main_focus)
 {
     if (mouse_check_button_pressed(mb_left) && mousebuffer < 0)
     {
         mouse_held = 0
-        obj_check = collision_rectangle(x - 2, y - 2, x + 2, y + 2, all, false, true)
-        if (obj_check != -4)
+        var obj_list = ds_list_create();
+        var obj_count = collision_rectangle_list(x - 2, y - 2, x + 2, y + 2, all, false, true, obj_list, false)
+        selected_object = -898
+        if (obj_count > 0)
         {
-            visiblecheck = 0
-            if (show_invisible == 1)
-                visiblecheck = 1
-            else if (obj_check.visible == 1)
-                visiblecheck = 1
-            if (visiblecheck == 1 && obj_check.image_alpha > 0)
-                selected_object = obj_check
+            var last_depth = infinity;
+            var actors_only = false;
+            for (var i = 0; i < ds_list_size(obj_list); i++)
+            {
+                var obj_check = ds_list_find_value(obj_list, i);
+                //scr_debug_print("obj_check=" + string(obj_check) + " (depth " + string(obj_check.depth) + ")")
+                
+                if (!show_invisible && !(obj_check.visible && obj_check.image_alpha > 0))
+                    continue;
+                
+                // Ignore anything that covers the whole room since these are usually not very useful to select
+                if (obj_check.x <= 0 && obj_check.y <= 0 && obj_check.image_xscale >= room_width && obj_check.image_yscale >= room_height)
+                    continue;
+                
+                // If obj_actors are under the cursor, only select those (matches old behavior)
+                /*if (old_right_click)
+                {
+                    if (actors_only && obj_check.object_index != obj_actor)
+                    {
+                        continue;
+                    }
+                    else if (!actors_only && obj_check.object_index == obj_actor)
+                    {
+                        last_depth = infinity;
+                        actors_only = true;
+                    }
+                }*/
+                
+                // Prioritize whatever is visually in front
+                if (obj_check.depth < last_depth)
+                {
+                    selected_object = obj_check;
+                    last_depth = obj_check.depth;
+                }   
+            }
+            
+            if (i_ex(selected_object))
+            {
+                relx = x - selected_object.x;
+                rely = y - selected_object.y;
+            }
         }
-        else
-        {
-            selected_object = -898
-        }
+        ds_list_destroy(obj_list);
     }
-}
-if (main_focus)
-{
-    if (mouse_check_button(mb_left) && instance_exists(selected_object))
+    if (mouse_check_button(mb_left) && i_ex(selected_object))
     {
         mouse_held++
         mouse_held_minimum = 5
-        if (mouse_held >= mouse_held_minimum && instance_exists(selected_object))
+        /*if (selected_object.object_index == obj_actor)
+            mouse_held_minimum = 15*/
+        if (mouse_held >= mouse_held_minimum)
         {
-            selected_object.x = x - (selected_object.sprite_width / 2)
-            selected_object.y = y - (selected_object.sprite_height / 2)
+            selected_object.x = x - relx
+            selected_object.y = y - rely
         }
     }
     else
@@ -52,7 +84,7 @@ if (keyboard_check_pressed(vk_pagedown))
         show_all_object_xy = 1
     mouse_held = 0
 }
-if (instance_exists(selected_object) && !keyboard_check(ord("P")))
+if (i_ex(selected_object) && !keyboard_check(ord("P")))
 {
     if (selected_object.sprite_index != -1)
     {
@@ -76,7 +108,7 @@ if (keyboard_check_pressed(vk_pageup))
 }
 if (keyboard_check_pressed(vk_delete))
 {
-    if (instance_exists(selected_object))
+    if (i_ex(selected_object))
     {
         with (selected_object)
             instance_destroy()
@@ -90,6 +122,12 @@ if (keyboard_check_pressed(ord("V")))
     else
         show_invisible = 0
 }
+
+if (keyboard_check_pressed(vk_end))
+{
+    old_right_click = !old_right_click
+}
+
 if (siner >= 5 && mouse_check_button_pressed(mb_middle))
 {
     instance_destroy()
@@ -101,7 +139,7 @@ if (show_all_object_xy == 1)
     for (i = 0; i < instance_count; i++)
     {
         findo = instance_id_get(i)
-        if (instance_exists(findo))
+        if (i_ex(findo))
         {
             visiblecheck = 0
             if (show_invisible == 1)
@@ -163,22 +201,27 @@ if (show_all_object_xy == 1)
     draw_set_color(c_fuchsia)
     draw_text(x, y - 20, string_hash_to_newline(string(fox) + " , " + string(foy)))
 }
-draw_set_color(c_black)
-draw_line_width(x + 16, y + 16, x + 2, y + 2, 5)
-draw_set_color(c_white)
-draw_line_width(x + 12, y + 12, x + 3, y + 3, 4)
-draw_set_color(make_color_hsv(siner * 6, 255, 255))
-draw_line_width(x + 7, y + 7, x + 3, y + 3, 3)
-old_right_click = 0
+
+// don't draw main cursor if out of focus
+if (main_focus)
+{
+    draw_set_color(c_black)
+    draw_line_width(x + 16, y + 16, x + 2, y + 2, 5)
+    draw_set_color(c_white)
+    draw_line_width(x + 12, y + 12, x + 3, y + 3, 4)
+    draw_set_color(make_color_hsv((siner * 6) % 256, 255, 255))
+    draw_line_width(x + 7, y + 7, x + 3, y + 3, 3)
+}
+
 if (!old_right_click)
 {
     if (mouse_check_button_pressed(mb_right))
     {
         main_focus = 0
-        if (!instance_exists(obj_debug_windows))
+        if (!i_ex(obj_debug_windows))
         {
             instance_create(0, 0, obj_debug_windows)
-            if (!instance_exists(selected_object))
+            if (!i_ex(selected_object))
                 obj_debug_windows.type = 1
             with (obj_debug_windows)
                 event_user(15)
@@ -189,6 +232,213 @@ if (!old_right_click)
                 instance_destroy()
         }
     }
+}
+if (i_ex(selected_object))
+{
+    so = selected_object
+    if (object_get_parent(so.object_index) == obj_monsterparent)
+    {
+        if (enable_mouse_wheel)
+        {
+            if (mouse_wheel_up() || mouse_wheel_down())
+            {
+                with (so)
+                {
+                    if (state == 0)
+                    {
+                        state = 3
+                        shakex = 2
+                        hurttimer = 10
+                    }
+                    else
+                    {
+                        state = 0
+                    }
+                }
+            }
+        }
+    }
+    /*if (so.object_index == obj_actor)
+    {
+        if (mouse_wheel_up() && enable_mouse_wheel)
+        {
+            with (so)
+            {
+                if (specialspriteno < 9)
+                {
+                    specialspriteno++
+                    sprite_index = specialsprite[specialspriteno]
+                }
+                else
+                {
+                    specialspriteno = 0
+                    sprite_index = dsprite
+                }
+            }
+        }
+        if (mouse_wheel_down() && enable_mouse_wheel)
+        {
+            with (so)
+            {
+                if (specialspriteno > 0)
+                {
+                    specialspriteno--
+                    sprite_index = specialsprite[specialspriteno]
+                }
+                else
+                {
+                    specialspriteno = 9
+                    sprite_index = specialsprite[specialspriteno]
+                }
+            }
+        }
+        if (button2_h())
+            cardinal_grid_align = 1
+        else
+            cardinal_grid_align = 0
+        if (old_right_click)
+        {
+            if (mouse_check_button_pressed(mb_right) && mousebuffer < 0)
+            {
+                cardinal_grid_align = 0
+                thiscardinal = "d"
+                actor_debug_xstart = so.x
+                actor_debug_ystart = so.y
+            }
+        }
+        if (old_right_click)
+        {
+            if (mouse_check_button(mb_right) && mousebuffer < 0)
+            {
+                dir_from_actor = point_direction(so.x, so.y, x, y)
+                thiscardinal = scr_get_cardinal_direction(dir_from_actor)
+                if (cardinal_grid_align == 1)
+                {
+                    if (thiscardinal == "d" || thiscardinal == "u")
+                        x = so.x
+                    if (thiscardinal == "r" || thiscardinal == "l")
+                        y = so.y
+                }
+                actor_debug_x = x
+                actor_debug_y = y
+                scr_actor_facing(so, thiscardinal)
+                draw_set_color(c_red)
+                if (cardinal_grid_align == 1)
+                    draw_set_color(c_aqua)
+                draw_arrow(so.x, so.y, x, y, 8)
+                draw_sprite_ext(so.sprite_index, so.image_index, x, y, so.image_xscale, so.image_yscale, so.image_angle, so.image_blend, 0.5 + (sin(siner / 4) * 0.1))
+            }
+        }
+        if (old_right_click)
+        {
+            if (mouse_check_button_released(mb_right) && mousebuffer < 0)
+            {
+                dir_from_actor = point_direction(so.x, so.y, x, y)
+                thiscardinal = scr_get_cardinal_direction(dir_from_actor)
+                if (cardinal_grid_align == 1)
+                {
+                    if (thiscardinal == "d" || thiscardinal == "u")
+                        x = so.x
+                    if (thiscardinal == "r" || thiscardinal == "l")
+                        y = so.y
+                }
+                if (actor_previously_selected != so.number)
+                    totalstring += ("c_sel(" + string(so.number) + ") //select " + so.name + " \\n")
+                actor_previously_selected = so.number
+                _speed = 4
+                _time = 40
+                _realdist = point_distance(so.x, so.y, x, y)
+                _realtime = _realdist / _speed
+                if (cardinal_grid_align == 1)
+                    totalstring += ("c_walk_wait(\"" + thiscardinal + "\"" + "," + string(_speed) + "," + string(_realtime) + ") //move " + so.name + " " + string(_realdist) + " pixels\\n")
+                else
+                    totalstring += ("c_walkdirect_wait(" + string(x) + "," + string(y) + "," + string(ceil(_realtime)) + ")//move" + so.name + " \\n")
+                clipboard_set_text(totalstring)
+                scr_actor_facing(so, thiscardinal)
+                so.x = x
+                so.y = y
+                copymessage = "Copied to clipboard"
+                copybuffer = 15
+                mousebuffer = 3
+            }
+        }
+        if (keyboard_check_pressed(ord("W")))
+        {
+            totalstring += "c_wait(30)\\n"
+            copymessage = "Wait command copied"
+            copybuffer = 15
+        }
+        if (keyboard_check_pressed(ord("D")))
+        {
+            totalstring += "c_msgset(0,\"* Text/%\")\\nc_talk_wait()\\n"
+            copymessage = "Dialogue command copied"
+            copybuffer = 15
+        }
+        if (keyboard_check_pressed(ord("Q")))
+        {
+            if (actor_previously_selected != so.number)
+                totalstring += ("c_sel(" + string(so.number) + ") //select " + so.name + " \\n")
+            actor_previously_selected = so.number
+            totalstring += ("c_specialsprite(" + string(so.specialspriteno) + ")\\n")
+            copymessage = "Sprite change copied"
+            copybuffer = 15
+        }
+        if (keyboard_check_pressed(ord("P")))
+        {
+            panremx = camerax()
+            panremy = cameray()
+            if (instance_exists(obj_mainchara))
+            {
+                if (obj_mainchara.cutscene == 0)
+                {
+                    obj_mainchara.cutscene = 1
+                    totalstring += "c_pannable(1)\\n"
+                    copymessage = "Panning enabled!"
+                    copybuffer = 5
+                }
+            }
+        }
+        if (keyboard_check(ord("P")))
+        {
+            cameraxadd = 0
+            camerayadd = 0
+            cameraspeed = 2
+            if (global.darkzone == 1)
+                cameraspeed = 4
+            if (right_h())
+                cameraxadd = cameraspeed
+            if (left_h())
+                cameraxadd = -cameraspeed
+            if (up_h())
+                camerayadd = -cameraspeed
+            if (down_h())
+                camerayadd = cameraspeed
+            camerax_set(camerax() + cameraxadd)
+            cameray_set(cameray() + camerayadd)
+        }
+        if (keyboard_check_released(ord("P")))
+        {
+            if (camerax() != panremx || cameray() != panremy)
+            {
+                pandiffx = camerax() - panremx
+                pandiffy = cameray() - panremy
+                totalstring += ("c_panspeed_wait(" + string(pandiffx / 40) + "," + string(pandiffy / 40) + ",40) //pan amount: " + string(pandiffx) + "," + string(pandiffy))
+                totalstring += (" // panned to: " + string(camerax()) + "," + string(cameray()) + "  \\n")
+                copymessage = "Pan copied!"
+                copybuffer = 15
+                panremx = camerax()
+                panremy = cameray()
+            }
+        }
+        if (copybuffer > 0)
+        {
+            if (copybuffer == 15)
+                clipboard_set_text(totalstring)
+            draw_set_color(c_yellow)
+            copybuffer -= 1
+            draw_text(x, y, string_hash_to_newline(copymessage))
+        }
+    }*/
 }
 
 enum e__VW
