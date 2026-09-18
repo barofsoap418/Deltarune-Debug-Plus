@@ -4,8 +4,8 @@ S: Open Save Menu
 L: Load Current Save
 R: Restart Room
 BACKSPACE + R: Restart Game
-`: Toggle Fast Forward
-CTRL + `: Toggle Slow Mode
+~: Toggle Fast Forward
+CTRL + ~: Toggle Slow Mode
 INSERT: Go to Internal Next Room
 DELETE: Go to Internal Previous Room
 
@@ -16,6 +16,7 @@ SHIFT + CTRL + C: Toggle drawing inputs
 SHIFT + CTRL + D: Toggle flag change debug messages
 SHIFT + CTRL + G: Toggle God Mode
 SHIFT + CTRL + A: Toggle visiblity of solids
+SHIFT + CTRL + T: Toggle visiblilty of current cutscene command in cutscenes (ch2+ only)
 SHIFT + CTRL + W: Toggle window size between base size (640x480) and most common size (1280x960)
 SHIFT + CTRL + UP: Toggle performance bar
 SHIFT + CTRL + BACKSPACE: Dump list of all instances to save folder
@@ -303,16 +304,22 @@ W + V: Warp to black monster room
 
 
 === CHAPTER 4 ===
+CTRL + SHIFT + I: Display Kris's floorheight variable (largely unused outside of some test rooms)
 V while climbing: Toggle visibility of Kris and several other climbing objects
 B: Toggle visibility of dark overlay in many rooms
 V: Toggle room glow in multiple rooms (often doesn't work properly due to other factors like prophecy panels also controlling the glowing)
 numpad5 while Titan star dissolving animation exists: Play/restart animation
+D in rooms where obj_climbingarea exists (only used in several unused rooms as it's for the early climbing system): Toggle climbing flag
 
 ==== BATTLES ====
 --- JACKENSTEIN ---
 TAB: Make all treasure move to the soul
 TAB during attack after using unleash: Change flee type of the jackolantern
 SPACE during attack after using unleash: Show soul glow and jackolantern hitboxes
+
+--- SOUND OF JUSTICE ---
+MOUSE SCROLL UP: Increase Attack Pattern ID
+MOUSE SCROLL DOWN: Decrease Attack Pattern ID
 
 --- TITAN ---
 numpad4: Create smoke coming from left side of Titan
@@ -323,6 +330,7 @@ BACKSPACE while healing during ending sequence: Transition back to normal state
 
 --- MIKES ---
 CTRL + SHIFT + 1: Skip to final attack
+SHIFT + 0: Reset Microphone
 
 ==== RHYTHM GAME ====
 1-6 when the rhythm game room starts: Tries to load different songs like in Chapter 3 but can't due to some new code
@@ -354,9 +362,15 @@ P while the first room where the Titan spawn chases you is starting: Warp to poi
 W + V in the room where Gerson breaks a prophecy panel: Set to right before he breaks the prophecy panel
 P in room where Gerson tries to show the party which way to go: Warp to top left of the room (breaks sequence unless used after susie and ralsei go right)
 W + V in Gerson's Study: Warp to Second Sanctuary version
+P while the pre-golden piano room is starting: Toggle if the golden piano was played or not (Alters dialogue of the cuptain in the room)
 W + E while pre-piano puzzle piece room is starting: Set if you saw Ralsei's room in Castle Town or not
+P while Jackenstein's room is starting: Warp to post-fall part of room: (Makes room a bit bugged out visually)
+W + V in Mizzle encounter room: Attempts to warp to bell, crashes due to trying to reference an instance of obj_climbloc for the y position of the warp (an instance isn't placed in the room)
+P while room with the Knight prophecy is starting: Set the prophecy to be unbroken
 P while post-knight climb room starts: set tempflag 90 to 1 (this does nothing, might have been intended to set to 2 since that does do something)
 W + 1 in Holywatercooler room: Warp to top of the climbing sequence
+W + V in the whispering statues room: Open top entrance to room, but also warps to about 1200 pixels below the room's boundaries
+M while in dark rooms: Disable darkness and ripple effects
 
 --- PRE-JOCKINGTON GROWS THE BEARD DARK ROOM ---
 P while room is starting: Prevent Gerson silhouette in top right of the room that runs out after being spotted from disappearing (normally unused due it being programmed to disappear when global.plot is >= 127, and the previous room sets global.plot to 127)
@@ -366,6 +380,11 @@ E: Warp to below the Gerson silhouette
 --- HERO PROPHECY PANEL BROKEN ROOM ---
 1 while room is starting: Toggle if the prophecy was listened to or not
 P while room is starting: Warp to the meeting Gerson scene
+
+--- PRE-GERSON RIPPLE PUZZLE (PRE-CHASE SECTION) ---
+P while room is starting: Warp to right before the chase section
+W + 1: Warp to the second time you see Gerson's silhouette run away in the room
+W + 2: Warp to the third time you see Gerson's silhouette run away in the room
 
 --- ANCESTOR WORSHIP ROOM ---
 1 while room is starting: Load the room in its pre-Second Sanctuary state
@@ -386,9 +405,10 @@ W + V: Warp to puzzle piece spot
 2 while room is starting: Set room to completed state
 3 while room is starting: Load to the sequence where the Cuptains try to stop you from reaching the Mizzle
 W + 2: Warp to sequence where the Cuptains try to stop you from reaching the Mizzle
-W + 2: Warp to the party where the Mizzle is woken up
+W + 3: Warp to the party where the Mizzle is woken up
 
 --- LARGE ORGAN ROOM ---
+P while room is starting: Reset dog easter egg when attempting to play Megalovania
 1 while room is starting: Set room state to first time entering
 2 while room is starting: Set room state to returning after closing eyes with Ralsei (places you in a wall)
 3 while room is starting: Set room state to returning after getting the SheetMusic (places you in a wall)
@@ -409,8 +429,13 @@ B: Play the Titan Spawn spawning effect in the top right of the screen
 W + 1: Warp to getting the Golden Piano puzzle piece
 W + 2: Warp to right before the party where Gerson turns on the lights
 
+--- KNIGHT CLIMB ---
+P while the room is starting: Start pre-climb scene
+W + 2 while climbing: Warp to near the end of the climb
+
 ==== SECOND SANCTUARY ====
 P in THE PRINCE prophecy room: Set plot to before seeing the prophecy
+P in the Forgotten Man's room: Show the triggers in the room
 
 --- ROOM OUTSIDE THE FOUNTAIN ---
 1 while room is starting: Set room to first time entering state
@@ -434,6 +459,13 @@ E while room is starting: Reset the encounter flag for the top enemy
 7 while room is starting: Set amount of money the Forgotten Man gave to 1
 8 while room is starting; Set amount of money the Forgotten Man gave to 0
 W + 0: Warp to Dark Sanctuary money fountain room
+
+--- ROTATING TOWER ---
+P while room is starting: Set global.plot to 0
+1 while room is starting: Set room to pre-climb state
+2 while room is starting: Set room to post-climb state and warp to the upper part of the room
+W + 1: Warp to the end of the climb
+W + 2: Set room to post-climb state and warp to the upper part of the room
 
 --- WINDOW ROOM ---
 P while room is starting before entering the Forgotten Man's room: Set next time the secret room is entered to be the Forgotten Man's room
@@ -479,3 +511,79 @@ numpad0: Play throwing animation
 --- GLOWING SOUL SEQUENCE ---
 P: Make Susie swap places with Kris
 W: Make Ralsei swap places with Susie
+
+
+
+
+=== CHAPTER 5 ===
+SHIFT + C: Toggle Platforming ability
+SHIFT + H: Toggle Ralsei's Hat
+CTRL + SHIFT + I: Display Kris's floorheight variable (unused outside of one test room)
+Left face button on controller while the top face button is mapped to MENU: Alternate jump button
+Top face button on controller while the left face button is mapped to MENU: Alternate attack button
+SPACE during the credits: Pause/Resume credits (doesn't pause the castle town cutscenes but prevents them from continuing to the next one while paused)
+V while obj_towery_orbiter exists in room_plat_lab (impossible without further hacking): Show debug info for obj_towery_orbiter
+
+==== BATTLES ====
+--- TRASHY TRIO ---
+CTRL: Add 98% Mercy
+CTRL during the trashy Beam Attack: Activate the Beam Attack
+
+--- PINK ---
+F1: Set DOKI to max
+F7: Get set available TP to 100
+I: Skip to next phase
+V during dates: End date
+
+--- FLOWERY ---
+P: Skip to next phase
+ALT: Go to next attack category
+CTRL: Go to previous attack category
+1-9: Select attack number in current category
+END: Toggle attack pattern debug UI
+D: Set Flower Man's position to right before the lyrics kick in
+E: Set Flower Man's position to right before the slow section when the background transition happens
+
+==== RHYTHM GAME ====
+1-6 when the rhythm game room starts: Tries to load different songs like in Chapter 3 but can't due to some new code
+numpadSUBTRACT when the rhythm game room starts: Loads into track select menu (menu doesn't load correct songs)
+1-4 during Raise Up Your Bat: Set the difficulty of Kris's Solo
+U: Cycle through tutorial states
+P: Pause song
+I: Toggle Autoplay
+O: Toggle Debug Mode
+F5: End minigame
+F6: Lose minigame
+ADD: Increase song volume by 10%
+SUBTRACT: Decrease song volume 10%
+LEFT SHIFT + ADD: Increase song volume by 50%
+LEFT SHIFT + SUBTRACT: Decrease song volume by 50%
+P during ranking sequence: Restart sequence
+
+numpadADD while room is starting: Attempts to load selected song's chart from an external file instead
+
+
+==== GARDEN ====
+SPACE during the Flowery introduction video: Pause/Resume video
+
+--- FLOWERY JOINS PARTY ROOM ---
+1: Start scene where Flowery joins
+4: Start battle where Flowery makes the Floradinns kiss
+
+--- VOICE CLIPS SCENES ROOM ---
+P while the room is starting: Enable Voice Clips
+O while the room is starting: Create object for the visuals during Ralsei's battle menu explanation
+
+==== FLOWER CASTLE ====
+BACKSPACE while behind-curtain Orange exists: Make Orange slightly transparent.
+1 in the Seth and Orange platforming battle room while in platforming mode: Transition to the Orange's true form reveal cutscene
+P while the pre-Blue and Yellow battle cutscene is starting: Skip to the post-battle cutscene
+
+--- LEFT SIDE ASGORE CUTSCENE ---
+O while the cutscene is starting: Set progress on the right side of the castle to 0
+P while the cutscene is starting: Set progress on the right side of the castle to 100
+
+==== TOP OF CASTLE ====
+P while the room where Susie and Ralsei act by themselves is starting: Skip to the part where Ralsei Fireshocks the shuriken
+
+

@@ -9,6 +9,7 @@ function scr_84_debug(arg0)
         
         ossafe_ini_open("DebugPlus.ini")
         global.chemg_god_mode = ini_read_real("AshleysDebug", "chemg_god_mode", 0)
+        global.chemg_show_val = ini_read_real("AshleysDebug", "chemg_show_val", 1)
         global.chemg_show_room = ini_read_real("AshleysDebug", "chemg_show_room", 1)
         global.chemg_show_plot = ini_read_real("AshleysDebug", "chemg_show_plot", 1)
         global.chemg_show_encounterno = ini_read_real("AshleysDebug", "chemg_show_encounterno", 0)
@@ -909,6 +910,7 @@ function scr_84_debug(arg0)
             }
         }, "", "Show Flag Changes")
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_interact_box", "Show Interaction Box")
+        scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_show_val", "Show Misc Values")
         parent = scr_84_pop()
         scr_84_add_menu_item(parent, "[toggle_global_saveto_ini]", "chemg_flag_detection", "Always Detect Flag Changes")
         

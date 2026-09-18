@@ -1,5 +1,6 @@
 function scr_save()
 {
+    // leftover from the GMLive extenstion. iirc it allows for making changes to rooms without recompiling your game by replacing a special room (in this case rm_blank) with the edited room. 
 	/*if (scr_debug())
 	{
 		if (room == rm_blank)
