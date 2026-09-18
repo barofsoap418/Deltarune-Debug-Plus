@@ -1,7 +1,7 @@
 # Deltarune Debug Plus
 Debug mode restoration and improvement mod for Deltarune
 
-Each chapter's folder is an UndertaleModTool Project. Just open the project in the folder of the chapter you want to mod over the corresponding data file.
+Each chapter's folder is an UndertaleModTool Project. Just open the project in the folder of the chapter you want to mod over the corresponding data file. Debug mode can be disabled by just setting global.debug in obj_initializer2's create event to 0.
 
 Credits:
 
