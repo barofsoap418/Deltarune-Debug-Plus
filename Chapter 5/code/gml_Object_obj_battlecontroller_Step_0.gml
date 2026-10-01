@@ -130,7 +130,8 @@ if (victoried == 1)
 			scr_endcombat()
 	}
 }
-if (i_ex(obj_flowery_enemy) && obj_flowery_enemy.introcon == 2)
+
+if ((i_ex(obj_flowery_enemy) && obj_flowery_enemy.introcon == 2) || bonsai_stop == true)
 {
 }
 else if (global.myfight == 0)
@@ -1026,7 +1027,45 @@ onebuffer -= 1
 twobuffer -= 1
 lbuffer -= 1
 rbuffer -= 1
-if ((global.mnfight == 2 && timeron == 1) || (i_ex(obj_flowery_enemy) && obj_flowery_enemy.introcon == 2))
+
+
+if (bonsai_stop == true)
+{
+    bonsai_timer++
+    if (bonsai_timer == 90)
+    {
+        with (obj_terracota_enemy)
+        {
+            scr_recruit()
+            event_user(10)
+            with (bg)
+                instance_destroy()
+            with (obj_writer)
+                instance_destroy()
+            bonsaicon = 0
+            scr_wincombat()
+            snd_stop(snd_bell_bounce_short)
+            with (obj_pine_tree_telegraph)
+                instance_destroy()
+            with (obj_collidebullet)
+                instance_destroy()
+            with (obj_bulletparent)
+                instance_destroy()
+            with (obj_bulletgenparent)
+                instance_destroy()
+            with (obj_darkener)
+                darken = 0
+            with (obj_battlecontroller)
+                noreturn = 1
+            with (obj_heart)
+            {
+                instance_create(x, y, obj_returnheart)
+                instance_destroy()
+            }
+        }
+    }
+}
+else if ((global.mnfight == 2 && timeron == 1) || (i_ex(obj_flowery_enemy) && obj_flowery_enemy.introcon == 2))
 {
 	global.turntimer -= 1
 	if (global.turntimer <= 0 && reset == 0)
